@@ -111,4 +111,12 @@ export const fetchPosts = () => dispatch => {
     })
 }
 
+// TEST section for setting postsFilter
+export const FILTER_POSTS = 'FILTER_POSTS'
 
+export function filterPosts(filter) {
+  return {
+    type: FILTER_POSTS,
+    filter 
+  }
+}

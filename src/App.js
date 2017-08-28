@@ -16,6 +16,13 @@ class App extends Component {
           <Route path="/posts" render={() => (
             <Posts />
           )} />
+
+{/* TODO figure out how to pass the category data to the comp */}
+          <Route path="/:category/posts" render={(match) => (
+            <Posts match={match} />
+          )} />
+
+
         </div>
       </Router>
     );
