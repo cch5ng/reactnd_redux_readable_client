@@ -44,29 +44,43 @@ class Posts extends Component {
 
     return (
       <div className="posts">
-        <h3>Categories</h3>
-        <ul onClick={this.categoryClick} >
-          <Link to="/posts" key="postsAll" ><li key="all">all</li></Link>
-          {categories
-            ? categories.map((category, idx) => {
-              let link = `/${category.name}/posts`
-              let linkKey = `${category.name}${idx}`
-              return (
-                <Link to={link} key={linkKey} ><li key={category.name}>{category.name}</li></Link>
-              )
-            })
-            : null
-          }
-        </ul>
-        <h3>Posts</h3>
-        <ul>
-          {postsFiltered
-            ? postsFiltered.map(post => (
-              <li key={post.id}>{post.title}</li>
-            ))
-            : null
-          }
-        </ul>
+        <div>
+          <h3>Categories</h3>
+          <ul onClick={this.categoryClick} className="categories-list">
+            <Link to="/posts" key="postsAll" ><li key="all">all</li></Link>
+            {categories
+              ? categories.map((category, idx) => {
+                let link = `/${category.name}/posts`
+                let linkKey = `${category.name}${idx}`
+                return (
+                  <Link to={link} key={linkKey} ><li key={category.name}>{category.name}</li></Link>
+                )
+              })
+              : null
+            }
+          </ul>
+        </div>
+        <div>
+          <h3>Posts</h3>
+          <ul>
+            <li>Sort by Votes</li>
+            <li>Sort by Most Recent</li>
+          </ul>
+          <ul className="post-list">
+            {postsFiltered
+              ? postsFiltered.map(post => (
+                <li key={post.id} className="post-list-item">
+                  {post.title}<br />
+                  Author: {post.author}<br />
+                  Votes: {post.voteScore}<br />
+                  Time: {post.timestamp}<br />
+
+                </li>
+              ))
+              : null
+            }
+          </ul>
+        </div>
       </div>
     )
   }
