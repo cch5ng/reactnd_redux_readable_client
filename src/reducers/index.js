@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../actions'
 import { REQUEST_POSTS, RECEIVE_POSTS } from '../actions'
+import { FILTER_POSTS } from '../actions'
 
 // const initPostsState = [
 //     {
@@ -97,10 +98,23 @@ function posts(state = [], action) {
   }
 }
 
+function postsFilter(state = { filter: 'all' }, action) {
+
+  switch(action.type) {
+    case FILTER_POSTS:
+      return {
+        ...state,
+        filter: action.filter
+      }
+    default:
+      return state
+  }
+}
 
 export default combineReducers({
   posts,
-  categories
+  categories,
+  postsFilter
 })
 
 // note that format of combined reducer will be like
