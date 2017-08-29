@@ -46,6 +46,7 @@ mHeaders.append('Authorization', 'mAuth')
 const INIT_GET_CATEGORIES = {method: 'GET',
                               headers: mHeaders
                             }
+const API_GET_POST_DETAIL = 'http://localhost:5001/posts/'
 
 // sync actions for getting categories
 export const REQUEST_CATEGORIES = 'REQUEST_CATEGORIES'
@@ -129,5 +130,40 @@ export function sortPosts(sortKey) {
     type: SORT_POSTS,
     sortKey 
   }
+}
+
+////////
+
+// TEST section for Post Detail actions
+export const REQUEST_POST_DETAIL = 'REQUEST_POST_DETAIL'
+export const RECEIVE_POST_DETAIL = 'RECEIVE_POST_DETAIL'
+
+export function requestPostDetail() {
+  return {
+    type: REQUEST_POST_DETAIL,
+    retrieving: true
+  }
+}
+
+export function receivePostDetail(postDetail) {
+  return {
+    type: RECEIVE_POST_DETAIL,
+    postDetail,
+    retrieving: false
+
+  }
+}
+
+// async action for getting posts
+export const fetchPostDetail = (postId) => dispatch => {
+  dispatch(requestPostDetail())
+  console.log(`${API_GET_POST_DETAIL}${postId}`)
+  return fetch(`${API_GET_POST_DETAIL}${postId}`, INIT_GET_CATEGORIES)
+    .then(response => response.json())
+    // use json.posts to make the data more shallow
+    .then(json => dispatch(receivePostDetail(json)))
+    .catch(function(err) {
+      console.log('fetch err: ' + err.message)
+    })
 }
 

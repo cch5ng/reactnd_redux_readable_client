@@ -5,6 +5,7 @@ import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES, fetchCategories } from '../acti
 import { REQUEST_POSTS, RECEIVE_POSTS, fetchPosts } from '../actions'
 import { FILTER_POSTS, filterPosts } from '../actions'
 import { SORT_POSTS, sortPosts } from '../actions'
+import Post from './Post'
 import '../App.css';
 
 class Posts extends Component {
@@ -117,14 +118,6 @@ class Posts extends Component {
     return sortedPosts
   }
 
-  prettyTime(timestampMs) {
-    let dateStr = ''
-    const dateTime = new Date(timestampMs)
-    dateStr = dateTime.toString()
-
-    return dateStr
-  }
-
   prettySortVotes(sortOrderDesc) {
     switch(sortOrderDesc) {
       case true:
@@ -202,15 +195,22 @@ class Posts extends Component {
           </ul>
           <ul className="post-list">
             {postsSorted
-              ? postsSorted.map(post => (
-                <li key={post.id} className="post-list-item">
-                  {post.title}<br />
-                  Author: {post.author}<br />
-                  Votes: {post.voteScore}<br />
-                  Time: {this.prettyTime(post.timestamp)}<br />
-
-                </li>
-              ))
+              ? postsSorted.map(post => {
+                  let link = `/posts/${post.id}`
+                  return (
+                    <Link to={link} key={post.id}>
+                      <Post post={post} prettyTime={this.props.prettyTime} />
+{ /* 
+                      <li key={post.id} className="post-list-item">
+                        {post.title}<br />
+                        Author: {post.author}<br />
+                        Votes: {post.voteScore}<br />
+                        Time: {this.props.prettyTime(post.timestamp)}<br />
+                      </li>
+*/}
+                    </Link>
+                  )
+              })
               : null
             }
           </ul>

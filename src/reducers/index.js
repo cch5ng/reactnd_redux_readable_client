@@ -3,6 +3,8 @@ import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../actions'
 import { REQUEST_POSTS, RECEIVE_POSTS } from '../actions'
 import { FILTER_POSTS } from '../actions'
 import { SORT_POSTS } from '../actions'
+import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../actions'
+
 
 // const initPostsState = [
 //     {
@@ -126,12 +128,29 @@ function postsSort(state = { sortKey: 'voteScore', sortOrderDesc: true }, action
   }
 }
 
+function postDetail(state = {}, action) {
+
+  switch(action.type) {
+    case REQUEST_POST_DETAIL:
+      return {
+        ...state,
+      }
+    case RECEIVE_POST_DETAIL:
+      return {
+        ...state,
+        postDetail: action.postDetail
+      }
+    default:
+      return state
+  }
+}
 
 export default combineReducers({
   posts,
   categories,
   postsFilter,
-  postsSort
+  postsSort,
+  postDetail
 })
 
 // note that format of combined reducer will be like
