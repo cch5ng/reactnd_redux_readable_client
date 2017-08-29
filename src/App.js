@@ -26,6 +26,11 @@ class App extends Component {
         <div className="App">
           <Nav />
 
+          <Route exact path="/" render={() => (
+            <Posts prettyTime={this.prettyTime} />
+          )} />
+
+
           <Route exact path="/posts" render={() => (
             <Posts prettyTime={this.prettyTime} />
           )} />
