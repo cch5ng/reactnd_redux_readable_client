@@ -23,7 +23,7 @@ class Posts extends Component {
   }
 
   postsSortClick(ev) {
-    const sortKey = ev.target.className
+    const sortKey = ev.target.id
     console.log('sortKey: ' + sortKey)
     this.props.dispatch(sortPosts(sortKey))
   }
@@ -192,9 +192,9 @@ class Posts extends Component {
         </div>
         <div>
           <h3>Posts</h3>
-          <ul onClick={this.postsSortClick} >
-            <li className="voteScore">Sort by Votes ({this.prettySortVotes(sortOrderDesc)})</li>
-            <li className="timestamp">Sort by Most Recent ({this.prettySortTime(sortOrderDesc)})</li>
+          <ul onClick={this.postsSortClick} className="sort-key-list">
+            <li id="voteScore" className={ sortKey === "voteScore" ? "is-active-sort" : "" }>Sort by Votes ({this.prettySortVotes(sortOrderDesc)})</li>
+            <li id="timestamp" className={ sortKey === "timestamp" ? "is-active-sort" : "" }>Sort by Most Recent ({this.prettySortTime(sortOrderDesc)})</li>
           </ul>
           <ul className="post-list">
             {postsSorted
