@@ -32,17 +32,26 @@
 /* Post */
 .categories-list,
 .post-list,
-.sort-key-list {
+.sort-key-list,
+.comments-list {
   list-style-type: none;
 }
 
-.post-list-item {
+.post-list-item,
+.post-detail {
   background-color: #99d5cf;
   margin-top: 12px;
-  padding: 5px 10px;
+  padding: 10px;
   border-radius: 8px;
 }
 
 .is-active-sort {
   background-color: #ffd1aa;
+}
+
+.comments-list-item {
+  background-color: #cceae7;
+  margin-top: 12px;
+  padding: 5px 10px;
+  border-radius: 8px;
 }

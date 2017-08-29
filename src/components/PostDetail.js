@@ -17,23 +17,38 @@ class PostDetail extends Component {
 
   render() {
     let postDetail = null
+    let comments = null
     if (this.props.postDetail.postDetail) {
       postDetail = this.props.postDetail.postDetail
+    }
+    if (this.props.comments.comments) {
+      comments = this.props.comments.comments
     }
     return (
       <div>
       { postDetail
         ? <div>
-            <h3>{postDetail.title}</h3>
-            <p>{postDetail.body}</p>
-            <p>Author: {postDetail.author}</p>
-            <p>Votes: {postDetail.voteScore}</p>
-            <p>Time: {this.props.prettyTime(postDetail.timestamp)}</p>
+            <div className="post-detail">
+              <h3>{postDetail.title}</h3>
+              <p>{postDetail.body}</p>
+              <p>Author: {postDetail.author}</p>
+              <p>Votes: {postDetail.voteScore}</p>
+              <p>Time: {this.props.prettyTime(postDetail.timestamp)}</p>
 
-            <h3>Comments</h3>
-            <ul>
-              list of comments
-            </ul>
+              <h4>Comments</h4>
+              <ul className="comments-list">
+                { comments 
+                  ? comments.map(comment => (
+                    <li key={comment.id} className="comments-list-item">
+                      {comment.body}<br />
+                      Author: {comment.author}<br />
+                      Votes: {comment.voteScore}<br />
+                    </li>
+                  ))
+                  : null
+                }
+              </ul>
+            </div>
           </div>
         : null
       }
