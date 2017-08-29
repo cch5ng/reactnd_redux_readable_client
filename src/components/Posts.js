@@ -24,78 +24,19 @@ class Posts extends Component {
   }
 
   postsSortClick(ev) {
-    const sortKey = ev.target.id
-    console.log('sortKey: ' + sortKey)
+    const className = ev.target.className
+    let sortKey = ''
+    if (className.indexOf('voteScore') > -1) {
+      sortKey = 'voteScore'
+    }
+    if (className.indexOf('timestamp') > -1) {
+      sortKey = 'timestamp'      
+    }
+    console.log('posts sortKey: ' + sortKey)
     this.props.dispatch(sortPosts(sortKey))
   }
  
   // HELPERS
-  sortPosts(sortKey, sortOrderDesc, posts) {
-    let sortedPosts = []
-
-    if (sortOrderDesc) {
-      posts.forEach(post => {
-        if (sortedPosts.length === 0) {
-          sortedPosts.push(post)
-        } else if (sortedPosts.length === 1 && post[sortKey] >= sortedPosts[0][sortKey]){
-          sortedPosts.unshift(post)
-        } else if (sortedPosts.length === 1 && post[sortKey] <= sortedPosts[sortedPosts.length - 1][sortKey]) {
-          sortedPosts.push(post)        
-        } else {
-          for (var i = 1; i < sortedPosts.length - 1; i++) {
-            if (post.sortKey <= sortedPosts[i][sortKey] && post[sortKey] >= sortedPosts[i][sortKey]) {
-              let tempAr = []
-              tempAr = [...sortedPosts.slice(0, i), post, ...sortedPosts.slice(i+1)]
-              sortedPosts = tempAr
-            }
-          } 
-        }
-      })
-    }
-
-    if (!sortOrderDesc) {
-      posts.forEach(post => {
-        if (sortedPosts.length === 0) {
-          sortedPosts.push(post)
-        } else if (sortedPosts.length === 1 && post[sortKey] <= sortedPosts[0][sortKey]){
-          sortedPosts.unshift(post)
-        } else if (sortedPosts.length === 1 && post[sortKey] >= sortedPosts[sortedPosts.length - 1][sortKey]) {
-          sortedPosts.push(post)        
-        } else {
-          for (var i = 1; i < sortedPosts.length - 1; i++) {
-            if (post.sortKey >= sortedPosts[i][sortKey] && post[sortKey] <= sortedPosts[i][sortKey]) {
-              let tempAr = []
-              tempAr = [...sortedPosts.slice(0, i), post, ...sortedPosts.slice(i+1)]
-              sortedPosts = tempAr
-            }
-          }
-        }
-      })
-    }
-    return sortedPosts
-  }
-
-  prettySortVotes(sortOrderDesc) {
-    switch(sortOrderDesc) {
-      case true:
-        return 'high to low'
-      case false:
-        return 'low to high'
-      default:
-        return 'unknown'
-    }
-  }
-
-  prettySortTime(sortOrderDesc) {
-    switch(sortOrderDesc) {
-      case true:
-        return 'recent to oldest'
-      case false:
-        return 'oldest to recent'
-      default:
-        return 'unknown'
-    }
-  }
 
   render() {
     let categories = null
@@ -122,7 +63,7 @@ class Posts extends Component {
     }
 
     if (sortKey && postsFiltered) {
-      postsSorted = this.sortPosts(sortKey, sortOrderDesc, postsFiltered)
+      postsSorted = this.props.sortList(sortKey, sortOrderDesc, postsFiltered)
       console.log('postsSorted: ' + postsSorted)
     }
 
@@ -147,8 +88,8 @@ class Posts extends Component {
         <div>
           <h3>Posts</h3>
           <ul onClick={this.postsSortClick} className="sort-key-list">
-            <li id="voteScore" className={ sortKey === "voteScore" ? "is-active-sort" : "" }>Sort by Votes ({this.prettySortVotes(sortOrderDesc)})</li>
-            <li id="timestamp" className={ sortKey === "timestamp" ? "is-active-sort" : "" }>Sort by Most Recent ({this.prettySortTime(sortOrderDesc)})</li>
+            <li className={ sortKey === "voteScore" ? "is-active-sort voteScore" : "voteScore" }>Sort by Votes ({this.props.prettySortVotes(sortOrderDesc)})</li>
+            <li className={ sortKey === "timestamp" ? "is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({this.props.prettySortTime(sortOrderDesc)})</li>
           </ul>
           <ul className="post-list">
             {postsSorted
@@ -157,14 +98,6 @@ class Posts extends Component {
                   return (
                     <Link to={link} key={post.id}>
                       <Post post={post} prettyTime={this.props.prettyTime} />
-{ /* 
-                      <li key={post.id} className="post-list-item">
-                        {post.title}<br />
-                        Author: {post.author}<br />
-                        Votes: {post.voteScore}<br />
-                        Time: {this.props.prettyTime(post.timestamp)}<br />
-                      </li>
-*/}
                     </Link>
                   )
               })
