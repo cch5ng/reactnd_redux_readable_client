@@ -118,7 +118,11 @@ class Posts extends Component {
   }
 
   prettyTime(timestampMs) {
+    let dateStr = ''
+    const dateTime = new Date(timestampMs)
+    dateStr = dateTime.toString()
 
+    return dateStr
   }
 
   prettySortVotes(sortOrderDesc) {
@@ -203,7 +207,7 @@ class Posts extends Component {
                   {post.title}<br />
                   Author: {post.author}<br />
                   Votes: {post.voteScore}<br />
-                  Time: {post.timestamp}<br />
+                  Time: {this.prettyTime(post.timestamp)}<br />
 
                 </li>
               ))
