@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+//import FaAngleDown from 'react-icons';
 import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES, fetchCategories } from '../actions'
 import { REQUEST_POSTS, RECEIVE_POSTS, fetchPosts } from '../actions'
 import { FILTER_POSTS, filterPosts } from '../actions'
