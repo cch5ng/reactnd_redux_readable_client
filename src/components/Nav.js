@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
-
 import '../App.css';
 
 class Nav extends Component {
@@ -16,11 +14,4 @@ class Nav extends Component {
   }
 }
 
-function mapStateToProps({  }) {
-
-  return {
-
-  }
-}
-
-export default connect(mapStateToProps)(Nav);
+export default Nav
