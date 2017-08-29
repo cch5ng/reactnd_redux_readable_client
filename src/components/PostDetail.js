@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../actions'
+import { REQUEST_COMMENTS, RECEIVE_COMMENTS, fetchComments } from '../actions'
 
 import '../App.css';
 
@@ -11,7 +12,7 @@ class PostDetail extends Component {
     // dispatch fetch to get the post data based on the id
     const postId = this.props.match.params.id
     this.props.dispatch(fetchPostDetail(postId))
-
+    this.props.dispatch(fetchComments(postId))
   }
 
   render() {
@@ -28,6 +29,11 @@ class PostDetail extends Component {
             <p>Author: {postDetail.author}</p>
             <p>Votes: {postDetail.voteScore}</p>
             <p>Time: {this.props.prettyTime(postDetail.timestamp)}</p>
+
+            <h3>Comments</h3>
+            <ul>
+              list of comments
+            </ul>
           </div>
         : null
       }
@@ -36,21 +42,11 @@ class PostDetail extends Component {
   }
 }
 
-function mapStateToProps({ postDetail }) {
-
+function mapStateToProps({ postDetail, comments }) {
   return {
-    postDetail
+    postDetail,
+    comments
   }
 }
 
 export default connect(mapStateToProps)(PostDetail);
-
-
-/* 
-      <li key={post.id} className="post-list-item">
-        {post.title}<br />
-        Author: {post.author}<br />
-        Votes: {post.voteScore}<br />
-        Time: {this.props.prettyTime(post.timestamp)}<br />
-      </li>
-*/

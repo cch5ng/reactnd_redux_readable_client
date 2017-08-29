@@ -6,6 +6,8 @@ const INIT_GET_CATEGORIES = {method: 'GET',
                               headers: mHeaders
                             }
 const API_GET_POST_DETAIL = 'http://localhost:5001/posts/'
+const API_GET_COMMENTS_PREFIX = 'http://localhost:5001/posts/'
+const API_GET_COMMENTS_SUFFIX = '/comments'
 
 // sync actions for getting categories
 export const REQUEST_CATEGORIES = 'REQUEST_CATEGORIES'
@@ -121,6 +123,40 @@ export const fetchPostDetail = (postId) => dispatch => {
     .then(response => response.json())
     // use json.posts to make the data more shallow
     .then(json => dispatch(receivePostDetail(json)))
+    .catch(function(err) {
+      console.log('fetch err: ' + err.message)
+    })
+}
+
+/////
+
+// section for Comments (by post id) actions
+export const REQUEST_COMMENTS = 'REQUEST_COMMENTS'
+export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
+
+export function requestComments() {
+  return {
+    type: REQUEST_COMMENTS,
+    retrieving: true
+  }
+}
+
+export function receiveComments(comments) {
+  return {
+    type: RECEIVE_COMMENTS,
+    comments,
+    retrieving: false
+
+  }
+}
+
+// async action for getting comments
+export const fetchComments = (postId) => dispatch => {
+  dispatch(requestComments())
+  return fetch(`${API_GET_COMMENTS_PREFIX}${postId}${API_GET_COMMENTS_SUFFIX}`, INIT_GET_CATEGORIES)
+    .then(response => response.json())
+    // use json.posts to make the data more shallow
+    .then(json => dispatch(receiveComments(json)))
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
