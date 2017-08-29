@@ -120,3 +120,14 @@ export function filterPosts(filter) {
     filter 
   }
 }
+
+// TEST section for setting postsSortBy
+export const SORT_POSTS = 'SORT_POSTS'
+
+export function sortPosts(sortKey) {
+  return {
+    type: SORT_POSTS,
+    sortKey 
+  }
+}
+
