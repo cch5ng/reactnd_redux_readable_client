@@ -30,91 +30,48 @@ class Posts extends Component {
   }
  
   // HELPERS
-// TODO need troubleshoot
   sortPosts(sortKey, sortOrderDesc, posts) {
     let sortedPosts = []
 
-// TODO pretty sure this needs refactor
-    if (sortOrderDesc && sortKey === "voteScore") {
+    if (sortOrderDesc) {
       posts.forEach(post => {
         if (sortedPosts.length === 0) {
           sortedPosts.push(post)
-        } else if (sortedPosts.length === 1 && post.voteScore >= sortedPosts[0].voteScore){
+        } else if (sortedPosts.length === 1 && post[sortKey] >= sortedPosts[0][sortKey]){
           sortedPosts.unshift(post)
-        } else if (sortedPosts.length === 1 && post.voteScore <= sortedPosts[sortedPosts.length - 1].voteScore) {
+        } else if (sortedPosts.length === 1 && post[sortKey] <= sortedPosts[sortedPosts.length - 1][sortKey]) {
           sortedPosts.push(post)        
         } else {
           for (var i = 1; i < sortedPosts.length - 1; i++) {
-            if (post.voteScore <= sortedPosts[i].voteScore && post.voteScore >= sortedPosts[i].voteScore) {
+            if (post.sortKey <= sortedPosts[i][sortKey] && post[sortKey] >= sortedPosts[i][sortKey]) {
               let tempAr = []
               tempAr = [...sortedPosts.slice(0, i), post, ...sortedPosts.slice(i+1)]
               sortedPosts = tempAr
             }
-          }        
+          } 
         }
-      })     
+      })
     }
 
-    if (!sortOrderDesc && sortKey === "voteScore") {
+    if (!sortOrderDesc) {
       posts.forEach(post => {
         if (sortedPosts.length === 0) {
           sortedPosts.push(post)
-        } else if (sortedPosts.length === 1 && post.voteScore <= sortedPosts[0].voteScore){
+        } else if (sortedPosts.length === 1 && post[sortKey] <= sortedPosts[0][sortKey]){
           sortedPosts.unshift(post)
-        } else if (sortedPosts.length === 1 && post.voteScore >= sortedPosts[sortedPosts.length - 1].voteScore) {
+        } else if (sortedPosts.length === 1 && post[sortKey] >= sortedPosts[sortedPosts.length - 1][sortKey]) {
           sortedPosts.push(post)        
         } else {
           for (var i = 1; i < sortedPosts.length - 1; i++) {
-            if (post.voteScore >= sortedPosts[i].voteScore && post.voteScore <= sortedPosts[i].voteScore) {
+            if (post.sortKey >= sortedPosts[i][sortKey] && post[sortKey] <= sortedPosts[i][sortKey]) {
               let tempAr = []
               tempAr = [...sortedPosts.slice(0, i), post, ...sortedPosts.slice(i+1)]
               sortedPosts = tempAr
             }
-          }        
+          }
         }
-      })     
+      })
     }
-
-    if (sortOrderDesc && sortKey === "timestamp") {
-      posts.forEach(post => {
-        if (sortedPosts.length === 0) {
-          sortedPosts.push(post)
-        } else if (sortedPosts.length === 1 && post.timestamp >= sortedPosts[0].timestamp){
-          sortedPosts.unshift(post)
-        } else if (sortedPosts.length === 1 && post.timestamp <= sortedPosts[sortedPosts.length - 1].timestamp) {
-          sortedPosts.push(post)        
-        } else {
-          for (var i = 1; i < sortedPosts.length - 1; i++) {
-            if (post.timestamp <= sortedPosts[i].timestamp && post.timestamp >= sortedPosts[i].timestamp) {
-              let tempAr = []
-              tempAr = [...sortedPosts.slice(0, i), post, ...sortedPosts.slice(i+1)]
-              sortedPosts = tempAr
-            }
-          }        
-        }
-      })     
-    }
-
-    if (!sortOrderDesc && sortKey === "timestamp") {
-      posts.forEach(post => {
-        if (sortedPosts.length === 0) {
-          sortedPosts.push(post)
-        } else if (sortedPosts.length === 1 && post.timestamp <= sortedPosts[0].timestamp){
-          sortedPosts.unshift(post)
-        } else if (sortedPosts.length === 1 && post.timestamp >= sortedPosts[sortedPosts.length - 1].timestamp) {
-          sortedPosts.push(post)        
-        } else {
-          for (var i = 1; i < sortedPosts.length - 1; i++) {
-            if (post.timestamp >= sortedPosts[i].timestamp && post.timestamp <= sortedPosts[i].timestamp) {
-              let tempAr = []
-              tempAr = [...sortedPosts.slice(0, i), post, ...sortedPosts.slice(i+1)]
-              sortedPosts = tempAr
-            }
-          }        
-        }
-      })     
-    }
-
     return sortedPosts
   }
 
