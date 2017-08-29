@@ -7,6 +7,7 @@ import {
 import Posts from './components/Posts';
 import Post from './components/Post'
 import PostDetail from './components/PostDetail'
+import Nav from './components/Nav'
 import './App.css';
 
 class App extends Component {
@@ -23,6 +24,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
+          <Nav />
 
           <Route exact path="/posts" render={() => (
             <Posts prettyTime={this.prettyTime} />
