@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../actions'
 import { REQUEST_POSTS, RECEIVE_POSTS } from '../actions'
 import { FILTER_POSTS } from '../actions'
+import { SORT_POSTS } from '../actions'
 
 // const initPostsState = [
 //     {
@@ -111,10 +112,26 @@ function postsFilter(state = { filter: 'all' }, action) {
   }
 }
 
+function postsSort(state = { sortKey: 'voteScore', sortOrderDesc: true }, action) {
+
+  switch(action.type) {
+    case SORT_POSTS:
+      return {
+        ...state,
+        sortKey: action.sortKey,
+        sortOrderDesc: action.sortKey === state.sortKey ? !state.sortOrderDesc : true 
+      }
+    default:
+      return state
+  }
+}
+
+
 export default combineReducers({
   posts,
   categories,
-  postsFilter
+  postsFilter,
+  postsSort
 })
 
 // note that format of combined reducer will be like
