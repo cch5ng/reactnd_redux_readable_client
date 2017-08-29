@@ -162,3 +162,13 @@ export const fetchComments = (postId) => dispatch => {
     })
 }
 
+// TEST section for setting commentsSortBy
+export const SORT_COMMENTS = 'SORT_COMMENTS'
+
+export function sortComments(sortKey) {
+  return {
+    type: SORT_COMMENTS,
+    sortKey
+  }
+}
+

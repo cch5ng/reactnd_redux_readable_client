@@ -3,10 +3,26 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../actions'
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS, fetchComments } from '../actions'
+import { SORT_COMMENTS, sortComments } from '../actions'
 
 import '../App.css';
 
 class PostDetail extends Component {
+
+  commentsSortClick = this.commentsSortClick.bind(this)
+
+  commentsSortClick(ev) {
+    const className = ev.target.className
+    let sortKey = ''
+    if (className.indexOf('voteScore') > -1) {
+      sortKey = 'voteScore'
+    }
+    if (className.indexOf('timestamp') > -1) {
+      sortKey = 'timestamp'      
+    }
+    console.log('comment sortKey: ' + sortKey)
+    this.props.dispatch(sortComments(sortKey))
+  }
 
   componentDidMount() {
     // dispatch fetch to get the post data based on the id
@@ -18,12 +34,28 @@ class PostDetail extends Component {
   render() {
     let postDetail = null
     let comments = null
+    let commentsSort = null
+    // var will store the sorted commments
+    let commentsOrdered = null
+    const { sortKey, sortOrderDesc } = this.props.commentsSort
+
     if (this.props.postDetail.postDetail) {
       postDetail = this.props.postDetail.postDetail
     }
     if (this.props.comments.comments) {
       comments = this.props.comments.comments
     }
+    if (this.props.commentsSort) {
+      commentsSort = this.props.commentsSort
+    }
+    if (sortKey && comments && comments.length) {
+      console.log('len comments: ' + comments.length)
+      commentsOrdered = this.props.sortList(sortKey, sortOrderDesc, comments)
+      console.log('len commentsOrdered: ' + commentsOrdered.length)
+    }
+
+
+    console.log('commentsSort.sortKey: ' + commentsSort.sortKey)
     return (
       <div>
       { postDetail
@@ -36,13 +68,20 @@ class PostDetail extends Component {
               <p>Time: {this.props.prettyTime(postDetail.timestamp)}</p>
 
               <h4>Comments</h4>
+
+              <ul onClick={this.commentsSortClick} className="sort-key-list">
+                <li className={ commentsSort.sortKey === "voteScore" ? "is-active-sort voteScore" : "voteScore" }>Sort by Votes ({this.props.prettySortVotes(commentsSort.sortOrderDesc)})</li>
+                <li className={ commentsSort.sortKey === "timestamp" ? "is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({this.props.prettySortTime(commentsSort.sortOrderDesc)})</li>
+              </ul>
+
               <ul className="comments-list">
-                { comments 
-                  ? comments.map(comment => (
+                { commentsOrdered 
+                  ? commentsOrdered.map(comment => (
                     <li key={comment.id} className="comments-list-item">
                       {comment.body}<br />
                       Author: {comment.author}<br />
                       Votes: {comment.voteScore}<br />
+                      Time: {this.props.prettyTime(comment.timestamp)}
                     </li>
                   ))
                   : null
@@ -57,10 +96,11 @@ class PostDetail extends Component {
   }
 }
 
-function mapStateToProps({ postDetail, comments }) {
+function mapStateToProps({ postDetail, comments, commentsSort }) {
   return {
     postDetail,
-    comments
+    comments,
+    commentsSort
   }
 }
 

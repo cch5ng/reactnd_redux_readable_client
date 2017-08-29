@@ -1,10 +1,14 @@
 import { combineReducers } from 'redux'
+// TODO separate /categories
 import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../actions'
+// separate /posts
 import { REQUEST_POSTS, RECEIVE_POSTS } from '../actions'
 import { FILTER_POSTS } from '../actions'
 import { SORT_POSTS } from '../actions'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../actions'
+// separate /comments
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from '../actions'
+import { SORT_COMMENTS } from '../actions'
 
 function categories(state = [], action) {
 
@@ -104,13 +108,30 @@ function comments(state = [], action) {
   }
 }
 
+// TODO could this be refactored with postsSort? kind of want to keep them separate
+// but basically the same logic, just a different reducer
+function commentsSort(state = { sortKey: 'voteScore', sortOrderDesc: true }, action) {
+
+  switch(action.type) {
+    case SORT_COMMENTS:
+      return {
+        ...state,
+        sortKey: action.sortKey,
+        sortOrderDesc: action.sortKey === state.sortKey ? !state.sortOrderDesc : true 
+      }
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   posts,
   categories,
   postsFilter,
   postsSort,
   postDetail,
-  comments
+  comments,
+  commentsSort
 })
 
 // note that format of combined reducer will be like
