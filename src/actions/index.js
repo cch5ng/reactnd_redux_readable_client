@@ -109,6 +109,7 @@ export const updatePostVote = (postId, option) => dispatch => {
     .then(response => response.json())
     // use json.posts to make the data more shallow
     .then(json => dispatch(receivePostVote(json)))
+    .then(dispatch(fetchPosts()))
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
