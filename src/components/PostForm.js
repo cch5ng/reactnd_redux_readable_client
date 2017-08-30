@@ -13,7 +13,7 @@ class PostForm extends Component {
     postTitleInp: '',
     postBodyTa: '',
     postAuthorInp: '',
-    postVoteScoreInp: 0,
+    postCategoryOpt: 'none',
     postDatetimeInp: ''
   }
 
@@ -23,6 +23,8 @@ class PostForm extends Component {
   formInputUpdate(ev) {
     const id = ev.target.id
     const value = ev.target.value
+    console.log('id: ' + id)
+    console.log('value: ' + value)
     let stateObj = {}
     stateObj[id] = value
 
@@ -31,34 +33,52 @@ class PostForm extends Component {
 
   formSubmit(ev) {
     ev.preventDefault()
-    console.log('got here formSubmit')
+    const form = document.getElementById("post-create-form")
     const curDateMs = Date.now()
-    console.log('curDateMs: ' + curDateMs)
     const formData = {
       title: this.state.postTitleInp || '',
       body: this.state.postBodyTa || '',
       author: this.state.postAuthorInp || '',
-      //voteScore: parseInt(this.state.postVoteScoreInp) || 0,
+      category: this.state.postCategoryOpt || 'none',
       timestamp: curDateMs
     }
 
     this.props.dispatch(fetchPostCreate(formData))
+    this.setState(
+      {
+          postTitleInp: '',
+          postBodyTa: '',
+          postAuthorInp: '',
+          postCategoryOpt: 'none',
+          postDatetimeInp: ''
+      }
+    )
 
   }
 
-//           <input type="number" value={this.state.postVoteScoreInp} name="post-voteScore-inp" id="postVoteScoreInp" onChange={this.formInputUpdate} /><br />
-
-
   render() {
+    let categories = null
+    if (this.props.categories.categories) {
+      categories = this.props.categories.categories
+    }
+    console.log('categories: ' + categories)
 
     return (
       <div>
         <h3>Add Post</h3>
-        <form>
+        <form id="post-create-form">
           <input type="text" value={this.state.postTitleInp} name="post-title-inp" id="postTitleInp" placeholder="title" onChange={this.formInputUpdate} /><br /><br />
           <textarea width="100" value={this.state.postBodyTa} name="post-body-ta" id="postBodyTa" placeholder="post body" onChange={this.formInputUpdate} /><br />
+          {categories && (
+            <div>
+              <select id="postCategoryOpt" onChange={this.formInputUpdate} defaultValue="none">
+                {categories.map(category => (
+                  <option key={category.name} value={category.name} >{category.name}</option>
+                ))}
+              </select><br />
+            </div>
+          )}
           <input type="text" value={this.state.postAuthorInp} name="post-author-inp" id="postAuthorInp"  placeholder="author" onChange={this.formInputUpdate} /><br />
-          <input type="datetime-local" name="post-datetime-inp" id="postDatetimeInp" onChange={this.formInputUpdate} /><br />
           <button name="postSaveBtn" id="postSaveBtn" onClick={this.formSubmit} >Save</button> <button id="postCancelBtn" id="postCancelBtn">Cancel</button>
         </form>
       </div>
@@ -66,9 +86,10 @@ class PostForm extends Component {
   }
 }
 
-function mapStateToProps({ postCreate }) {
+function mapStateToProps({ postCreate, categories }) {
   return {
-    postCreate
+    postCreate,
+    categories
   }
 }
 
