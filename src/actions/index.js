@@ -115,6 +115,48 @@ export const updatePostVote = (postId, option) => dispatch => {
     })
 }
 
+/////
+
+// TEST section for create Post action
+export const REQUEST_POST_CREATE = 'REQUEST_POST_CREATE'
+export const RECEIVE_POST_CREATE = 'RECEIVE_POST_CREATE'
+
+export function requestPostCreate() {
+  return {
+    type: REQUEST_POST_CREATE,
+    retrieving: true
+  }
+}
+
+export function receivePostCreate(post) {
+  return {
+    type: RECEIVE_POST_CREATE,
+    post,
+    retrieving: false
+
+  }
+}
+
+// async action for getting posts
+export const fetchPostCreate = (postData) => dispatch => {
+  dispatch(requestPostCreate())
+  let INIT_CREATE_POST = {method: 'POST',
+                          headers: {
+                            'Authorization': 'mAuth',
+                            "Content-Type": 'application/json'
+                          },
+                          body: JSON.stringify(postData)
+                        }
+
+  return fetch(API_GET_POSTS, INIT_CREATE_POST)
+    .then(response => response.json())
+    // use json.posts to make the data more shallow
+    .then(json => dispatch(receivePostCreate(json)))
+    .catch(function(err) {
+      console.log('fetch err: ' + err.message)
+    })
+}
+
 // TEST section for setting postsFilter
 export const FILTER_POSTS = 'FILTER_POSTS'
 

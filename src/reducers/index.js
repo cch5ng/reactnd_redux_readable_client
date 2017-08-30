@@ -7,6 +7,7 @@ import { FILTER_POSTS } from '../actions'
 import { SORT_POSTS } from '../actions'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../actions'
 import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE } from '../actions'
+import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE } from '../actions'
 // separate /comments
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from '../actions'
 import { SORT_COMMENTS } from '../actions'
@@ -92,6 +93,23 @@ function postDetail(state = {}, action) {
   }
 }
 
+function postCreate(state = {}, action) {
+
+  switch(action.type) {
+    case REQUEST_POST_CREATE:
+      return {
+        ...state,
+      }
+    case RECEIVE_POST_CREATE:
+      return {
+        ...state,
+        post: action.post
+      }
+    default:
+      return state
+  }
+}
+
 function comments(state = [], action) {
 
   switch(action.type) {
@@ -150,6 +168,7 @@ export default combineReducers({
   postsFilter,
   postsSort,
   postDetail,
+  postCreate,
   postVote,
   comments,
   commentsSort
