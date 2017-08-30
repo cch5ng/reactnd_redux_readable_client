@@ -99,8 +99,11 @@ export function receivePostVote(post) {
 export const updatePostVote = (postId, option) => dispatch => {
   dispatch(requestPostVote())
   let INIT_UPDATE_POSTS = {method: 'POST',
-                          headers: mHeaders,
-                          body: JSON.stringify({ option: option})
+                          headers: {
+                            'Authorization': 'mAuth',
+                            "Content-Type": 'application/json'
+                          },
+                          body: JSON.stringify({ option })
                         }
   return fetch(`${API_GET_POSTS}/${postId}`, INIT_UPDATE_POSTS)
     .then(response => response.json())
