@@ -66,6 +66,9 @@ class Posts extends Component {
       postsSorted = this.props.sortList(sortKey, sortOrderDesc, postsFiltered)
       console.log('postsSorted: ' + postsSorted)
     }
+{/*                  let link = `/posts/${post.id}` */}
+//{/*                    <Link to={link} key={post.id}> */}
+//{/*                    </Link> */}
 
     return (
       <div className="posts">
@@ -94,11 +97,8 @@ class Posts extends Component {
           <ul className="post-list">
             {postsSorted
               ? postsSorted.map(post => {
-                  let link = `/posts/${post.id}`
                   return (
-                    <Link to={link} key={post.id}>
-                      <Post post={post} prettyTime={this.props.prettyTime} />
-                    </Link>
+                    <Post key={post.id} post={post} prettyTime={this.props.prettyTime} clickVote={this.props.clickVote} />
                   )
               })
               : null

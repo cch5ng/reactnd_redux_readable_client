@@ -1,9 +1,9 @@
 const API_GET_CATEGORIES = 'http://localhost:5001/categories'
 const API_GET_POSTS = 'http://localhost:5001/posts'
-let mHeaders = new Headers();
-mHeaders.append('Authorization', 'mAuth')
 const INIT_GET_CATEGORIES = {method: 'GET',
-                              headers: mHeaders
+                              headers: {
+                                'Authorization': 'mAuth'
+                              }
                             }
 const API_GET_POST_DETAIL = 'http://localhost:5001/posts/'
 const API_GET_COMMENTS_PREFIX = 'http://localhost:5001/posts/'
@@ -68,6 +68,48 @@ export const fetchPosts = () => dispatch => {
     .then(response => response.json())
     // use json.posts to make the data more shallow
     .then(json => dispatch(receivePosts(json)))
+    .catch(function(err) {
+      console.log('fetch err: ' + err.message)
+    })
+}
+
+/////
+
+// TEST section for Post vote actions
+export const REQUEST_POST_VOTE = 'REQUEST_POST_VOTE'
+export const RECEIVE_POST_VOTE = 'RECEIVE_POST_VOTE'
+
+export function requestPostVote() {
+  return {
+    type: REQUEST_POST_VOTE,
+    retrieving: true
+  }
+}
+
+export function receivePostVote(post) {
+  return {
+    type: RECEIVE_POST_VOTE,
+    post,
+    retrieving: false
+
+  }
+}
+
+// async action for getting posts
+export const updatePostVote = (postId, option) => dispatch => {
+  dispatch(requestPostVote())
+  let INIT_UPDATE_POSTS = {method: 'POST',
+                          headers: {
+                            'Authorization': 'mAuth',
+                            "Content-Type": 'application/json'
+                          },
+                          body: JSON.stringify({ option })
+                        }
+  return fetch(`${API_GET_POSTS}/${postId}`, INIT_UPDATE_POSTS)
+    .then(response => response.json())
+    // use json.posts to make the data more shallow
+    .then(json => dispatch(receivePostVote(json)))
+    .then(dispatch(fetchPosts()))
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })

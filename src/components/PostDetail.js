@@ -20,7 +20,6 @@ class PostDetail extends Component {
     if (className.indexOf('timestamp') > -1) {
       sortKey = 'timestamp'      
     }
-    console.log('comment sortKey: ' + sortKey)
     this.props.dispatch(sortComments(sortKey))
   }
 
@@ -49,13 +48,9 @@ class PostDetail extends Component {
       commentsSort = this.props.commentsSort
     }
     if (sortKey && comments && comments.length) {
-      console.log('len comments: ' + comments.length)
       commentsOrdered = this.props.sortList(sortKey, sortOrderDesc, comments)
-      console.log('len commentsOrdered: ' + commentsOrdered.length)
     }
 
-
-    console.log('commentsSort.sortKey: ' + commentsSort.sortKey)
     return (
       <div>
       { postDetail
