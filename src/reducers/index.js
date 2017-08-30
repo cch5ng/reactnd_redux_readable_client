@@ -6,9 +6,11 @@ import { REQUEST_POSTS, RECEIVE_POSTS } from '../actions'
 import { FILTER_POSTS } from '../actions'
 import { SORT_POSTS } from '../actions'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../actions'
+import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE } from '../actions'
 // separate /comments
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from '../actions'
 import { SORT_COMMENTS } from '../actions'
+
 
 function categories(state = [], action) {
 
@@ -124,12 +126,31 @@ function commentsSort(state = { sortKey: 'voteScore', sortOrderDesc: true }, act
   }
 }
 
+function postVote(state = {}, action) {
+
+  switch(action.type) {
+    case REQUEST_POST_VOTE:
+      return {
+        ...state,
+
+      }
+    case RECEIVE_POST_VOTE:
+      return {
+        ...state,
+        //posts: action.posts
+      }
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   posts,
   categories,
   postsFilter,
   postsSort,
   postDetail,
+  postVote,
   comments,
   commentsSort
 })

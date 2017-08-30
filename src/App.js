@@ -3,19 +3,43 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom'
+import { connect } from 'react-redux'
 import Posts from './components/Posts'
 import PostDetail from './components/PostDetail'
 import Nav from './components/Nav'
+import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE, updatePostVote } from './actions'
 import './App.css';
 
 class App extends Component {
+
+  clickVote = this.clickVote.bind(this)
+
+// EVENT HANDLERS
+
+  clickVote(ev, postId) {
+    const classList = ev.target.classList
+// console.log('clickVote handler')
+// console.log('classList: ' + classList)
+// console.log('type classList: ' + typeof classList)
+
+    switch(classList[0]) {
+      case "post-arrow-up-icon":
+        console.log('clickVote')
+        this.props.dispatch(updatePostVote(postId, 'upVote'))
+        return
+      case "post-arrow-down-icon":
+        this.props.dispatch(updatePostVote(postId, 'downVote'))
+        return
+      default:
+        return
+    }
+//    console.log('ev.target.classList: ' + ev.target.classList)
+  }
 
 // HELPERS
 
   sortList(sortKey, sortOrderDesc, list) {
     let sortedList = []
-    console.log('sortKey: ' + sortKey)
-    console.log('len list: ' + list.length)
 
     if (sortOrderDesc) {
       list.forEach(item => {
@@ -24,7 +48,6 @@ class App extends Component {
         } else if (sortedList.length === 1 && item[sortKey] >= sortedList[0][sortKey]){
           sortedList.unshift(item)
         } else if (sortedList.length === 1 && item[sortKey] < sortedList[sortedList.length - 1][sortKey]) {
-          console.log('gets App.js line 27')
           sortedList.push(item)        
         } else {
           for (var i = 1; i < sortedList.length - 1; i++) {
@@ -57,7 +80,6 @@ class App extends Component {
         }
       })
     }
-    console.log('len sortedList: ' + sortedList.length)
     return sortedList
   }
 
@@ -98,22 +120,27 @@ class App extends Component {
           <Nav />
 
           <Route exact path="/" render={() => (
-            <Posts prettyTime={this.prettyTime} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList}/>
+            <Posts prettyTime={this.prettyTime} 
+              prettySortVotes={this.prettySortVotes} 
+              prettySortTime={this.prettySortTime} 
+              sortList={this.sortList}
+              clickVote={this.clickVote}
+              />
           )} />
 
 
           <Route exact path="/posts" render={() => (
-            <Posts prettyTime={this.prettyTime} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList}/>
+            <Posts prettyTime={this.prettyTime} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList} clickVote={this.clickVote}/>
           )} />
 
 {/* TODO figure out how to pass the category data to the comp */}
           <Route exact path="/:category/posts" render={(match) => (
-            <Posts prettyTime={this.prettyTime} match={match} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList}/>
+            <Posts prettyTime={this.prettyTime} match={match} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList} clickVote={this.clickVote}/>
           )} />
 
 
           <Route exact path="/posts/:id" render={ ({match}) => (
-            <PostDetail prettyTime={this.prettyTime} match={match} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList}/>
+            <PostDetail prettyTime={this.prettyTime} match={match} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList} clickVote={this.clickVote}/>
             )
           }
           />
@@ -124,4 +151,11 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps({ postVote }) {
+
+  return {
+    postVote
+  }
+}
+
+export default connect(mapStateToProps)(App);

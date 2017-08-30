@@ -73,6 +73,44 @@ export const fetchPosts = () => dispatch => {
     })
 }
 
+/////
+
+// TEST section for Post vote actions
+export const REQUEST_POST_VOTE = 'REQUEST_POST_VOTE'
+export const RECEIVE_POST_VOTE = 'RECEIVE_POST_VOTE'
+
+export function requestPostVote() {
+  return {
+    type: REQUEST_POST_VOTE,
+    retrieving: true
+  }
+}
+
+export function receivePostVote(post) {
+  return {
+    type: RECEIVE_POST_VOTE,
+    post,
+    retrieving: false
+
+  }
+}
+
+// async action for getting posts
+export const updatePostVote = (postId, option) => dispatch => {
+  dispatch(requestPostVote())
+  let INIT_UPDATE_POSTS = {method: 'POST',
+                          headers: mHeaders,
+                          body: JSON.stringify({ option: option})
+                        }
+  return fetch(`${API_GET_POSTS}/${postId}`, INIT_UPDATE_POSTS)
+    .then(response => response.json())
+    // use json.posts to make the data more shallow
+    .then(json => dispatch(receivePostVote(json)))
+    .catch(function(err) {
+      console.log('fetch err: ' + err.message)
+    })
+}
+
 // TEST section for setting postsFilter
 export const FILTER_POSTS = 'FILTER_POSTS'
 

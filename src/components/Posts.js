@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-//import FaAngleDown from 'react-icons';
 import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES, fetchCategories } from '../actions'
 import { REQUEST_POSTS, RECEIVE_POSTS, fetchPosts } from '../actions'
 import { FILTER_POSTS, filterPosts } from '../actions'
@@ -98,7 +97,7 @@ class Posts extends Component {
                   let link = `/posts/${post.id}`
                   return (
                     <Link to={link} key={post.id}>
-                      <Post post={post} prettyTime={this.props.prettyTime} />
+                      <Post post={post} prettyTime={this.props.prettyTime} clickVote={this.props.clickVote} />
                     </Link>
                   )
               })

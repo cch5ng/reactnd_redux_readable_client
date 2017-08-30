@@ -13,7 +13,7 @@ class Post extends Component {
       <li key={post.id} className="post-list-item">
         {post.title}<br />
         Author: {post.author}<br />
-        Votes: {post.voteScore} <ArrowUpIcon /><ArrowDownIcon /><br />
+        Votes: {post.voteScore} <ArrowUpIcon className="post-arrow-up-icon" onClick={(ev) => this.props.clickVote(ev, post.id)} /><ArrowDownIcon className="post-arrow-down-icon" onClick={this.props.clickVote} /><br />
         Time: {this.props.prettyTime(post.timestamp)}<br />
       </li>
     )
