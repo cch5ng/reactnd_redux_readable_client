@@ -8,7 +8,8 @@ class Nav extends Component {
     //const post = this.props.post
     return (
       <div>
-        <Link to="/">Posts</Link>
+        <Link to="/">Posts</Link><br />
+        <Link to="/newPost">Add Post</Link>
       </div>
     )
   }

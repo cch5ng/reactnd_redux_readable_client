@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import Posts from './components/Posts'
 import PostDetail from './components/PostDetail'
 import Nav from './components/Nav'
+import PostForm from './components/PostForm'
 import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE, updatePostVote } from './actions'
 import './App.css';
 
@@ -133,7 +134,6 @@ class App extends Component {
             <Posts prettyTime={this.prettyTime} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList} clickVote={this.clickVote}/>
           )} />
 
-{/* TODO figure out how to pass the category data to the comp */}
           <Route exact path="/:category/posts" render={(match) => (
             <Posts prettyTime={this.prettyTime} match={match} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList} clickVote={this.clickVote}/>
           )} />
@@ -141,9 +141,11 @@ class App extends Component {
 
           <Route exact path="/posts/:id" render={ ({match}) => (
             <PostDetail prettyTime={this.prettyTime} match={match} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList} clickVote={this.clickVote}/>
-            )
-          }
-          />
+          )} />
+
+          <Route exact path="/newPost" render={ ({}) => (
+            <PostForm />
+          )} />
 
         </div>
       </Router>
