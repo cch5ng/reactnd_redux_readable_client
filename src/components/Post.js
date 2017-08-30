@@ -8,10 +8,7 @@ import '../App.css';
 class Post extends Component {
 
   render() {
-    // TODO understand why this was breaking logic... const {post} = this.props.post
-    console.log('post: ' + this.props.post)
     const link = `/posts/${this.props.post.id}`
-    console.log('link: ' + link)
 
     return (
       <div className="post-list-item">
