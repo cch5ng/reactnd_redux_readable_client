@@ -98,7 +98,7 @@ class Posts extends Component {
             {postsSorted
               ? postsSorted.map(post => {
                   return (
-                      <Post key={post.id} post={post} prettyTime={this.props.prettyTime} clickVote={this.props.clickVote} />
+                    <Post key={post.id} post={post} prettyTime={this.props.prettyTime} clickVote={this.props.clickVote} />
                   )
               })
               : null
