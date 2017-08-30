@@ -1,9 +1,9 @@
 const API_GET_CATEGORIES = 'http://localhost:5001/categories'
 const API_GET_POSTS = 'http://localhost:5001/posts'
-let mHeaders = new Headers();
-mHeaders.append('Authorization', 'mAuth')
 const INIT_GET_CATEGORIES = {method: 'GET',
-                              headers: mHeaders
+                              headers: {
+                                'Authorization': 'mAuth'
+                              }
                             }
 const API_GET_POST_DETAIL = 'http://localhost:5001/posts/'
 const API_GET_COMMENTS_PREFIX = 'http://localhost:5001/posts/'
