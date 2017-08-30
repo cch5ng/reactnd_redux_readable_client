@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import Posts from './components/Posts'
 import PostDetail from './components/PostDetail'
 import Nav from './components/Nav'
+import PostForm from './components/PostForm'
 import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE, updatePostVote } from './actions'
 import './App.css';
 
