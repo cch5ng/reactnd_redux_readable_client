@@ -50,14 +50,15 @@ class PostForm extends Component {
     ev.preventDefault()
     const curDateMs = Date.now()
     let postFormState
+    let formData
     if (this.props.postFormState) {
       postFormState = this.props.postFormState
-      const formData = {
+      formData = {
         title: postFormState.title,
         body: postFormState.body,
         author: postFormState.author,
         category: postFormState.category,
-        //timestamp: curDateMs
+        timestamp: curDateMs
       }
     }
 
