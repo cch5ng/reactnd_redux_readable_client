@@ -19,9 +19,6 @@ class App extends Component {
 
   clickVote(ev, postId) {
     const classList = ev.target.classList
-// console.log('clickVote handler')
-// console.log('classList: ' + classList)
-// console.log('type classList: ' + typeof classList)
 
     switch(classList[0]) {
       case "post-arrow-up-icon":
@@ -34,74 +31,37 @@ class App extends Component {
       default:
         return
     }
-//    console.log('ev.target.classList: ' + ev.target.classList)
   }
 
 // HELPERS
 
   sortList(sortKey, sortOrderDesc, list) {
-console.log('len list: ' + list.length)
-console.log('sortKey: ' + sortKey)
-console.log('sortOrderDesc: ' + sortOrderDesc)
-
     let sortedList = []
+    let sortKeysList = []
+
+    list.forEach(item => {
+      if (sortKeysList.indexOf(item[sortKey]) === -1) {
+        sortKeysList.push(item[sortKey])
+      }
+    })
+    sortKeysList.sort()
 
     if (sortOrderDesc) {
-      list.forEach(item => {
-        console.log('item.title: ' + item.title)
-        if (sortedList.length === 0) {
-          sortedList.push(item)
-        } else if (sortedList.length >= 1 && item[sortKey] >= sortedList[0][sortKey]){
-          sortedList.unshift(item)
-        } else if (sortedList.length >= 1 && item[sortKey] <= sortedList[sortedList.length - 1][sortKey]) {
-          sortedList.push(item)        
-        } else if (sortedList.length >= 1 && item[sortKey] <= sortedList[0][sortKey] && item[sortKey] >= sortedList[1][sortKey]) {
-          let tempAr = []
-          tempAr = [sortedList[0]].concat([item]).concat(sortedList.slice(1))
-          sortedList = tempAr.slice()
-        } else {
-        console.log('item.title: ' + item.title)
-
-          for (var i = 1; i < sortedList.length - 1; i++) {
-            console.log('i: ' + i)
-            console.log('len sortedList: ' + sortedList.length)
-            if (item[sortKey] <= sortedList[i][sortKey]) {
-              let tempAr = []
-              tempAr = sortedList.slice(0, i).concat([item]).concat(sortedList.slice(i+1))
-              console.log('tempAr: ' + tempAr)
-              console.log('len tempAr: ' + tempAr.length)
-              //break
-              //return tempAr
-              sortedList = tempAr.slice()
-              console.log('sortedList: ' + sortedList)
-              break
-            }
-          } 
-        }
-        sortedList.forEach(item => (
-          console.log('title in list: ' + item.title)
+      sortKeysList.reverse()
+      sortKeysList.forEach(score => {
+        let nextList = list.filter( item => (
+          score === item[sortKey]
         ))
-        console.log('**********')
+        sortedList = sortedList.concat(nextList)
       })
     }
 
     if (!sortOrderDesc) {
-      list.forEach(item => {
-        if (sortedList.length === 0) {
-          sortedList.push(item)
-        } else if (sortedList.length >= 1 && item[sortKey] <= sortedList[0][sortKey]){
-          sortedList.unshift(item)
-        } else if (sortedList.length >= 1 && item[sortKey] > sortedList[sortedList.length - 1][sortKey]) {
-          sortedList.push(item)        
-        } else {
-          for (var i = 1; i < sortedList.length - 1; i++) {
-            if (item.sortKey >= sortedList[i][sortKey] && item[sortKey] <= sortedList[i][sortKey]) {
-              let tempAr = []
-              tempAr = [...sortedList.slice(0, i), item, ...sortedList.slice(i+1)]
-              sortedList = tempAr
-            }
-          }
-        }
+      sortKeysList.forEach(score => {
+        let nextList = list.filter( item => (
+          score === item[sortKey]
+        ))
+        sortedList = sortedList.concat(nextList)
       })
     }
     return sortedList
