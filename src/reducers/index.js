@@ -8,7 +8,7 @@ import { SORT_POSTS } from '../actions'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../actions'
 import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE } from '../actions'
 import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE } from '../actions'
-import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD } from '../actions'
+import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, UPDATE_POST_FORM_FIELD_MULTIPLE } from '../actions'
 // separate /comments
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from '../actions'
 import { SORT_COMMENTS } from '../actions'
@@ -112,6 +112,14 @@ function postCreate(state = {}, action) {
 }
 
 function postFormState(state = { formType: 'create', title: '', body: '', author: '', category: 'none', voteScore: 0, timestamp: ''}, action) {
+  const clearedFields = {
+    title: '',
+    body: '',
+    author: '',
+    category: 'none',
+    voteScore: 0,
+    timestamp: ''
+  }
 
   switch(action.type) {
     case SET_POST_FORM_TYPE:
@@ -127,6 +135,21 @@ function postFormState(state = { formType: 'create', title: '', body: '', author
          ...state,
          ...newField
        }
+    case UPDATE_POST_FORM_FIELD_MULTIPLE:
+        let fieldsDataObj = {}
+        var properties = Object.keys(action).filter(item => (item !== 'type'))
+        properties.forEach(prop => {
+          fieldsDataObj[prop] = action[prop]
+        })
+       return {
+         ...state,
+         ...fieldsDataObj
+       }
+    case CLEAR_POST_FORM_FIELD:
+      return {
+        ...state,
+        ...clearedFields
+      }
     default:
       return state
   }

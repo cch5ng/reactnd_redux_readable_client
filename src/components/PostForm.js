@@ -4,21 +4,12 @@ import { connect } from 'react-redux'
 import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES, fetchCategories } from '../actions'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../actions'
 import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE, fetchPostCreate } from '../actions'
-import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, setPostFormType, updatePostFormField } from '../actions'
+import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, setPostFormType, updatePostFormField, updatePostFormFieldMultiple, clearPostFormField } from '../actions'
 import ArrowDownIcon from 'react-icons/lib/fa/arrow-circle-down'
 import ArrowUpIcon from 'react-icons/lib/fa/arrow-circle-up'
 import '../App.css';
 
 class PostForm extends Component {
-
-  state = {
-    // formState: this.props.formType,
-    // postTitleInp: this.props.postDetail.postDetail ? this.props.postDetail.postDetail.title : '',
-    // postBodyTa: this.props.postDetail.postDetail ? this.props.postDetail.postDetail.body : '',
-    // postAuthorInp: this.props.postDetail.postDetail ? this.props.postDetail.postDetail.author : '',
-    // postCategoryOpt: this.props.postDetail.postDetail ? this.props.postDetail.postDetail.category : 'none',
-    // postDatetimeInp: this.props.postDetail.postDetail ? this.props.postDetail.postDetail.timestamp : ''
-  }
 
   formInputUpdate = this.formInputUpdate.bind(this)
   formSubmit = this.formSubmit.bind(this)
@@ -27,10 +18,23 @@ class PostForm extends Component {
     this.props.dispatch(setPostFormType(this.props.formType))
 // should this be necessary?
     this.props.dispatch(fetchCategories())
-    if (this.props.formType === "edit" && this.props.match) {
+    if (this.props.formType === "create") {
+      this.props.dispatch(clearPostFormField())
+    }
+    if (this.props.formType === "edit" && this.props.posts.posts && this.props.posts.posts.length) {
       const postId = this.props.match.params.id
-      console.log('postId: ' + postId)
-      this.props.dispatch(fetchPostDetail(postId))
+      let tpost = this.props.posts.posts.filter(post => (
+        post.id === postId
+      ))
+      const formObj = {
+        title: tpost[0].title,
+        author: tpost[0].author,
+        body: tpost[0].body,
+        category: tpost[0].category,
+        voteScore: tpost[0].voteScore,
+        timestamp: tpost[0].timestamp
+      }
+      this.props.dispatch(updatePostFormFieldMultiple(formObj))
     }
 
   }
@@ -63,10 +67,10 @@ class PostForm extends Component {
     }
 
     this.props.dispatch(fetchPostCreate(formData))
-// TODO clear form (need new action for postFormState data clear)
   }
 
   render() {
+    const { formType } = this.props.formType
     let categories = null
     let postDetail = null
     let postFormState = null
@@ -74,11 +78,11 @@ class PostForm extends Component {
     let postCategory = null
     let body = null
     let author = null
+    let voteScore = null
 
     if (this.props.categories.categories) {
       categories = this.props.categories.categories
     }
-    console.log('categories: ' + categories)
 
     if (this.props.postDetail.postDetail) {
       postDetail = this.props.postDetail.postDetail
@@ -89,23 +93,12 @@ class PostForm extends Component {
       body = postFormState.body
       author = postFormState.author
       postCategory = postFormState.category
+      voteScore = postFormState.voteScore
     }
-
-// TODO TEST don't think this is possible
-      // this.setState({ 
-      //   postTitleInp: postDetail.title,
-      //   postCategoryOpt: postDetail.category,
-      //   postBodyTa: postDetail.body
-      // })
-      //title = postDetail.title
-      //postCategory = postDetail.category
-      //body = postDetail.body
-
-
 
     return (
       <div>
-        <h3>Add Post</h3>
+        <h3>{ this.props.formType === 'create' ? 'Add' : 'Edit' } Post</h3>
         <form id="post-create-form">
           <input type="text" value={ postFormState ? postFormState.title : ''} name="post-title-inp" id="ptitle" placeholder="title" onChange={this.formInputUpdate} /><br /><br />
           <textarea width="100" value={ body ? body: ''} name="post-body-ta" id="pbody" placeholder="post body" onChange={this.formInputUpdate} /><br />
@@ -119,6 +112,12 @@ class PostForm extends Component {
             </div>
           )}
           <input type="text" value={author ? author : ""} name="post-author-inp" id="pauthor"  placeholder="author" onChange={this.formInputUpdate} /><br />
+          { this.props.formType === "edit" && (
+            <div>
+              <input type="number" value={voteScore ? voteScore : 1} name="post-voteScore-inp" id="pvoteScore"  placeholder="1" onChange={this.formInputUpdate} /><br />
+            </div>
+
+          )}
           <button name="postSaveBtn" id="postSaveBtn" onClick={this.formSubmit} >Save</button> <button id="postCancelBtn" id="postCancelBtn">Cancel</button>
         </form>
       </div>
@@ -126,12 +125,13 @@ class PostForm extends Component {
   }
 }
 
-function mapStateToProps({ postCreate, categories, postDetail, postFormState }) {
+function mapStateToProps({ postCreate, categories, postDetail, postFormState, posts }) {
   return {
     postCreate,
     categories,
     postDetail,
-    postFormState
+    postFormState,
+    posts
   }
 }
 
