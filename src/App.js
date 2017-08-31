@@ -14,6 +14,7 @@ import './App.css';
 class App extends Component {
 
   clickVote = this.clickVote.bind(this)
+  sortList = this.sortList.bind(this)
 
 // EVENT HANDLERS
 
@@ -38,17 +39,18 @@ class App extends Component {
   sortList(sortKey, sortOrderDesc, list) {
     let sortedList = []
     let sortKeysList = []
+    let sortKeysList2
 
     list.forEach(item => {
       if (sortKeysList.indexOf(item[sortKey]) === -1) {
         sortKeysList.push(item[sortKey])
       }
     })
-    sortKeysList.sort()
+    sortKeysList2 = this.sortNumbersAr(sortKeysList)
 
     if (sortOrderDesc) {
-      sortKeysList.reverse()
-      sortKeysList.forEach(score => {
+      sortKeysList2.reverse()
+      sortKeysList2.forEach(score => {
         let nextList = list.filter( item => (
           score === item[sortKey]
         ))
@@ -57,7 +59,7 @@ class App extends Component {
     }
 
     if (!sortOrderDesc) {
-      sortKeysList.forEach(score => {
+      sortKeysList2.forEach(score => {
         let nextList = list.filter( item => (
           score === item[sortKey]
         ))
@@ -95,6 +97,33 @@ class App extends Component {
       default:
         return 'unknown'
     }
+  }
+
+  sortNumbersAr(numAr) {
+    let sortedAr = []
+
+    for (var i = 0; i < numAr.length; i++) {
+      if (sortedAr.length === 0) {
+        sortedAr.push(numAr[i])
+      } else if (numAr[i] < sortedAr[0]) {
+        sortedAr.unshift(numAr[i])
+      } else if (numAr[i] > sortedAr[sortedAr.length - 1]) {
+        sortedAr.push(numAr[i])
+      } else {
+        for (var j = 0; j < sortedAr.length - 1; j++) {
+          if (numAr[i] >= sortedAr[j] && numAr[i] <= sortedAr[j + 1]) {
+            let end = j + 1
+            if (j === 0) {
+              end = 1
+            }
+            let tempAr = sortedAr.slice(0, end).concat([numAr[i]]).concat(sortedAr.slice(j + 1))
+            sortedAr = tempAr.slice(0)
+            break
+          }
+        }         
+      }
+    }
+    return sortedAr
   }
 
   render() {

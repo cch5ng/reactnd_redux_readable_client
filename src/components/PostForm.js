@@ -42,11 +42,14 @@ class PostForm extends Component {
 
   formInputUpdate(ev) {
     const id = ev.target.id
-    const value = ev.target.value
+    let value = ev.target.value
     // the className format is like 'ptitle' to differentiate b/t post and comment
     let prettyId = id.slice(1)
     let stateObj = {}
 
+    if (prettyId === "voteScore") {
+      value = parseInt(value)
+    }
     stateObj[prettyId] = value
     this.props.dispatch(updatePostFormField(stateObj))
   }
@@ -66,12 +69,14 @@ class PostForm extends Component {
     const postId = this.props.match.params.id
     if (this.props.postFormState) {
       postFormState = this.props.postFormState
+
+console.log('this.props.postFormState.voteScore: ' + typeof this.props.postFormState.voteScore)
       formData = {
         title: this.props.postFormState.title,
         body: this.props.postFormState.body,
         author: this.props.postFormState.author,
         category: this.props.postFormState.category,
-        voteScore: this.props.postFormState.voteScore,
+        voteScore: parseInt(this.props.postFormState.voteScore),
         timestamp: postTimestamp,
       }
     }
@@ -132,7 +137,7 @@ class PostForm extends Component {
           <input type="text" value={author ? author : ""} name="post-author-inp" id="pauthor"  placeholder="author" onChange={this.formInputUpdate} /><br />
           { this.props.formType === "edit" && (
             <div>
-              <input type="number" value={voteScore ? voteScore : 1} name="post-voteScore-inp" id="pvoteScore"  placeholder="1" onChange={this.formInputUpdate} /><br />
+              <input type="number" value={voteScore ? voteScore : '0'} name="post-voteScore-inp" id="pvoteScore"  placeholder="1" onChange={this.formInputUpdate} /><br />
             </div>
 
           )}
