@@ -14,6 +14,7 @@ class Post extends Component {
     return (
       <div className="post-list-item">
         <Link to={link} >{post.title}</Link><br />
+        <Link to={`/editPost/${post.id}`}><button>Edit</button></Link><br />
           Author: {post.author}<br />
           Votes: {post.voteScore} <ArrowUpIcon className="post-arrow-up-icon" onClick={(ev) => this.props.clickVote(ev, post.id)} /><ArrowDownIcon className="post-arrow-down-icon"  onClick={(ev) => this.props.clickVote(ev, post.id)} /><br />
           Time: {this.props.prettyTime(post.timestamp)}<br /> 

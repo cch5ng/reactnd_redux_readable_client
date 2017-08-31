@@ -152,10 +152,59 @@ export const fetchPostCreate = (postData) => dispatch => {
     .then(response => response.json())
     // use json.posts to make the data more shallow
     .then(json => dispatch(receivePostCreate(json)))
+    .then(() => {
+      dispatch(clearPostFormField())
+    })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
 }
+
+/////
+
+// section for edit Post action
+export const REQUEST_POST_EDIT = 'REQUEST_POST_EDIT'
+export const RECEIVE_POST_EDIT = 'RECEIVE_POST_EDIT'
+
+export function requestPostEdit() {
+  return {
+    type: REQUEST_POST_EDIT,
+    retrieving: true
+  }
+}
+
+export function receivePostEdit(post) {
+  return {
+    type: RECEIVE_POST_EDIT,
+    post,
+    retrieving: false
+
+  }
+}
+
+// async action for editing a post
+export const fetchPostEdit = (postId, postData) => dispatch => {
+  dispatch(requestPostEdit())
+  let INIT_EDIT_POST = {method: 'PUT',
+                          headers: {
+                            'Authorization': 'mAuth',
+                            "Content-Type": 'application/json'
+                          },
+                          body: JSON.stringify(postData)
+                        }
+
+  return fetch(`${API_GET_POSTS}/${postId}`, INIT_EDIT_POST)
+    .then(response => response.json())
+    // use json.posts to make the data more shallow
+    .then(json => dispatch(receivePostEdit(json)))
+    .then(() => {
+      dispatch(clearPostFormField())
+    })
+    .catch(function(err) {
+      console.log('fetch err: ' + err.message)
+    })
+}
+
 
 // TEST section for setting postsFilter
 export const FILTER_POSTS = 'FILTER_POSTS'
@@ -212,6 +261,42 @@ export const fetchPostDetail = (postId) => dispatch => {
     })
 }
 
+////////
+
+// section for Post Form State actions (first try to combine state for create vs edit)
+export const SET_POST_FORM_TYPE = 'SET_POST_FORM_TYPE'
+export const UPDATE_POST_FORM_FIELD = 'UPDATE_POST_FORM_FIELD'
+export const UPDATE_POST_FORM_FIELD_MULTIPLE = 'UPDATE_POST_FORM_FIELD_MULTIPLE'
+export const CLEAR_POST_FORM_FIELD = 'CLEAR_POST_FORM_FIELD'
+
+export function setPostFormType(formType) {
+  return {
+    type: SET_POST_FORM_TYPE,
+    formType
+  }
+}
+
+export function updatePostFormField(fieldDataObj) {
+  return {
+    type: UPDATE_POST_FORM_FIELD,
+    ...fieldDataObj
+  }
+}
+
+export function updatePostFormFieldMultiple(fieldDataObj) {
+  return {
+    type: UPDATE_POST_FORM_FIELD_MULTIPLE,
+    ...fieldDataObj
+  }
+}
+
+// called at the end of action, fetchPostCreate
+export function clearPostFormField() {
+  return {
+    type: CLEAR_POST_FORM_FIELD
+  }
+}
+
 /////
 
 // section for Comments (by post id) actions
@@ -246,7 +331,7 @@ export const fetchComments = (postId) => dispatch => {
     })
 }
 
-// TEST section for setting commentsSortBy
+// section for setting commentsSortBy
 export const SORT_COMMENTS = 'SORT_COMMENTS'
 
 export function sortComments(sortKey) {
