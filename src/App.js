@@ -126,9 +126,14 @@ class App extends Component {
             <PostDetail prettyTime={this.prettyTime} match={match} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList} clickVote={this.clickVote}/>
           )} />
 
-          <Route exact path="/newPost" render={ ({}) => (
-            <PostForm />
+          <Route exact path="/newPost" render={ () => (
+            <PostForm formType="create" />
           )} />
+
+          <Route exact path="/editPost/:id" render={ ({match}) => (
+            <PostForm formType="edit" match={match} />
+          )} />
+
 
         </div>
       </Router>
