@@ -212,6 +212,29 @@ export const fetchPostDetail = (postId) => dispatch => {
     })
 }
 
+////////
+
+// section for Post Form State actions (first try to combine state for create vs edit)
+export const SET_POST_FORM_TYPE = 'SET_POST_FORM_TYPE'
+export const UPDATE_POST_FORM_FIELD = 'UPDATE_POST_FORM_FIELD'
+
+export function setPostFormType(formType) {
+  return {
+    type: SET_POST_FORM_TYPE,
+    formType
+    //retrieving: true
+  }
+}
+
+export function updatePostFormField(fieldDataObj) {
+  return {
+    type: UPDATE_POST_FORM_FIELD,
+    ...fieldDataObj
+    //retrieving: false
+
+  }
+}
+
 /////
 
 // section for Comments (by post id) actions

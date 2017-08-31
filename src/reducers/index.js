@@ -8,6 +8,7 @@ import { SORT_POSTS } from '../actions'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../actions'
 import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE } from '../actions'
 import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE } from '../actions'
+import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD } from '../actions'
 // separate /comments
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from '../actions'
 import { SORT_COMMENTS } from '../actions'
@@ -110,6 +111,28 @@ function postCreate(state = {}, action) {
   }
 }
 
+function postFormState(state = { formType: 'create', title: '', body: '', author: '', category: 'none', voteScore: 0, timestamp: ''}, action) {
+
+  switch(action.type) {
+    case SET_POST_FORM_TYPE:
+      return {
+        ...state,
+        formType: action.formType
+      }
+    case UPDATE_POST_FORM_FIELD:
+        let newField = {}
+        var property = Object.keys(action).filter(item => (item !== 'type'))
+        newField[property] = action[property]
+       return {
+         ...state,
+         ...newField
+       }
+    default:
+      return state
+  }
+}
+
+
 function comments(state = [], action) {
 
   switch(action.type) {
@@ -171,7 +194,8 @@ export default combineReducers({
   postCreate,
   postVote,
   comments,
-  commentsSort
+  commentsSort,
+  postFormState
 })
 
 // note that format of combined reducer will be like
