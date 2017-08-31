@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES, fetchCategories } from '../actions'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../actions'
 import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE, fetchPostCreate } from '../actions'
+import { REQUEST_POST_EDIT, RECEIVE_POST_EDIT, fetchPostEdit } from '../actions'
 import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, setPostFormType, updatePostFormField, updatePostFormFieldMultiple, clearPostFormField } from '../actions'
 import ArrowDownIcon from 'react-icons/lib/fa/arrow-circle-down'
 import ArrowUpIcon from 'react-icons/lib/fa/arrow-circle-up'
@@ -54,19 +55,36 @@ class PostForm extends Component {
     ev.preventDefault()
     const curDateMs = Date.now()
     let postFormState
+    //let tDate = new Date(this.props.postFormState.timestamp)
+    let postTimestamp 
+    if (this.props.formType === "create") {
+      postTimestamp = curDateMs
+    } else {
+      postTimestamp = Date.parse(this.props.postFormState.timestamp)
+    }
     let formData
+    const postId = this.props.match.params.id
     if (this.props.postFormState) {
       postFormState = this.props.postFormState
       formData = {
-        title: postFormState.title,
-        body: postFormState.body,
-        author: postFormState.author,
-        category: postFormState.category,
-        timestamp: curDateMs
+        title: this.props.postFormState.title,
+        body: this.props.postFormState.body,
+        author: this.props.postFormState.author,
+        category: this.props.postFormState.category,
+        voteScore: this.props.postFormState.voteScore,
+        timestamp: postTimestamp,
       }
     }
 
-    this.props.dispatch(fetchPostCreate(formData))
+    // create form
+    if (this.props.formType === "create") {
+      this.props.dispatch(fetchPostCreate(formData))
+    }
+
+    // edit form
+    if (this.props.formType === "edit") {
+      this.props.dispatch(fetchPostEdit(postId, formData))
+    }
   }
 
   render() {
