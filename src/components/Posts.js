@@ -32,7 +32,6 @@ class Posts extends Component {
     if (className.indexOf('timestamp') > -1) {
       sortKey = 'timestamp'      
     }
-    console.log('posts sortKey: ' + sortKey)
     this.props.dispatch(sortPosts(sortKey))
   }
  
@@ -64,11 +63,7 @@ class Posts extends Component {
 
     if (sortKey && postsFiltered) {
       postsSorted = this.props.sortList(sortKey, sortOrderDesc, postsFiltered)
-      console.log('postsSorted: ' + postsSorted)
     }
-{/*                  let link = `/posts/${post.id}` */}
-//{/*                    <Link to={link} key={post.id}> */}
-//{/*                    </Link> */}
 
     return (
       <div className="posts">
