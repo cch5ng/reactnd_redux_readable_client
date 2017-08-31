@@ -160,6 +160,52 @@ export const fetchPostCreate = (postData) => dispatch => {
     })
 }
 
+/////
+
+// section for edit Post action
+export const REQUEST_POST_EDIT = 'REQUEST_POST_EDIT'
+export const RECEIVE_POST_EDIT = 'RECEIVE_POST_EDIT'
+
+export function requestPostEdit() {
+  return {
+    type: REQUEST_POST_EDIT,
+    retrieving: true
+  }
+}
+
+export function receivePostEdit(post) {
+  return {
+    type: RECEIVE_POST_EDIT,
+    post,
+    retrieving: false
+
+  }
+}
+
+// async action for editing a post
+export const fetchPostEdit = (postId, postData) => dispatch => {
+  dispatch(requestPostEdit())
+  let INIT_EDIT_POST = {method: 'PUT',
+                          headers: {
+                            'Authorization': 'mAuth',
+                            "Content-Type": 'application/json'
+                          },
+                          body: JSON.stringify(postData)
+                        }
+
+  return fetch(`${API_GET_POSTS}/${postId}`, INIT_EDIT_POST)
+    .then(response => response.json())
+    // use json.posts to make the data more shallow
+    .then(json => dispatch(receivePostEdit(json)))
+    .then(() => {
+      dispatch(clearPostFormField())
+    })
+    .catch(function(err) {
+      console.log('fetch err: ' + err.message)
+    })
+}
+
+
 // TEST section for setting postsFilter
 export const FILTER_POSTS = 'FILTER_POSTS'
 
