@@ -1,6 +1,8 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
 }
 
 .App {
@@ -22,6 +24,13 @@
 
 .App-intro {
   font-size: large;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 400;
 }
 
 @keyframes App-logo-spin {
