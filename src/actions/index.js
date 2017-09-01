@@ -477,6 +477,48 @@ export const fetchCommentEdit = (commentId, commentData) => dispatch => {
     })
 }
 
+/////
+
+// section for delete Comment action
+export const REQUEST_COMMENT_DELETE = 'REQUEST_COMMENT_DELETE'
+export const RECEIVE_COMMENT_DELETE = 'RECEIVE_COMMENT_DELETE'
+
+export function requestCommentDelete() {
+  return {
+    type: REQUEST_COMMENT_DELETE,
+    retrieving: true
+  }
+}
+
+export function receiveCommentDelete(comment) {
+  return {
+    type: RECEIVE_COMMENT_DELETE,
+    comment,
+    retrieving: false
+  }
+}
+
+// async action for deleting a post
+export const fetchCommentDelete = (commentId) => dispatch => {
+  dispatch(requestCommentDelete())
+  let INIT_DELETE_POST = {method: 'DELETE',
+                          headers: {
+                            'Authorization': 'mAuth',
+                            "Content-Type": 'application/json'
+                          }
+                        }
+
+  return fetch(`${API_COMMENTS}/${commentId}`, INIT_DELETE_POST)
+    .then(response => response.json())
+    // use json.posts to make the data more shallow
+    .then(json => dispatch(receiveCommentDelete(json)))
+// TODO seems like timing with this is off?    
+    .then(() => dispatch(fetchComments()))
+    .catch(function(err) {
+      console.log('fetch err: ' + err.message)
+    })
+}
+
 ////////
 
 // section for Comment Form State actions (first try to combine state for create vs edit)

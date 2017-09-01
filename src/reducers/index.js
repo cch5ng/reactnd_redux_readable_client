@@ -7,7 +7,7 @@ import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE, REQUEST_POST_EDIT, RECEIVE_PO
 import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, UPDATE_POST_FORM_FIELD_MULTIPLE } from '../actions'
 // separate /comments
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS, SORT_COMMENTS } from '../actions'
-import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, RECEIVE_COMMENT_EDIT, REQUEST_COMMENT_EDIT } from '../actions'
+import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, RECEIVE_COMMENT_EDIT, REQUEST_COMMENT_EDIT, REQUEST_COMMENT_DELETE, RECEIVE_COMMENT_DELETE } from '../actions'
 import { TOGGLE_COMMENT_FORM_ACTIVE, UPDATE_COMMENT_FORM_FIELD, SET_COMMENT_FORM_TYPE, CLEAR_COMMENT_FORM_FIELD, UPDATE_COMMENT_FORM_FIELD_MULTIPLE, SET_CURRENT_COMMENT_ID } from '../actions'
 
 function categories(state = [], action) {
@@ -114,10 +114,6 @@ function postEdit(state = {}, action) {
 function postDelete(state = {}, action) {
   switch(action.type) {
     case RECEIVE_POST_DELETE:
-      // return {
-      //   ...state,
-      //   post: action.post
-      // }
     case REQUEST_POST_DELETE:
     default:
       return state
@@ -229,6 +225,19 @@ function commentEdit(state = {}, action) {
   }
 }
 
+function commentDelete(state = {}, action) {
+  switch(action.type) {
+    case RECEIVE_COMMENT_DELETE:
+      return {
+        ...state,
+        comment: action.comment
+      }
+    case REQUEST_COMMENT_DELETE:
+    default:
+      return state
+  }
+}
+
 function commentFormState(state = { active: false, formType: 'create', id: '', body: '', author: '', voteScore: 0, timestamp: ''}, action) {
   const clearedFields = {
     id: '',
@@ -314,6 +323,8 @@ export default combineReducers({
   comments,
   commentsSort,
   commentCreate,
+  commentEdit,
+  commentDelete,
   postFormState,
   commentFormState
 })
