@@ -6,8 +6,8 @@ import uuidv1 from 'uuid/v1'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../actions'
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS, fetchComments } from '../actions'
 import { SORT_COMMENTS, sortComments } from '../actions'
-import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, fetchCommentCreate } from '../actions'
-import { toggleCommentFormActive, updateCommentFormField, setCommentFormType } from '../actions'
+import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, fetchCommentCreate, fetchCommentEdit } from '../actions'
+import { toggleCommentFormActive, updateCommentFormField, setCommentFormType, clearCommentFormField, updateCommentFormFieldMultiple, setCurrentCommentId } from '../actions'
 
 import '../App.css';
 
@@ -18,6 +18,7 @@ class PostDetail extends Component {
   closeModal = this.closeModal.bind(this)
   commentEditBtnClick = this.commentEditBtnClick.bind(this)
   formInputUpdate = this.formInputUpdate.bind(this)
+  afterOpenModal = this.afterOpenModal.bind(this)
 
   componentDidMount() {
     // dispatch fetch to get the post data based on the id
@@ -45,44 +46,67 @@ class PostDetail extends Component {
     let commentFormState
     let commentTimestamp
     let commentId
-    // if (this.props.formType === "create") {
+    if (this.props.commentFormState.formType === "create") {
        commentTimestamp = curDateMs
        commentId = uuidv1()
-    // } else {
-    //   postTimestamp = Date.parse(this.props.postFormState.timestamp)
-    // }
+     } else {
+       commentTimestamp = Date.parse(this.props.commentFormState.timestamp)
+       commentId = this.props.commentFormState.id
+    }
     let formData
     const parentId = this.props.match.params.id
     if (this.props.commentFormState) {
-      //commentFormState = this.props.commentFormState
+      commentFormState = this.props.commentFormState
 
-// console.log('this.props.postFormState.voteScore: ' + typeof this.props.postFormState.voteScore)
       formData = {
         id: commentId,
         body: this.props.commentFormState.body,
         author: this.props.commentFormState.author,
-//         voteScore: parseInt(this.props.postFormState.voteScore),
+        voteScore: parseInt(this.props.commentFormState.voteScore),
         timestamp: commentTimestamp,
         parentId
       }
     }
 
-//     // create form
-//     if (this.props.formType === "create") {
+    // create form
+    if (this.props.commentFormState.formType === "create") {
        this.props.dispatch(fetchCommentCreate(formData))
-//     }
+    }
 
-//     // edit form
-//     if (this.props.formType === "edit") {
-//       this.props.dispatch(fetchPostEdit(postId, formData))
-//     }
+    // edit form
+    if (this.props.commentFormState.formType === "edit") {
+      this.props.dispatch(fetchCommentEdit(commentId, formData))
+    }
   }
 
   commentEditBtnClick(ev) {
     let btnId = ev.target.id
     let formType = btnId.split('-')
+    let commentId = ev.target.className
+    let commentFormState = this.props.commentFormState
+
+    this.props.dispatch(setCurrentCommentId(commentId))    
     this.props.dispatch(toggleCommentFormActive())
     this.props.dispatch(setCommentFormType(formType[0]))
+  }
+
+  afterOpenModal() {
+    if (this.props.commentFormState.formType === "create") {
+      this.props.dispatch(clearCommentFormField())
+    }
+
+    if (this.props.commentFormState.formType === "edit" && this.props.comments.comments && this.props.comments.comments.length) {
+      let tcomment = this.props.comments.comments.filter(comment => (
+        comment.id === this.props.commentFormState.id
+      ))
+      const formObj = {
+        author: tcomment[0].author,
+        body: tcomment[0].body,
+        voteScore: tcomment[0].voteScore,
+        timestamp: tcomment[0].timestamp
+      }
+      this.props.dispatch(updateCommentFormFieldMultiple(formObj))
+    }
   }
 
   closeModal() {
@@ -103,19 +127,6 @@ class PostDetail extends Component {
     this.props.dispatch(updateCommentFormField(stateObj))
   }
 
-
-/*value={ body ? body: ''}*/
-//onChange={this.formInputUpdate}
-//value={author ? author : ""}
-//onChange={this.formInputUpdate}
-
-/*
-          { this.props.formType === "edit" && (
-            <div>
-              <input type="number" value={voteScore ? voteScore : '0'} name="post-voteScore-inp" id="pvoteScore"  placeholder="1" onChange={this.formInputUpdate} /><br />
-            </div>
-          )}
-*/
   render() {
     let postDetail = null
     let comments = null
@@ -173,7 +184,7 @@ class PostDetail extends Component {
                   ? commentsOrdered.map(comment => (
                     <li key={comment.id} className="comments-list-item">
                       {comment.body}<br />
-                      <button onClick={this.commentEditBtnClick} id="edit-comment">Edit</button><br />
+                      <button onClick={this.commentEditBtnClick} id="edit-comment" className={comment.id} >Edit</button><br />
                       Author: {comment.author}<br />
                       Votes: {comment.voteScore}<br />
                       Time: {this.props.prettyTime(comment.timestamp)}
@@ -183,7 +194,7 @@ class PostDetail extends Component {
                 }
               </ul>
             </div>
-            <Modal isOpen={active} contentLabel="Modal" onRequestClose={this.closeModal}>
+            <Modal isOpen={active} contentLabel="Modal" onRequestClose={this.closeModal} onAfterOpen={this.afterOpenModal} >
               <h3>{formType === "create" ? "Add": "Edit"} Comment</h3>
               <button onClick={this.closeModal}>close</button>
               <form id="comment-form">
@@ -200,12 +211,13 @@ class PostDetail extends Component {
   }
 }
 
-function mapStateToProps({ postDetail, comments, commentsSort, commentCreate, commentFormState }) {
+function mapStateToProps({ postDetail, comments, commentsSort, commentCreate, commentEdit, commentFormState }) {
   return {
     postDetail,
     comments,
     commentsSort,
     commentCreate,
+    commentEdit,
     commentFormState
   }
 }

@@ -252,7 +252,6 @@ export function receivePostDetail(postDetail) {
 // async action for getting posts
 export const fetchPostDetail = (postId) => dispatch => {
   dispatch(requestPostDetail())
-  console.log(`${API_GET_POST_DETAIL}${postId}`)
   return fetch(`${API_GET_POST_DETAIL}${postId}`, INIT_GET_CATEGORIES)
     .then(response => response.json())
     // use json.posts to make the data more shallow
@@ -284,6 +283,7 @@ export function updatePostFormField(fieldDataObj) {
   }
 }
 
+// used to prepopulate form if formType = 'edit'
 export function updatePostFormFieldMultiple(fieldDataObj) {
   return {
     type: UPDATE_POST_FORM_FIELD_MULTIPLE,
@@ -390,13 +390,61 @@ export const fetchCommentCreate = (commentData) => dispatch => {
     })
 }
 
+/////
+
+// section for edit Comment action
+export const REQUEST_COMMENT_EDIT = 'REQUEST_COMMENT_EDIT'
+export const RECEIVE_COMMENT_EDIT = 'RECEIVE_COMMENT_EDIT'
+
+export function requestCommentEdit() {
+  return {
+    type: REQUEST_COMMENT_EDIT,
+    retrieving: true
+  }
+}
+
+export function receiveCommentEdit(comment) {
+  return {
+    type: RECEIVE_COMMENT_EDIT,
+    comment,
+    retrieving: false
+  }
+}
+
+// async action for getting posts
+export const fetchCommentEdit = (commentId, commentData) => dispatch => {
+  dispatch(requestCommentCreate())
+  let INIT_CREATE_COMMENT = {method: 'PUT',
+                          headers: {
+                            'Authorization': 'mAuth',
+                            "Content-Type": 'application/json'
+                          },
+                          body: JSON.stringify(commentData)
+                        }
+
+  return fetch(`${API_COMMENTS}/${commentId}`, INIT_CREATE_COMMENT)
+    .then(response => response.json())
+    // use json.posts to make the data more shallow
+    .then(json => dispatch(receiveCommentEdit(json)))
+    .then(() => {
+      dispatch(clearCommentFormField())
+    })
+    .then(() => {
+      dispatch(fetchComments(commentData.parentId))
+    })
+    .catch(function(err) {
+      console.log('fetch err: ' + err.message)
+    })
+}
+
 ////////
 
 // section for Comment Form State actions (first try to combine state for create vs edit)
 export const TOGGLE_COMMENT_FORM_ACTIVE = 'TOGGLE_COMMENT_FORM_ACTIVE'
 export const SET_COMMENT_FORM_TYPE = 'SET_COMMENT_FORM_TYPE'
+export const SET_CURRENT_COMMENT_ID = 'SET_CURRENT_COMMENT_ID'
 export const UPDATE_COMMENT_FORM_FIELD = 'UPDATE_COMMENT_FORM_FIELD'
-// export const UPDATE_COMMENT_FORM_FIELD_MULTIPLE = 'UPDATE_COMMENT_FORM_FIELD_MULTIPLE'
+export const UPDATE_COMMENT_FORM_FIELD_MULTIPLE = 'UPDATE_COMMENT_FORM_FIELD_MULTIPLE'
 export const CLEAR_COMMENT_FORM_FIELD = 'CLEAR_COMMENT_FORM_FIELD'
 
 export function toggleCommentFormActive() {
@@ -412,6 +460,13 @@ export function setCommentFormType(formType) {
   }
 }
 
+export function setCurrentCommentId(commentId) {
+  return {
+    type: SET_CURRENT_COMMENT_ID,
+    commentId
+  }
+}
+
 export function updateCommentFormField(fieldDataObj) {
   return {
     type: UPDATE_COMMENT_FORM_FIELD,
@@ -419,12 +474,13 @@ export function updateCommentFormField(fieldDataObj) {
   }
 }
 
-// export function updateCommentFormFieldMultiple(fieldDataObj) {
-//   return {
-//     type: UPDATE_POST_FORM_FIELD_MULTIPLE,
-//     ...fieldDataObj
-//   }
-// }
+// used to prepopulate the form if formType is 'edit'
+export function updateCommentFormFieldMultiple(fieldDataObj) {
+  return {
+    type: UPDATE_COMMENT_FORM_FIELD_MULTIPLE,
+    ...fieldDataObj
+  }
+}
 
 // // called at the end of action, fetchCommentCreate
 export function clearCommentFormField() {

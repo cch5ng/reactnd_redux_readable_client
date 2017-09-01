@@ -1,20 +1,14 @@
 import { combineReducers } from 'redux'
-// TODO separate /categories
+// separate /categories
 import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../actions'
 // separate /posts
-import { REQUEST_POSTS, RECEIVE_POSTS } from '../actions'
-import { FILTER_POSTS } from '../actions'
-import { SORT_POSTS } from '../actions'
-import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../actions'
-import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE } from '../actions'
-import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE } from '../actions'
-import { REQUEST_POST_EDIT, RECEIVE_POST_EDIT } from '../actions'
+import { REQUEST_POSTS, RECEIVE_POSTS, FILTER_POSTS, SORT_POSTS, REQUEST_POST_VOTE, RECEIVE_POST_VOTE } from '../actions'
+import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE, REQUEST_POST_EDIT, RECEIVE_POST_EDIT, REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../actions'
 import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, UPDATE_POST_FORM_FIELD_MULTIPLE } from '../actions'
 // separate /comments
-import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from '../actions'
-import { SORT_COMMENTS } from '../actions'
-import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE } from '../actions'
-import { TOGGLE_COMMENT_FORM_ACTIVE, UPDATE_COMMENT_FORM_FIELD, SET_COMMENT_FORM_TYPE, CLEAR_COMMENT_FORM_FIELD } from '../actions'
+import { REQUEST_COMMENTS, RECEIVE_COMMENTS, SORT_COMMENTS } from '../actions'
+import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, RECEIVE_COMMENT_EDIT, REQUEST_COMMENT_EDIT } from '../actions'
+import { TOGGLE_COMMENT_FORM_ACTIVE, UPDATE_COMMENT_FORM_FIELD, SET_COMMENT_FORM_TYPE, CLEAR_COMMENT_FORM_FIELD, UPDATE_COMMENT_FORM_FIELD_MULTIPLE, SET_CURRENT_COMMENT_ID } from '../actions'
 
 function categories(state = [], action) {
 
@@ -205,7 +199,6 @@ function commentsSort(state = { sortKey: 'voteScore', sortOrderDesc: true }, act
 }
 
 function commentCreate(state = {}, action) {
-
   switch(action.type) {
     case RECEIVE_COMMENT_CREATE:
       return {
@@ -218,8 +211,22 @@ function commentCreate(state = {}, action) {
   }
 }
 
-function commentFormState(state = { active: false, formType: 'create', body: '', author: '', voteScore: 0, timestamp: ''}, action) {
+function commentEdit(state = {}, action) {
+  switch(action.type) {
+    case RECEIVE_COMMENT_EDIT:
+      return {
+        ...state,
+        comment: action.comment
+      }
+    case REQUEST_COMMENT_EDIT:
+    default:
+      return state
+  }
+}
+
+function commentFormState(state = { active: false, formType: 'create', id: '', body: '', author: '', voteScore: 0, timestamp: ''}, action) {
   const clearedFields = {
+    id: '',
     body: '',
     author: '',
     voteScore: 0,
@@ -237,6 +244,11 @@ function commentFormState(state = { active: false, formType: 'create', body: '',
         ...state,
         formType: action.formType
       }
+    case SET_CURRENT_COMMENT_ID:
+      return {
+        ...state,
+        id: action.commentId
+      }
     case UPDATE_COMMENT_FORM_FIELD:
         let newField = {}
         var property = Object.keys(action).filter(item => (item !== 'type'))
@@ -245,16 +257,16 @@ function commentFormState(state = { active: false, formType: 'create', body: '',
          ...state,
          ...newField
        }
-    // case UPDATE_COMMENT_FORM_FIELD_MULTIPLE:
-    //     let fieldsDataObj = {}
-    //     var properties = Object.keys(action).filter(item => (item !== 'type'))
-    //     properties.forEach(prop => {
-    //       fieldsDataObj[prop] = action[prop]
-    //     })
-    //    return {
-    //      ...state,
-    //      ...fieldsDataObj
-    //    }
+    case UPDATE_COMMENT_FORM_FIELD_MULTIPLE:
+        let fieldsDataObj = {}
+        var properties = Object.keys(action).filter(item => (item !== 'type'))
+        properties.forEach(prop => {
+          fieldsDataObj[prop] = action[prop]
+        })
+       return {
+         ...state,
+         ...fieldsDataObj
+       }
     case CLEAR_COMMENT_FORM_FIELD:
       return {
         ...state,

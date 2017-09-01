@@ -60,17 +60,20 @@ class PostForm extends Component {
     let postFormState
     //let tDate = new Date(this.props.postFormState.timestamp)
     let postTimestamp 
+    let postId
     if (this.props.formType === "create") {
       postTimestamp = curDateMs
     } else {
       postTimestamp = Date.parse(this.props.postFormState.timestamp)
     }
     let formData
-    const postId = this.props.match.params.id
+
+    if (this.props.match) {
+      postId = this.props.match.params.id
+    }
     if (this.props.postFormState) {
       postFormState = this.props.postFormState
 
-console.log('this.props.postFormState.voteScore: ' + typeof this.props.postFormState.voteScore)
       formData = {
         title: this.props.postFormState.title,
         body: this.props.postFormState.body,
