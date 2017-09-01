@@ -164,7 +164,7 @@ class PostDetail extends Component {
         ? <div>
             <div className="post-detail">
               <h3>{postDetail.title}</h3>
-              <Link to={`/editPost/${postDetail.id}`}><button>Edit</button></Link><br />
+              <Link to={`/editPost/${postDetail.id}`}><button>Edit</button></Link> <button onClick={(ev) => this.props.deletePostBtnClick(postDetail.id)}>Delete</button><br />
               <p>{postDetail.body}</p>
               <p>Author: {postDetail.author}</p>
               <p>Votes: {postDetail.voteScore}</p>

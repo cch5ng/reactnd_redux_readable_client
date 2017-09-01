@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 // separate /categories
 import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../actions'
 // separate /posts
-import { REQUEST_POSTS, RECEIVE_POSTS, FILTER_POSTS, SORT_POSTS, REQUEST_POST_VOTE, RECEIVE_POST_VOTE } from '../actions'
+import { REQUEST_POSTS, RECEIVE_POSTS, FILTER_POSTS, SORT_POSTS, REQUEST_POST_VOTE, RECEIVE_POST_VOTE, REQUEST_POST_DELETE, RECEIVE_POST_DELETE } from '../actions'
 import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE, REQUEST_POST_EDIT, RECEIVE_POST_EDIT, REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../actions'
 import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, UPDATE_POST_FORM_FIELD_MULTIPLE } from '../actions'
 // separate /comments
@@ -11,7 +11,6 @@ import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, RECEIVE_COMMENT_EDIT, R
 import { TOGGLE_COMMENT_FORM_ACTIVE, UPDATE_COMMENT_FORM_FIELD, SET_COMMENT_FORM_TYPE, CLEAR_COMMENT_FORM_FIELD, UPDATE_COMMENT_FORM_FIELD_MULTIPLE, SET_CURRENT_COMMENT_ID } from '../actions'
 
 function categories(state = [], action) {
-
   switch(action.type) {
     case REQUEST_CATEGORIES:
       return {
@@ -29,7 +28,6 @@ function categories(state = [], action) {
 }
 
 function posts(state = [], action) {
-
   switch(action.type) {
     case REQUEST_POSTS:
       return {
@@ -47,7 +45,6 @@ function posts(state = [], action) {
 }
 
 function postsFilter(state = { filter: 'all' }, action) {
-
   switch(action.type) {
     case FILTER_POSTS:
       return {
@@ -60,7 +57,6 @@ function postsFilter(state = { filter: 'all' }, action) {
 }
 
 function postsSort(state = { sortKey: 'voteScore', sortOrderDesc: true }, action) {
-
   switch(action.type) {
     case SORT_POSTS:
       return {
@@ -74,7 +70,6 @@ function postsSort(state = { sortKey: 'voteScore', sortOrderDesc: true }, action
 }
 
 function postDetail(state = {}, action) {
-
   switch(action.type) {
     case REQUEST_POST_DETAIL:
       return {
@@ -91,7 +86,6 @@ function postDetail(state = {}, action) {
 }
 
 function postCreate(state = {}, action) {
-
   switch(action.type) {
     case RECEIVE_POST_CREATE:
       return {
@@ -105,7 +99,6 @@ function postCreate(state = {}, action) {
 }
 
 function postEdit(state = {}, action) {
-
   switch(action.type) {
     case RECEIVE_POST_CREATE:
       return {
@@ -118,6 +111,18 @@ function postEdit(state = {}, action) {
   }
 }
 
+function postDelete(state = {}, action) {
+  switch(action.type) {
+    case RECEIVE_POST_DELETE:
+      // return {
+      //   ...state,
+      //   post: action.post
+      // }
+    case REQUEST_POST_DELETE:
+    default:
+      return state
+  }
+}
 
 function postFormState(state = { formType: 'create', title: '', body: '', author: '', category: 'none', voteScore: 0, timestamp: ''}, action) {
   const clearedFields = {
@@ -304,6 +309,7 @@ export default combineReducers({
   postDetail,
   postCreate,
   postEdit,
+  postDelete,
   postVote,
   comments,
   commentsSort,
