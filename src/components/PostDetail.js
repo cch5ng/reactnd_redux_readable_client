@@ -7,7 +7,7 @@ import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../ac
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS, fetchComments } from '../actions'
 import { SORT_COMMENTS, sortComments } from '../actions'
 import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, fetchCommentCreate } from '../actions'
-import { toggleCommentFormActive } from '../actions'
+import { toggleCommentFormActive, updateCommentFormField } from '../actions'
 
 import '../App.css';
 
@@ -15,9 +15,9 @@ class PostDetail extends Component {
 
   commentsSortClick = this.commentsSortClick.bind(this)
   formSubmit = this.formSubmit.bind(this)
-  //afterOpenModal = this.afterOpenModal.bind(this)
   closeModal = this.closeModal.bind(this)
   commentEditBtnClick = this.commentEditBtnClick.bind(this)
+  formInputUpdate = this.formInputUpdate.bind(this)
 
   commentsSortClick(ev) {
     const className = ev.target.className
@@ -53,21 +53,21 @@ class PostDetail extends Component {
     // }
     let formData
     const parentId = this.props.match.params.id
-    // if (this.props.postFormState) {
-    //   postFormState = this.props.postFormState
+    if (this.props.commentFormState) {
+      //commentFormState = this.props.commentFormState
 
 // console.log('this.props.postFormState.voteScore: ' + typeof this.props.postFormState.voteScore)
       formData = {
-//         title: this.props.postFormState.title,
         id: commentId,
-        body: 'test comment', //this.props.postFormState.body,
-        author: 'test author', //this.props.postFormState.author,
+        body: this.props.commentFormState.body,
+        author: this.props.commentFormState.author,
 //         category: this.props.postFormState.category,
 //         voteScore: parseInt(this.props.postFormState.voteScore),
-         timestamp: commentTimestamp,
-         parentId
-//       }
-     }
+        timestamp: commentTimestamp,
+        parentId
+      }
+    }
+    console.log('formData.body: ' + formData.body)
 
 //     // create form
 //     if (this.props.formType === "create") {
@@ -93,6 +93,20 @@ class PostDetail extends Component {
   closeModal() {
 // TODO update store for modal state
     this.props.dispatch(toggleCommentFormActive())
+  }
+
+  formInputUpdate(ev) {
+    const id = ev.target.id
+    let value = ev.target.value
+    // the className format is like 'ptitle' to differentiate b/t post and comment
+    let prettyId = id.slice(1)
+    let stateObj = {}
+
+    if (prettyId === "voteScore") {
+      value = parseInt(value)
+    }
+    stateObj[prettyId] = value
+    this.props.dispatch(updateCommentFormField(stateObj))
   }
 
 
@@ -173,8 +187,8 @@ class PostDetail extends Component {
               <h3>Add Edit Comment</h3>
               <button onClick={this.closeModal}>close</button>
               <form id="comment-form">
-                <textarea width="100"  name="comment-body-ta" id="cbody" placeholder="comment body"  /><br />
-                <input type="text" name="comment-author-inp" id="cauthor"  placeholder="author" /><br />
+                <textarea width="100"  name="comment-body-ta" id="cbody" onChange={this.formInputUpdate} placeholder="comment body"  /><br />
+                <input type="text" name="comment-author-inp" id="cauthor" onChange={this.formInputUpdate}  placeholder="author" /><br />
                 <button name="postSaveBtn" id="commentSaveBtn" onClick={this.formSubmit} >Save</button> <button id="commentCancelBtn" >Cancel</button>
               </form>
             </Modal>

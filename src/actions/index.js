@@ -382,6 +382,9 @@ export const fetchCommentCreate = (commentData) => dispatch => {
     // .then(() => {
     //   dispatch(clearPostFormField())
     // })
+    .then(() => {
+      dispatch(fetchComments(commentData.parentId))
+    })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
@@ -391,9 +394,9 @@ export const fetchCommentCreate = (commentData) => dispatch => {
 
 // section for Comment Form State actions (first try to combine state for create vs edit)
 export const TOGGLE_COMMENT_FORM_ACTIVE = 'TOGGLE_COMMENT_FORM_ACTIVE'
-// export const UPDATE_POST_FORM_FIELD = 'UPDATE_POST_FORM_FIELD'
-// export const UPDATE_POST_FORM_FIELD_MULTIPLE = 'UPDATE_POST_FORM_FIELD_MULTIPLE'
-// export const CLEAR_POST_FORM_FIELD = 'CLEAR_POST_FORM_FIELD'
+export const UPDATE_COMMENT_FORM_FIELD = 'UPDATE_COMMENT_FORM_FIELD'
+// export const UPDATE_COMMENT_FORM_FIELD_MULTIPLE = 'UPDATE_COMMENT_FORM_FIELD_MULTIPLE'
+// export const CLEAR_COMMENT_FORM_FIELD = 'CLEAR_COMMENT_FORM_FIELD'
 
 export function toggleCommentFormActive() {
   return {
@@ -401,14 +404,14 @@ export function toggleCommentFormActive() {
   }
 }
 
-// export function updatePostFormField(fieldDataObj) {
-//   return {
-//     type: UPDATE_POST_FORM_FIELD,
-//     ...fieldDataObj
-//   }
-// }
+export function updateCommentFormField(fieldDataObj) {
+  return {
+    type: UPDATE_COMMENT_FORM_FIELD,
+    ...fieldDataObj
+  }
+}
 
-// export function updatePostFormFieldMultiple(fieldDataObj) {
+// export function updateCommentFormFieldMultiple(fieldDataObj) {
 //   return {
 //     type: UPDATE_POST_FORM_FIELD_MULTIPLE,
 //     ...fieldDataObj
@@ -416,7 +419,7 @@ export function toggleCommentFormActive() {
 // }
 
 // // called at the end of action, fetchPostCreate
-// export function clearPostFormField() {
+// export function clearCommentFormField() {
 //   return {
 //     type: CLEAR_POST_FORM_FIELD
 //   }

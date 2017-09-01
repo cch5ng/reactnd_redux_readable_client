@@ -14,7 +14,7 @@ import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, UPDA
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from '../actions'
 import { SORT_COMMENTS } from '../actions'
 import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE } from '../actions'
-import { TOGGLE_COMMENT_FORM_ACTIVE } from '../actions'
+import { TOGGLE_COMMENT_FORM_ACTIVE, UPDATE_COMMENT_FORM_FIELD } from '../actions'
 
 function categories(state = [], action) {
 
@@ -232,15 +232,15 @@ function commentFormState(state = { active: false, formType: 'create', body: '',
         ...state,
         active: !state.active
       }
-    // case UPDATE_POST_FORM_FIELD:
-    //     let newField = {}
-    //     var property = Object.keys(action).filter(item => (item !== 'type'))
-    //     newField[property] = action[property]
-    //    return {
-    //      ...state,
-    //      ...newField
-    //    }
-    // case UPDATE_POST_FORM_FIELD_MULTIPLE:
+    case UPDATE_COMMENT_FORM_FIELD:
+        let newField = {}
+        var property = Object.keys(action).filter(item => (item !== 'type'))
+        newField[property] = action[property]
+       return {
+         ...state,
+         ...newField
+       }
+    // case UPDATE_COMMENT_FORM_FIELD_MULTIPLE:
     //     let fieldsDataObj = {}
     //     var properties = Object.keys(action).filter(item => (item !== 'type'))
     //     properties.forEach(prop => {
@@ -250,7 +250,7 @@ function commentFormState(state = { active: false, formType: 'create', body: '',
     //      ...state,
     //      ...fieldsDataObj
     //    }
-    // case CLEAR_POST_FORM_FIELD:
+    // case CLEAR_COMMENT_FORM_FIELD:
     //   return {
     //     ...state,
     //     ...clearedFields
