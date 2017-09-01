@@ -379,9 +379,9 @@ export const fetchCommentCreate = (commentData) => dispatch => {
     .then(response => response.json())
     // use json.posts to make the data more shallow
     .then(json => dispatch(receiveCommentCreate(json)))
-    // .then(() => {
-    //   dispatch(clearPostFormField())
-    // })
+    .then(() => {
+      dispatch(clearCommentFormField())
+    })
     .then(() => {
       dispatch(fetchComments(commentData.parentId))
     })
@@ -397,7 +397,7 @@ export const TOGGLE_COMMENT_FORM_ACTIVE = 'TOGGLE_COMMENT_FORM_ACTIVE'
 export const SET_COMMENT_FORM_TYPE = 'SET_COMMENT_FORM_TYPE'
 export const UPDATE_COMMENT_FORM_FIELD = 'UPDATE_COMMENT_FORM_FIELD'
 // export const UPDATE_COMMENT_FORM_FIELD_MULTIPLE = 'UPDATE_COMMENT_FORM_FIELD_MULTIPLE'
-// export const CLEAR_COMMENT_FORM_FIELD = 'CLEAR_COMMENT_FORM_FIELD'
+export const CLEAR_COMMENT_FORM_FIELD = 'CLEAR_COMMENT_FORM_FIELD'
 
 export function toggleCommentFormActive() {
   return {
@@ -426,10 +426,10 @@ export function updateCommentFormField(fieldDataObj) {
 //   }
 // }
 
-// // called at the end of action, fetchPostCreate
-// export function clearCommentFormField() {
-//   return {
-//     type: CLEAR_POST_FORM_FIELD
-//   }
-// }
+// // called at the end of action, fetchCommentCreate
+export function clearCommentFormField() {
+  return {
+    type: CLEAR_COMMENT_FORM_FIELD
+  }
+}
 

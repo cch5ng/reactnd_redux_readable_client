@@ -14,7 +14,7 @@ import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, UPDA
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from '../actions'
 import { SORT_COMMENTS } from '../actions'
 import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE } from '../actions'
-import { TOGGLE_COMMENT_FORM_ACTIVE, UPDATE_COMMENT_FORM_FIELD, SET_COMMENT_FORM_TYPE } from '../actions'
+import { TOGGLE_COMMENT_FORM_ACTIVE, UPDATE_COMMENT_FORM_FIELD, SET_COMMENT_FORM_TYPE, CLEAR_COMMENT_FORM_FIELD } from '../actions'
 
 function categories(state = [], action) {
 
@@ -235,7 +235,7 @@ function commentFormState(state = { active: false, formType: 'create', body: '',
     case SET_COMMENT_FORM_TYPE:
       return {
         ...state,
-        formtype: action.formType
+        formType: action.formType
       }
     case UPDATE_COMMENT_FORM_FIELD:
         let newField = {}
@@ -255,11 +255,11 @@ function commentFormState(state = { active: false, formType: 'create', body: '',
     //      ...state,
     //      ...fieldsDataObj
     //    }
-    // case CLEAR_COMMENT_FORM_FIELD:
-    //   return {
-    //     ...state,
-    //     ...clearedFields
-    //   }
+    case CLEAR_COMMENT_FORM_FIELD:
+      return {
+        ...state,
+        ...clearedFields
+      }
     default:
       return state
   }

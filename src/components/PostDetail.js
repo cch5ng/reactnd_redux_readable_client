@@ -61,13 +61,11 @@ class PostDetail extends Component {
         id: commentId,
         body: this.props.commentFormState.body,
         author: this.props.commentFormState.author,
-//         category: this.props.postFormState.category,
 //         voteScore: parseInt(this.props.postFormState.voteScore),
         timestamp: commentTimestamp,
         parentId
       }
     }
-    console.log('formData.body: ' + formData.body)
 
 //     // create form
 //     if (this.props.formType === "create") {
@@ -80,32 +78,14 @@ class PostDetail extends Component {
 //     }
   }
 
-  //afterOpenModal() {
-// TODO update store for modal state
-  //  this.props.dispatch(toggleCommentFormActive())
-  //}
-
   commentEditBtnClick(ev) {
-    console.log('ev.target.id: ' + ev.target.id)
-    const btnId = ev.target.id
+    let btnId = ev.target.id
     let formType = btnId.split('-')
     this.props.dispatch(toggleCommentFormActive())
     this.props.dispatch(setCommentFormType(formType[0]))
-    
-    // switch(btnId) {
-    //   case 'create-comment':
-    //     this.props.dispatch(setCommentFormType('create'))
-    //     return
-    //   case 'edit-comment':
-    //     this.props.dispatch(setCommentFormType('edit'))
-    //     return
-    //   default:
-    //     return      
-    // }
   }
 
   closeModal() {
-// TODO update store for modal state
     this.props.dispatch(toggleCommentFormActive())
   }
 
@@ -143,6 +123,9 @@ class PostDetail extends Component {
     // var will store the sorted commments
     let commentsOrdered = null
     let active = null
+    let body = null
+    let author = null
+    let formType = null
     const { sortKey, sortOrderDesc } = this.props.commentsSort
 
     if (this.props.postDetail.postDetail) {
@@ -159,6 +142,9 @@ class PostDetail extends Component {
     }
     if (this.props.commentFormState) {
       active = this.props.commentFormState.active
+      formType = this.props.commentFormState.formType
+      body = this.props.commentFormState.body
+      author = this.props.commentFormState.author
     }
 
     return (
@@ -198,11 +184,11 @@ class PostDetail extends Component {
               </ul>
             </div>
             <Modal isOpen={active} contentLabel="Modal" onRequestClose={this.closeModal}>
-              <h3>Add Edit Comment</h3>
+              <h3>{formType === "create" ? "Add": "Edit"} Comment</h3>
               <button onClick={this.closeModal}>close</button>
               <form id="comment-form">
-                <textarea width="100"  name="comment-body-ta" id="cbody" onChange={this.formInputUpdate} placeholder="comment body"  /><br />
-                <input type="text" name="comment-author-inp" id="cauthor" onChange={this.formInputUpdate}  placeholder="author" /><br />
+                <textarea width="100"  name="comment-body-ta" id="cbody" value={body ? body : ''} onChange={this.formInputUpdate} placeholder="comment body"  /><br />
+                <input type="text" name="comment-author-inp" id="cauthor" value={author ? author: ''} onChange={this.formInputUpdate}  placeholder="author" /><br />
                 <button name="postSaveBtn" id="commentSaveBtn" onClick={this.formSubmit} >Save</button> <button id="commentCancelBtn" >Cancel</button>
               </form>
             </Modal>
