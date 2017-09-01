@@ -13,7 +13,7 @@ import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, UPDA
 // separate /comments
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from '../actions'
 import { SORT_COMMENTS } from '../actions'
-import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE } from '../actions'
+import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, RECEIVE_COMMENT_EDIT, REQUEST_COMMENT_EDIT } from '../actions'
 import { TOGGLE_COMMENT_FORM_ACTIVE, UPDATE_COMMENT_FORM_FIELD, SET_COMMENT_FORM_TYPE, CLEAR_COMMENT_FORM_FIELD, UPDATE_COMMENT_FORM_FIELD_MULTIPLE, SET_CURRENT_COMMENT_ID } from '../actions'
 
 function categories(state = [], action) {
@@ -205,7 +205,6 @@ function commentsSort(state = { sortKey: 'voteScore', sortOrderDesc: true }, act
 }
 
 function commentCreate(state = {}, action) {
-
   switch(action.type) {
     case RECEIVE_COMMENT_CREATE:
       return {
@@ -218,8 +217,22 @@ function commentCreate(state = {}, action) {
   }
 }
 
+function commentEdit(state = {}, action) {
+  switch(action.type) {
+    case RECEIVE_COMMENT_EDIT:
+      return {
+        ...state,
+        comment: action.comment
+      }
+    case REQUEST_COMMENT_EDIT:
+    default:
+      return state
+  }
+}
+
 function commentFormState(state = { active: false, formType: 'create', id: '', body: '', author: '', voteScore: 0, timestamp: ''}, action) {
   const clearedFields = {
+    id: '',
     body: '',
     author: '',
     voteScore: 0,

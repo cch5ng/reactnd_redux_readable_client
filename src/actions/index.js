@@ -391,6 +391,53 @@ export const fetchCommentCreate = (commentData) => dispatch => {
     })
 }
 
+/////
+
+// section for edit Comment action
+export const REQUEST_COMMENT_EDIT = 'REQUEST_COMMENT_EDIT'
+export const RECEIVE_COMMENT_EDIT = 'RECEIVE_COMMENT_EDIT'
+
+export function requestCommentEdit() {
+  return {
+    type: REQUEST_COMMENT_EDIT,
+    retrieving: true
+  }
+}
+
+export function receiveCommentEdit(comment) {
+  return {
+    type: RECEIVE_COMMENT_EDIT,
+    comment,
+    retrieving: false
+  }
+}
+
+// async action for getting posts
+export const fetchCommentEdit = (commentId, commentData) => dispatch => {
+  dispatch(requestCommentCreate())
+  let INIT_CREATE_COMMENT = {method: 'PUT',
+                          headers: {
+                            'Authorization': 'mAuth',
+                            "Content-Type": 'application/json'
+                          },
+                          body: JSON.stringify(commentData)
+                        }
+
+  return fetch(`${API_COMMENTS}/${commentId}`, INIT_CREATE_COMMENT)
+    .then(response => response.json())
+    // use json.posts to make the data more shallow
+    .then(json => dispatch(receiveCommentEdit(json)))
+    .then(() => {
+      dispatch(clearCommentFormField())
+    })
+    .then(() => {
+      dispatch(fetchComments(commentData.parentId))
+    })
+    .catch(function(err) {
+      console.log('fetch err: ' + err.message)
+    })
+}
+
 ////////
 
 // section for Comment Form State actions (first try to combine state for create vs edit)

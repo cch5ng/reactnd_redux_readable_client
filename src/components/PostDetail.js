@@ -6,7 +6,7 @@ import uuidv1 from 'uuid/v1'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../actions'
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS, fetchComments } from '../actions'
 import { SORT_COMMENTS, sortComments } from '../actions'
-import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, fetchCommentCreate } from '../actions'
+import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, fetchCommentCreate, fetchCommentEdit } from '../actions'
 import { toggleCommentFormActive, updateCommentFormField, setCommentFormType, clearCommentFormField, updateCommentFormFieldMultiple, setCurrentCommentId } from '../actions'
 
 import '../App.css';
@@ -51,15 +51,14 @@ class PostDetail extends Component {
        commentId = uuidv1()
      } else {
        commentTimestamp = Date.parse(this.props.commentFormState.timestamp)
+       commentId = this.props.commentFormState.id
     }
     let formData
     const parentId = this.props.match.params.id
     if (this.props.commentFormState) {
-      //commentFormState = this.props.commentFormState
+      commentFormState = this.props.commentFormState
 
-// console.log('this.props.postFormState.voteScore: ' + typeof this.props.postFormState.voteScore)
       formData = {
-// TODO issue of getting commentId for edit state
         id: commentId,
         body: this.props.commentFormState.body,
         author: this.props.commentFormState.author,
@@ -69,15 +68,15 @@ class PostDetail extends Component {
       }
     }
 
-//     // create form
-//     if (this.props.formType === "create") {
+    // create form
+    if (this.props.commentFormState.formType === "create") {
        this.props.dispatch(fetchCommentCreate(formData))
-//     }
+    }
 
-//     // edit form
-//     if (this.props.formType === "edit") {
-//       this.props.dispatch(fetchPostEdit(postId, formData))
-//     }
+    // edit form
+    if (this.props.commentFormState.formType === "edit") {
+      this.props.dispatch(fetchCommentEdit(commentId, formData))
+    }
   }
 
   commentEditBtnClick(ev) {
@@ -212,12 +211,13 @@ class PostDetail extends Component {
   }
 }
 
-function mapStateToProps({ postDetail, comments, commentsSort, commentCreate, commentFormState }) {
+function mapStateToProps({ postDetail, comments, commentsSort, commentCreate, commentEdit, commentFormState }) {
   return {
     postDetail,
     comments,
     commentsSort,
     commentCreate,
+    commentEdit,
     commentFormState
   }
 }
