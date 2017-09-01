@@ -284,6 +284,7 @@ export function updatePostFormField(fieldDataObj) {
   }
 }
 
+// used to prepopulate form if formType = 'edit'
 export function updatePostFormFieldMultiple(fieldDataObj) {
   return {
     type: UPDATE_POST_FORM_FIELD_MULTIPLE,
@@ -395,8 +396,9 @@ export const fetchCommentCreate = (commentData) => dispatch => {
 // section for Comment Form State actions (first try to combine state for create vs edit)
 export const TOGGLE_COMMENT_FORM_ACTIVE = 'TOGGLE_COMMENT_FORM_ACTIVE'
 export const SET_COMMENT_FORM_TYPE = 'SET_COMMENT_FORM_TYPE'
+export const SET_CURRENT_COMMENT_ID = 'SET_CURRENT_COMMENT_ID'
 export const UPDATE_COMMENT_FORM_FIELD = 'UPDATE_COMMENT_FORM_FIELD'
-// export const UPDATE_COMMENT_FORM_FIELD_MULTIPLE = 'UPDATE_COMMENT_FORM_FIELD_MULTIPLE'
+export const UPDATE_COMMENT_FORM_FIELD_MULTIPLE = 'UPDATE_COMMENT_FORM_FIELD_MULTIPLE'
 export const CLEAR_COMMENT_FORM_FIELD = 'CLEAR_COMMENT_FORM_FIELD'
 
 export function toggleCommentFormActive() {
@@ -412,6 +414,13 @@ export function setCommentFormType(formType) {
   }
 }
 
+export function setCurrentCommentId(commentId) {
+  return {
+    type: SET_CURRENT_COMMENT_ID,
+    commentId
+  }
+}
+
 export function updateCommentFormField(fieldDataObj) {
   return {
     type: UPDATE_COMMENT_FORM_FIELD,
@@ -419,12 +428,13 @@ export function updateCommentFormField(fieldDataObj) {
   }
 }
 
-// export function updateCommentFormFieldMultiple(fieldDataObj) {
-//   return {
-//     type: UPDATE_POST_FORM_FIELD_MULTIPLE,
-//     ...fieldDataObj
-//   }
-// }
+// used to prepopulate the form if formType is 'edit'
+export function updateCommentFormFieldMultiple(fieldDataObj) {
+  return {
+    type: UPDATE_COMMENT_FORM_FIELD_MULTIPLE,
+    ...fieldDataObj
+  }
+}
 
 // // called at the end of action, fetchCommentCreate
 export function clearCommentFormField() {
