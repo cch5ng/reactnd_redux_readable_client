@@ -394,6 +394,7 @@ export const fetchCommentCreate = (commentData) => dispatch => {
 
 // section for Comment Form State actions (first try to combine state for create vs edit)
 export const TOGGLE_COMMENT_FORM_ACTIVE = 'TOGGLE_COMMENT_FORM_ACTIVE'
+export const SET_COMMENT_FORM_TYPE = 'SET_COMMENT_FORM_TYPE'
 export const UPDATE_COMMENT_FORM_FIELD = 'UPDATE_COMMENT_FORM_FIELD'
 // export const UPDATE_COMMENT_FORM_FIELD_MULTIPLE = 'UPDATE_COMMENT_FORM_FIELD_MULTIPLE'
 // export const CLEAR_COMMENT_FORM_FIELD = 'CLEAR_COMMENT_FORM_FIELD'
@@ -401,6 +402,13 @@ export const UPDATE_COMMENT_FORM_FIELD = 'UPDATE_COMMENT_FORM_FIELD'
 export function toggleCommentFormActive() {
   return {
     type: TOGGLE_COMMENT_FORM_ACTIVE,
+  }
+}
+
+export function setCommentFormType(formType) {
+  return {
+    type: SET_COMMENT_FORM_TYPE,
+    formType
   }
 }
 

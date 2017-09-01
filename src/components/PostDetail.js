@@ -7,7 +7,7 @@ import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../ac
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS, fetchComments } from '../actions'
 import { SORT_COMMENTS, sortComments } from '../actions'
 import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, fetchCommentCreate } from '../actions'
-import { toggleCommentFormActive, updateCommentFormField } from '../actions'
+import { toggleCommentFormActive, updateCommentFormField, setCommentFormType } from '../actions'
 
 import '../App.css';
 
@@ -19,6 +19,13 @@ class PostDetail extends Component {
   commentEditBtnClick = this.commentEditBtnClick.bind(this)
   formInputUpdate = this.formInputUpdate.bind(this)
 
+  componentDidMount() {
+    // dispatch fetch to get the post data based on the id
+    const postId = this.props.match.params.id
+    this.props.dispatch(fetchPostDetail(postId))
+    this.props.dispatch(fetchComments(postId))
+  }
+
   commentsSortClick(ev) {
     const className = ev.target.className
     let sortKey = ''
@@ -29,13 +36,6 @@ class PostDetail extends Component {
       sortKey = 'timestamp'      
     }
     this.props.dispatch(sortComments(sortKey))
-  }
-
-  componentDidMount() {
-    // dispatch fetch to get the post data based on the id
-    const postId = this.props.match.params.id
-    this.props.dispatch(fetchPostDetail(postId))
-    this.props.dispatch(fetchComments(postId))
   }
 
   // modal form submit
@@ -86,8 +86,22 @@ class PostDetail extends Component {
   //}
 
   commentEditBtnClick(ev) {
-    console.log('clicked comment edit btn')
+    console.log('ev.target.id: ' + ev.target.id)
+    const btnId = ev.target.id
+    let formType = btnId.split('-')
     this.props.dispatch(toggleCommentFormActive())
+    this.props.dispatch(setCommentFormType(formType[0]))
+    
+    // switch(btnId) {
+    //   case 'create-comment':
+    //     this.props.dispatch(setCommentFormType('create'))
+    //     return
+    //   case 'edit-comment':
+    //     this.props.dispatch(setCommentFormType('edit'))
+    //     return
+    //   default:
+    //     return      
+    // }
   }
 
   closeModal() {
@@ -166,14 +180,14 @@ class PostDetail extends Component {
                 <li className={ commentsSort.sortKey === "timestamp" ? "is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({this.props.prettySortTime(commentsSort.sortOrderDesc)})</li>
               </ul>
 
-              <button onClick={this.commentEditBtnClick}>Add Comment</button>
+              <button onClick={this.commentEditBtnClick} id="create-comment">Add Comment</button>
 
               <ul className="comments-list">
                 { commentsOrdered 
                   ? commentsOrdered.map(comment => (
                     <li key={comment.id} className="comments-list-item">
                       {comment.body}<br />
-                      <button onClick={this.commentEditBtnClick}>Edit</button><br />
+                      <button onClick={this.commentEditBtnClick} id="edit-comment">Edit</button><br />
                       Author: {comment.author}<br />
                       Votes: {comment.voteScore}<br />
                       Time: {this.props.prettyTime(comment.timestamp)}
