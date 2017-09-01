@@ -206,6 +206,46 @@ export const fetchPostEdit = (postId, postData) => dispatch => {
     })
 }
 
+//////
+
+// section for delete Post action
+export const REQUEST_POST_DELETE = 'REQUEST_POST_DELETE'
+export const RECEIVE_POST_DELETE = 'RECEIVE_POST_DELETE'
+
+export function requestPostDelete() {
+  return {
+    type: REQUEST_POST_DELETE,
+    retrieving: true
+  }
+}
+
+export function receivePostDelete() {
+  return {
+    type: RECEIVE_POST_DELETE,
+    //post,
+    retrieving: false
+
+  }
+}
+
+// async action for editing a post
+export const fetchPostDelete = (postId) => dispatch => {
+  dispatch(requestPostDelete())
+  let INIT_EDIT_POST = {method: 'DELETE',
+                          headers: {
+                            'Authorization': 'mAuth',
+                            "Content-Type": 'application/json'
+                          },
+                          //body: JSON.stringify(postData)
+                        }
+
+  return fetch(`${API_GET_POSTS}/${postId}`, INIT_EDIT_POST)
+    .then(() => dispatch(receivePostDelete()))
+    .then(() => dispatch(fetchPosts()))
+    .catch(function(err) {
+      console.log('fetch err: ' + err.message)
+    })
+}
 
 // TEST section for setting postsFilter
 export const FILTER_POSTS = 'FILTER_POSTS'

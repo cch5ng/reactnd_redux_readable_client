@@ -8,13 +8,14 @@ import Posts from './components/Posts'
 import PostDetail from './components/PostDetail'
 import Nav from './components/Nav'
 import PostForm from './components/PostForm'
-import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE, updatePostVote } from './actions'
+import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE, updatePostVote, fetchPostDelete } from './actions'
 import './App.css';
 
 class App extends Component {
 
   clickVote = this.clickVote.bind(this)
   sortList = this.sortList.bind(this)
+  deletePostBtnClick = this.deletePostBtnClick.bind(this)
 
 // EVENT HANDLERS
 
@@ -32,6 +33,10 @@ class App extends Component {
       default:
         return
     }
+  }
+
+  deletePostBtnClick(postId) {
+    this.props.dispatch(fetchPostDelete(postId))
   }
 
 // HELPERS
@@ -138,21 +143,30 @@ class App extends Component {
               prettySortTime={this.prettySortTime} 
               sortList={this.sortList}
               clickVote={this.clickVote}
+              deletePostBtnClick={this.deletePostBtnClick}
               />
           )} />
 
 
           <Route exact path="/posts" render={() => (
-            <Posts prettyTime={this.prettyTime} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList} clickVote={this.clickVote}/>
+            <Posts prettyTime={this.prettyTime} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime}
+              sortList={this.sortList} clickVote={this.clickVote} deletePostBtnClick={this.deletePostBtnClick}
+            />
           )} />
 
           <Route exact path="/:category/posts" render={(match) => (
-            <Posts prettyTime={this.prettyTime} match={match} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList} clickVote={this.clickVote}/>
+            <Posts prettyTime={this.prettyTime} match={match} prettySortVotes={this.prettySortVotes} 
+              prettySortTime={this.prettySortTime} sortList={this.sortList} clickVote={this.clickVote}
+              deletePostBtnClick={this.deletePostBtnClick}
+            />
           )} />
 
 
           <Route exact path="/posts/:id" render={ ({match}) => (
-            <PostDetail prettyTime={this.prettyTime} match={match} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime} sortList={this.sortList} clickVote={this.clickVote}/>
+            <PostDetail prettyTime={this.prettyTime} match={match} prettySortVotes={this.prettySortVotes} 
+              prettySortTime={this.prettySortTime} sortList={this.sortList} clickVote={this.clickVote}
+              deletePostBtnClick={this.deletePostBtnClick}
+            />
           )} />
 
           <Route exact path="/newPost" render={ () => (

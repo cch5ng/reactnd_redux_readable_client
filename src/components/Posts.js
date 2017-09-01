@@ -56,8 +56,13 @@ class Posts extends Component {
         postsFiltered = posts.filter(post => (
           post.category === this.props.postsFilter.filter
         ))
+        postsFiltered = postsFiltered.filter(post => (
+          post.deleted === false
+        ))
       } else {
-        postsFiltered = posts
+        postsFiltered = posts.filter(post => (
+          post.deleted === false
+        ))
       }
     }
 
@@ -93,7 +98,7 @@ class Posts extends Component {
             {postsSorted
               ? postsSorted.map(post => {
                   return (
-                    <Post key={post.id} post={post} prettyTime={this.props.prettyTime} clickVote={this.props.clickVote} />
+                    <Post key={post.id} post={post} prettyTime={this.props.prettyTime} clickVote={this.props.clickVote} deletePostBtnClick={this.props.deletePostBtnClick} />
                   )
               })
               : null
