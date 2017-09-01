@@ -85,23 +85,18 @@ class PostDetail extends Component {
     let formType = btnId.split('-')
     let commentId = ev.target.className
     let commentFormState = this.props.commentFormState
-console.log('commentId: ' + commentId)    
 
     this.props.dispatch(setCurrentCommentId(commentId))    
     this.props.dispatch(toggleCommentFormActive())
     this.props.dispatch(setCommentFormType(formType[0]))
-
-
   }
 
   afterOpenModal() {
-
     if (this.props.commentFormState.formType === "create") {
       this.props.dispatch(clearCommentFormField())
     }
 
     if (this.props.commentFormState.formType === "edit" && this.props.comments.comments && this.props.comments.comments.length) {
-console.log('gets to commentEditBtnClick line 97')
       let tcomment = this.props.comments.comments.filter(comment => (
         comment.id === this.props.commentFormState.id
       ))
@@ -113,25 +108,6 @@ console.log('gets to commentEditBtnClick line 97')
       }
       this.props.dispatch(updateCommentFormFieldMultiple(formObj))
     }
-
-
-
-    // if (commentFormState.formType === "edit" && this.props.comments.comments && this.props.comments.comments.length) {
-    //   const postId = this.props.match.params.id
-    //   let tcomment = this.props.posts.posts.filter(post => (
-    //     post.id === postId
-    //   ))
-      // const formObj = {
-      //   title: tpost[0].title,
-      //   author: tpost[0].author,
-      //   body: tpost[0].body,
-      //   category: tpost[0].category,
-      //   voteScore: tpost[0].voteScore,
-      //   timestamp: tpost[0].timestamp
-      // }
-      // this.props.dispatch(updatePostFormFieldMultiple(formObj))
-    // }
-
   }
 
   closeModal() {
@@ -152,19 +128,6 @@ console.log('gets to commentEditBtnClick line 97')
     this.props.dispatch(updateCommentFormField(stateObj))
   }
 
-
-/*value={ body ? body: ''}*/
-//onChange={this.formInputUpdate}
-//value={author ? author : ""}
-//onChange={this.formInputUpdate}
-
-/*
-          { this.props.formType === "edit" && (
-            <div>
-              <input type="number" value={voteScore ? voteScore : '0'} name="post-voteScore-inp" id="pvoteScore"  placeholder="1" onChange={this.formInputUpdate} /><br />
-            </div>
-          )}
-*/
   render() {
     let postDetail = null
     let comments = null
