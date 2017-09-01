@@ -8,6 +8,7 @@ const INIT_GET_CATEGORIES = {method: 'GET',
 const API_GET_POST_DETAIL = 'http://localhost:5001/posts/'
 const API_GET_COMMENTS_PREFIX = 'http://localhost:5001/posts/'
 const API_GET_COMMENTS_SUFFIX = '/comments'
+const API_COMMENTS = 'http://localhost:5001/comments'
 
 // sync actions for getting categories
 export const REQUEST_CATEGORIES = 'REQUEST_CATEGORIES'
@@ -340,4 +341,84 @@ export function sortComments(sortKey) {
     sortKey
   }
 }
+
+/////
+
+// section for create Comment action
+export const REQUEST_COMMENT_CREATE = 'REQUEST_COMMENT_CREATE'
+export const RECEIVE_COMMENT_CREATE = 'RECEIVE_COMMENT_CREATE'
+
+export function requestCommentCreate() {
+  return {
+    type: REQUEST_COMMENT_CREATE,
+    retrieving: true
+  }
+}
+
+export function receiveCommentCreate(comment) {
+  return {
+    type: RECEIVE_COMMENT_CREATE,
+    comment,
+    retrieving: false
+
+  }
+}
+
+// async action for getting posts
+export const fetchCommentCreate = (commentData) => dispatch => {
+  dispatch(requestCommentCreate())
+  let INIT_CREATE_COMMENT = {method: 'POST',
+                          headers: {
+                            'Authorization': 'mAuth',
+                            "Content-Type": 'application/json'
+                          },
+                          body: JSON.stringify(commentData)
+                        }
+
+  return fetch(API_COMMENTS, INIT_CREATE_COMMENT)
+    .then(response => response.json())
+    // use json.posts to make the data more shallow
+    .then(json => dispatch(receiveCommentCreate(json)))
+    // .then(() => {
+    //   dispatch(clearPostFormField())
+    // })
+    .catch(function(err) {
+      console.log('fetch err: ' + err.message)
+    })
+}
+
+////////
+
+// section for Comment Form State actions (first try to combine state for create vs edit)
+export const TOGGLE_COMMENT_FORM_ACTIVE = 'TOGGLE_COMMENT_FORM_ACTIVE'
+// export const UPDATE_POST_FORM_FIELD = 'UPDATE_POST_FORM_FIELD'
+// export const UPDATE_POST_FORM_FIELD_MULTIPLE = 'UPDATE_POST_FORM_FIELD_MULTIPLE'
+// export const CLEAR_POST_FORM_FIELD = 'CLEAR_POST_FORM_FIELD'
+
+export function toggleCommentFormActive() {
+  return {
+    type: TOGGLE_COMMENT_FORM_ACTIVE,
+  }
+}
+
+// export function updatePostFormField(fieldDataObj) {
+//   return {
+//     type: UPDATE_POST_FORM_FIELD,
+//     ...fieldDataObj
+//   }
+// }
+
+// export function updatePostFormFieldMultiple(fieldDataObj) {
+//   return {
+//     type: UPDATE_POST_FORM_FIELD_MULTIPLE,
+//     ...fieldDataObj
+//   }
+// }
+
+// // called at the end of action, fetchPostCreate
+// export function clearPostFormField() {
+//   return {
+//     type: CLEAR_POST_FORM_FIELD
+//   }
+// }
 

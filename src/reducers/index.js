@@ -13,7 +13,8 @@ import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, UPDA
 // separate /comments
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from '../actions'
 import { SORT_COMMENTS } from '../actions'
-
+import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE } from '../actions'
+import { TOGGLE_COMMENT_FORM_ACTIVE } from '../actions'
 
 function categories(state = [], action) {
 
@@ -98,15 +99,12 @@ function postDetail(state = {}, action) {
 function postCreate(state = {}, action) {
 
   switch(action.type) {
-    case REQUEST_POST_CREATE:
-      return {
-        ...state,
-      }
     case RECEIVE_POST_CREATE:
       return {
         ...state,
         post: action.post
       }
+    case REQUEST_POST_CREATE:
     default:
       return state
   }
@@ -206,6 +204,63 @@ function commentsSort(state = { sortKey: 'voteScore', sortOrderDesc: true }, act
   }
 }
 
+function commentCreate(state = {}, action) {
+
+  switch(action.type) {
+    case RECEIVE_COMMENT_CREATE:
+      return {
+        ...state,
+        comment: action.comment
+      }
+    case REQUEST_COMMENT_CREATE:
+    default:
+      return state
+  }
+}
+
+function commentFormState(state = { active: false, formType: 'create', body: '', author: '', voteScore: 0, timestamp: ''}, action) {
+  const clearedFields = {
+    body: '',
+    author: '',
+    voteScore: 0,
+    timestamp: ''
+  }
+
+  switch(action.type) {
+    case TOGGLE_COMMENT_FORM_ACTIVE:
+      return {
+        ...state,
+        active: !state.active
+      }
+    // case UPDATE_POST_FORM_FIELD:
+    //     let newField = {}
+    //     var property = Object.keys(action).filter(item => (item !== 'type'))
+    //     newField[property] = action[property]
+    //    return {
+    //      ...state,
+    //      ...newField
+    //    }
+    // case UPDATE_POST_FORM_FIELD_MULTIPLE:
+    //     let fieldsDataObj = {}
+    //     var properties = Object.keys(action).filter(item => (item !== 'type'))
+    //     properties.forEach(prop => {
+    //       fieldsDataObj[prop] = action[prop]
+    //     })
+    //    return {
+    //      ...state,
+    //      ...fieldsDataObj
+    //    }
+    // case CLEAR_POST_FORM_FIELD:
+    //   return {
+    //     ...state,
+    //     ...clearedFields
+    //   }
+    default:
+      return state
+  }
+}
+
+
 function postVote(state = {}, action) {
 
   switch(action.type) {
@@ -235,7 +290,9 @@ export default combineReducers({
   postVote,
   comments,
   commentsSort,
+  commentCreate,
   postFormState,
+  commentFormState
 })
 
 // note that format of combined reducer will be like
