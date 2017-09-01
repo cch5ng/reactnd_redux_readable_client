@@ -252,7 +252,6 @@ export function receivePostDetail(postDetail) {
 // async action for getting posts
 export const fetchPostDetail = (postId) => dispatch => {
   dispatch(requestPostDetail())
-  console.log(`${API_GET_POST_DETAIL}${postId}`)
   return fetch(`${API_GET_POST_DETAIL}${postId}`, INIT_GET_CATEGORIES)
     .then(response => response.json())
     // use json.posts to make the data more shallow

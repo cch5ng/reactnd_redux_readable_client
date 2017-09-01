@@ -1,18 +1,12 @@
 import { combineReducers } from 'redux'
-// TODO separate /categories
+// separate /categories
 import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../actions'
 // separate /posts
-import { REQUEST_POSTS, RECEIVE_POSTS } from '../actions'
-import { FILTER_POSTS } from '../actions'
-import { SORT_POSTS } from '../actions'
-import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../actions'
-import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE } from '../actions'
-import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE } from '../actions'
-import { REQUEST_POST_EDIT, RECEIVE_POST_EDIT } from '../actions'
+import { REQUEST_POSTS, RECEIVE_POSTS, FILTER_POSTS, SORT_POSTS, REQUEST_POST_VOTE, RECEIVE_POST_VOTE } from '../actions'
+import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE, REQUEST_POST_EDIT, RECEIVE_POST_EDIT, REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../actions'
 import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, UPDATE_POST_FORM_FIELD_MULTIPLE } from '../actions'
 // separate /comments
-import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from '../actions'
-import { SORT_COMMENTS } from '../actions'
+import { REQUEST_COMMENTS, RECEIVE_COMMENTS, SORT_COMMENTS } from '../actions'
 import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, RECEIVE_COMMENT_EDIT, REQUEST_COMMENT_EDIT } from '../actions'
 import { TOGGLE_COMMENT_FORM_ACTIVE, UPDATE_COMMENT_FORM_FIELD, SET_COMMENT_FORM_TYPE, CLEAR_COMMENT_FORM_FIELD, UPDATE_COMMENT_FORM_FIELD_MULTIPLE, SET_CURRENT_COMMENT_ID } from '../actions'
 
