@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import uuidv1 from 'uuid/v1'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../actions'
-import { REQUEST_COMMENTS, RECEIVE_COMMENTS, fetchComments } from '../actions'
+import { REQUEST_COMMENTS, RECEIVE_COMMENTS, fetchComments, fetchCommentDelete } from '../actions'
 import { SORT_COMMENTS, sortComments } from '../actions'
 import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, fetchCommentCreate, fetchCommentEdit } from '../actions'
 import { toggleCommentFormActive, updateCommentFormField, setCommentFormType, clearCommentFormField, updateCommentFormFieldMultiple, setCurrentCommentId } from '../actions'
@@ -17,6 +17,7 @@ class PostDetail extends Component {
   formSubmit = this.formSubmit.bind(this)
   closeModal = this.closeModal.bind(this)
   commentEditBtnClick = this.commentEditBtnClick.bind(this)
+  commentDeleteBtnClick = this.commentDeleteBtnClick.bind(this)
   formInputUpdate = this.formInputUpdate.bind(this)
   afterOpenModal = this.afterOpenModal.bind(this)
 
@@ -90,6 +91,10 @@ class PostDetail extends Component {
     this.props.dispatch(setCommentFormType(formType[0]))
   }
 
+  commentDeleteBtnClick(commentId) {
+    this.props.dispatch(fetchCommentDelete(commentId))
+  }
+
   afterOpenModal() {
     if (this.props.commentFormState.formType === "create") {
       this.props.dispatch(clearCommentFormField())
@@ -131,6 +136,7 @@ class PostDetail extends Component {
     let postDetail = null
     let comments = null
     let commentsSort = null
+    let commentsFiltered = null
     // var will store the sorted commments
     let commentsOrdered = null
     let active = null
@@ -144,12 +150,15 @@ class PostDetail extends Component {
     }
     if (this.props.comments.comments) {
       comments = this.props.comments.comments
+      commentsFiltered = comments.filter(comment => (
+        comment.deleted === false
+      ))
     }
     if (this.props.commentsSort) {
       commentsSort = this.props.commentsSort
     }
-    if (sortKey && comments && comments.length) {
-      commentsOrdered = this.props.sortList(sortKey, sortOrderDesc, comments)
+    if (sortKey && commentsFiltered && commentsFiltered.length) {
+      commentsOrdered = this.props.sortList(sortKey, sortOrderDesc, commentsFiltered)
     }
     if (this.props.commentFormState) {
       active = this.props.commentFormState.active
@@ -184,7 +193,8 @@ class PostDetail extends Component {
                   ? commentsOrdered.map(comment => (
                     <li key={comment.id} className="comments-list-item">
                       {comment.body}<br />
-                      <button onClick={this.commentEditBtnClick} id="edit-comment" className={comment.id} >Edit</button><br />
+                      <button onClick={this.commentEditBtnClick} id="edit-comment" className={comment.id} >Edit</button> 
+                      <button onClick={(ev) => this.commentDeleteBtnClick(comment.id)} id="delete-comment" className={comment.id} >Delete</button><br />
                       Author: {comment.author}<br />
                       Votes: {comment.voteScore}<br />
                       Time: {this.props.prettyTime(comment.timestamp)}
