@@ -545,7 +545,7 @@ export function receiveCommentVote(comment) {
 }
 
 // async action for getting comment vote
-export const updateCommentVote = (commentId, option) => dispatch => {
+export const updateCommentVote = (commentId, postId, option) => dispatch => {
   dispatch(requestCommentVote())
   let INIT_VOTE_COMMENTS = {method: 'POST',
                           headers: {
@@ -559,7 +559,7 @@ export const updateCommentVote = (commentId, option) => dispatch => {
     // use json.posts to make the data more shallow
     .then(json => {
       dispatch(receiveCommentVote(json))
-      dispatch(fetchComments())
+      dispatch(fetchComments(postId))
     })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)

@@ -27,12 +27,12 @@ class App extends Component {
     if (classList[0] === "post-arrow-down-icon") {
       this.props.dispatch(updatePostVote(objId, 'downVote'))
     }
-    if (classList[0] === "comment-arrow-up-icon") {
-      this.props.dispatch(updateCommentVote(objId, 'upVote'))
-    }
-    if (classList[0] === "comment-arrow-down-icon") {
-      this.props.dispatch(updateCommentVote(objId, 'downVote'))
-    }
+    // if (classList[0] === "comment-arrow-up-icon") {
+    //   this.props.dispatch(updateCommentVote(objId, 'upVote'))
+    // }
+    // if (classList[0] === "comment-arrow-down-icon") {
+    //   this.props.dispatch(updateCommentVote(objId, 'downVote'))
+    // }
   }
 
   deletePostBtnClick(postId) {
