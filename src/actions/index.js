@@ -502,7 +502,7 @@ export function receiveCommentDelete(comment) {
 }
 
 // async action for deleting a post
-export const fetchCommentDelete = (commentId) => dispatch => {
+export const fetchCommentDelete = (commentId, postId) => dispatch => {
   dispatch(requestCommentDelete())
   let INIT_DELETE_POST = {method: 'DELETE',
                           headers: {
@@ -514,9 +514,10 @@ export const fetchCommentDelete = (commentId) => dispatch => {
   return fetch(`${API_COMMENTS}/${commentId}`, INIT_DELETE_POST)
     .then(response => response.json())
     // use json.posts to make the data more shallow
-    .then(json => dispatch(receiveCommentDelete(json)))
-// TODO seems like timing with this is off?    
-    .then(() => dispatch(fetchComments()))
+    .then(json => {
+      dispatch(receiveCommentDelete(json))
+      dispatch(fetchComments(postId)) 
+    })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
@@ -545,7 +546,7 @@ export function receiveCommentVote(comment) {
 }
 
 // async action for getting comment vote
-export const updateCommentVote = (commentId, option) => dispatch => {
+export const updateCommentVote = (commentId, postId, option) => dispatch => {
   dispatch(requestCommentVote())
   let INIT_VOTE_COMMENTS = {method: 'POST',
                           headers: {
@@ -559,7 +560,7 @@ export const updateCommentVote = (commentId, option) => dispatch => {
     // use json.posts to make the data more shallow
     .then(json => {
       dispatch(receiveCommentVote(json))
-      dispatch(fetchComments())
+      dispatch(fetchComments(postId))
     })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
