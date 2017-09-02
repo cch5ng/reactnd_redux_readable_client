@@ -109,8 +109,11 @@ export const updatePostVote = (postId, option) => dispatch => {
   return fetch(`${API_GET_POSTS}/${postId}`, INIT_UPDATE_POSTS)
     .then(response => response.json())
     // use json.posts to make the data more shallow
-    .then(json => dispatch(receivePostVote(json)))
-    .then(dispatch(fetchPosts()))
+    .then(json => {
+      dispatch(receivePostVote(json))
+      dispatch(fetchPosts())
+      dispatch(fetchPostDetail(postId))
+    })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
