@@ -72,28 +72,34 @@ class Posts extends Component {
 
     return (
       <div className="posts">
-        <div>
-          <h3>Categories</h3>
-          <ul onClick={this.categoryClick} className="categories-list">
-            <Link to="/posts" key="postsAll" ><li key="all">all</li></Link>
-            {categories
-              ? categories.map((category, idx) => {
-                let link = `/${category.name}/posts`
-                let linkKey = `${category.name}${idx}`
-                return (
-                  <Link to={link} key={linkKey} ><li key={category.name}>{category.name}</li></Link>
-                )
-              })
-              : null
-            }
-          </ul>
+        <div className="filter-sort grid">
+          <div className="col-50p">
+            <h3>Filter by Category</h3>
+            <ul onClick={this.categoryClick} className="categories-list">
+              <Link to="/posts" key="postsAll" ><li key="all">all</li></Link>
+              {categories
+                ? categories.map((category, idx) => {
+                  let link = `/${category.name}/posts`
+                  let linkKey = `${category.name}${idx}`
+                  return (
+                    <Link to={link} key={linkKey} ><li key={category.name}>{category.name}</li></Link>
+                  )
+                })
+                : null
+              }
+            </ul>
+          </div>
+
+          <div className="col-50p">
+            <h3>Sort Posts</h3>
+            <ul onClick={this.postsSortClick} className="sort-key-list">
+              <li className={ sortKey === "voteScore" ? "is-active-sort voteScore" : "voteScore" }>Sort by Votes ({this.props.prettySortVotes(sortOrderDesc)})</li>
+              <li className={ sortKey === "timestamp" ? "is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({this.props.prettySortTime(sortOrderDesc)})</li>
+            </ul>
+          </div>
         </div>
-        <div>
+        <div className="posts-container">
           <h3>Posts</h3>
-          <ul onClick={this.postsSortClick} className="sort-key-list">
-            <li className={ sortKey === "voteScore" ? "is-active-sort voteScore" : "voteScore" }>Sort by Votes ({this.props.prettySortVotes(sortOrderDesc)})</li>
-            <li className={ sortKey === "timestamp" ? "is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({this.props.prettySortTime(sortOrderDesc)})</li>
-          </ul>
           <ul className="post-list">
             {postsSorted
               ? postsSorted.map(post => {

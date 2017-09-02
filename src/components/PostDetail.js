@@ -80,13 +80,13 @@ class PostDetail extends Component {
     }
   }
 
-  commentEditBtnClick(ev) {
-    let btnId = ev.target.id
+  commentEditBtnClick(btnId, commentId) {
     let formType = btnId.split('-')
-    let commentId = ev.target.className
     let commentFormState = this.props.commentFormState
 
-    this.props.dispatch(setCurrentCommentId(commentId))    
+    if (formType[0] === "edit") {
+      this.props.dispatch(setCurrentCommentId(commentId))    
+    }
     this.props.dispatch(toggleCommentFormActive())
     this.props.dispatch(setCommentFormType(formType[0]))
   }
@@ -172,37 +172,40 @@ class PostDetail extends Component {
       { postDetail
         ? <div>
             <div className="post-detail">
-              <h3>{postDetail.title}</h3>
-              <Link to={`/editPost/${postDetail.id}`}><button>Edit</button></Link> <button onClick={(ev) => this.props.deletePostBtnClick(postDetail.id)}>Delete</button><br />
-              <p>{postDetail.body}</p>
-              <p>Author: {postDetail.author}</p>
-              <p>Votes: {postDetail.voteScore}</p>
-              <p>Time: {this.props.prettyTime(postDetail.timestamp)}</p>
+              <div className="post-detail-sect">
+                <h3>{postDetail.title}</h3>
+                <Link to={`/editPost/${postDetail.id}`}><button className="button">Edit</button></Link> <button className="button" onClick={(ev) => this.props.deletePostBtnClick(postDetail.id)}>Delete</button><br />
+                <p>{postDetail.body}</p>
+                <p>Author: {postDetail.author}</p>
+                <p>Votes: {postDetail.voteScore}</p>
+                <p>Time: {this.props.prettyTime(postDetail.timestamp)}</p>
+                <button className="button" onClick={(ev) => this.commentEditBtnClick(ev.target.id, '')} id="create-comment">Add Comment</button>
+              </div>
+              <div className="comments-container">
+                <h4>Comments</h4>
 
-              <h4>Comments</h4>
+                <ul onClick={this.commentsSortClick} className="sort-key-list">
+                  <li className={ commentsSort.sortKey === "voteScore" ? "is-active-sort voteScore" : "voteScore" }>Sort by Votes ({this.props.prettySortVotes(commentsSort.sortOrderDesc)})</li>
+                  <li className={ commentsSort.sortKey === "timestamp" ? "is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({this.props.prettySortTime(commentsSort.sortOrderDesc)})</li>
+                </ul>
 
-              <ul onClick={this.commentsSortClick} className="sort-key-list">
-                <li className={ commentsSort.sortKey === "voteScore" ? "is-active-sort voteScore" : "voteScore" }>Sort by Votes ({this.props.prettySortVotes(commentsSort.sortOrderDesc)})</li>
-                <li className={ commentsSort.sortKey === "timestamp" ? "is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({this.props.prettySortTime(commentsSort.sortOrderDesc)})</li>
-              </ul>
 
-              <button onClick={this.commentEditBtnClick} id="create-comment">Add Comment</button>
+                <ul className="comments-list">
+                  { commentsOrdered 
+                    ? commentsOrdered.map(comment => (
+                      <li key={comment.id} className="comments-list-item">
+                        {comment.body}<br />
+                        <button onClick={(ev) => this.commentEditBtnClick(ev.target.id, comment.id)} id="edit-comment" className="button" >Edit</button> <button onClick={(ev) => this.commentDeleteBtnClick(comment.id)} id="delete-comment" className="button" >Delete</button><br />
+                        Author: {comment.author}<br />
+                        Votes: {comment.voteScore}<br />
+                        Time: {this.props.prettyTime(comment.timestamp)}
+                      </li>
+                    ))
+                    : null
+                  }
+                </ul>
+              </div>
 
-              <ul className="comments-list">
-                { commentsOrdered 
-                  ? commentsOrdered.map(comment => (
-                    <li key={comment.id} className="comments-list-item">
-                      {comment.body}<br />
-                      <button onClick={this.commentEditBtnClick} id="edit-comment" className={comment.id} >Edit</button> 
-                      <button onClick={(ev) => this.commentDeleteBtnClick(comment.id)} id="delete-comment" className={comment.id} >Delete</button><br />
-                      Author: {comment.author}<br />
-                      Votes: {comment.voteScore}<br />
-                      Time: {this.props.prettyTime(comment.timestamp)}
-                    </li>
-                  ))
-                  : null
-                }
-              </ul>
             </div>
             <Modal isOpen={active} contentLabel="Modal" onRequestClose={this.closeModal} onAfterOpen={this.afterOpenModal} >
               <h3>{formType === "create" ? "Add": "Edit"} Comment</h3>

@@ -7,9 +7,17 @@ class Nav extends Component {
   render() {
     //const post = this.props.post
     return (
-      <div>
-        <Link to="/">Posts</Link><br />
-        <Link to="/newPost">Add Post</Link>
+      <div className="header title">
+        <div className="header-main">
+          <h2>Talk-about</h2>
+        </div>
+        <div className="header-contact">
+          <p className="contact">
+            <Link to="/">Posts</Link> <Link to="/newPost">Add Post</Link>
+          </p>
+        </div>
+
+
       </div>
     )
   }
