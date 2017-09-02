@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import {
-  BrowserRouter as Router,
-  Route
-} from 'react-router-dom'
+  BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Posts from './components/Posts'
 import PostDetail from './components/PostDetail'
 import Nav from './components/Nav'
 import PostForm from './components/PostForm'
 import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE, updatePostVote, fetchPostDelete } from './actions'
+import { updateCommentVote } from './actions'
 import './App.css';
 
 class App extends Component {
@@ -19,19 +18,20 @@ class App extends Component {
 
 // EVENT HANDLERS
 
-  clickVote(ev, postId) {
+  clickVote(ev, objId) {
     const classList = ev.target.classList
 
-    switch(classList[0]) {
-      case "post-arrow-up-icon":
-        console.log('clickVote')
-        this.props.dispatch(updatePostVote(postId, 'upVote'))
-        return
-      case "post-arrow-down-icon":
-        this.props.dispatch(updatePostVote(postId, 'downVote'))
-        return
-      default:
-        return
+    if (classList[0] === "post-arrow-up-icon") {
+      this.props.dispatch(updatePostVote(objId, 'upVote'))
+    }
+    if (classList[0] === "post-arrow-down-icon") {
+      this.props.dispatch(updatePostVote(objId, 'downVote'))
+    }
+    if (classList[0] === "comment-arrow-up-icon") {
+      this.props.dispatch(updateCommentVote(objId, 'upVote'))
+    }
+    if (classList[0] === "comment-arrow-down-icon") {
+      this.props.dispatch(updateCommentVote(objId, 'downVote'))
     }
   }
 
