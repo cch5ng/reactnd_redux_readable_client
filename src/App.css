@@ -101,6 +101,17 @@ h4 {
   border-radius: 8px;
 }
 
+/* Form */
+.button {
+  height: 25px;
+  font-size: 14px;
+  margin-right: 3px;
+  padding: 0 5px;
+  border-radius: 5px;
+  border-style: none;
+  background-color: #fff;
+}
+
 @media (min-width: 768px) {
 
   .header {

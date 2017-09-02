@@ -14,7 +14,7 @@ class Post extends Component {
     return (
       <div className="post-list-item">
         <Link to={link} >{post.title}</Link><br />
-        <Link to={`/editPost/${post.id}`}><button>Edit</button></Link> <button onClick={(ev) => this.props.deletePostBtnClick(post.id)} >Delete</button><br />
+        <Link to={`/editPost/${post.id}`}><button className="button">Edit</button></Link> <button className="button" onClick={(ev) => this.props.deletePostBtnClick(post.id)} >Delete</button><br />
           Author: {post.author}<br />
           Votes: {post.voteScore} <ArrowUpIcon className="post-arrow-up-icon" onClick={(ev) => this.props.clickVote(ev, post.id)} /><ArrowDownIcon className="post-arrow-down-icon"  onClick={(ev) => this.props.clickVote(ev, post.id)} /><br />
           Time: {this.props.prettyTime(post.timestamp)}<br /> 
