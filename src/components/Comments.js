@@ -116,8 +116,8 @@ class Comments extends Component {
     this.props.dispatch(setCommentFormType(formType[0]))
   }
 
-  commentDeleteBtnClick(commentId) {
-    this.props.dispatch(fetchCommentDelete(commentId))
+  commentDeleteBtnClick(commentId, postId) {
+    this.props.dispatch(fetchCommentDelete(commentId, postId))
   }
 
   afterOpenModal() {
@@ -198,7 +198,7 @@ class Comments extends Component {
             ? this.filterSortComments(comments).map(comment => (
               <li key={comment.id} className="comments-list-item">
                 {comment.body}<br />
-                <button onClick={(ev) => this.commentEditBtnClick(ev.target.id, comment.id)} id="edit-comment" className="button" >Edit</button> <button onClick={(ev) => this.props.commentDeleteBtnClick(comment.id)} id="delete-comment" className="button" >Delete</button><br />
+                <button onClick={(ev) => this.commentEditBtnClick(ev.target.id, comment.id)} id="edit-comment" className="button" >Edit</button> <button onClick={(ev) => this.commentDeleteBtnClick(comment.id, this.props.postId)} id="delete-comment" className="button" >Delete</button><br />
                 Author: {comment.author}<br />
                 Votes: {comment.voteScore}   <ArrowUpIcon className="comment-arrow-up-icon" onClick={(ev) => this.clickCommentVote(ev, comment.id, this.props.postId)} /><ArrowDownIcon className="comment-arrow-down-icon"  onClick={(ev) => this.clickCommentVote(ev, comment.id, this.props.postId)} /><br />
                 Time: {this.props.prettyTime(comment.timestamp)}
