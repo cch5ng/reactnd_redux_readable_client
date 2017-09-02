@@ -7,10 +7,10 @@
 
 .App {
   /*text-align: center;*/
-  margin: 20px 5%;
+  margin: 0 5% 20px 5%;
 }
 
-.App-logo {
+/*.App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
 }
@@ -20,12 +20,12 @@
   height: 150px;
   padding: 20px;
   color: white;
-}
+}*/
 
-.App-intro {
+/*.App-intro {
   font-size: large;
 }
-
+*/
 h1,
 h2,
 h3,
@@ -33,9 +33,45 @@ h4 {
   font-weight: 400;
 }
 
-@keyframes App-logo-spin {
+/*@keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+*/
+/* Nav */
+
+.header {
+  background-color: #999fd5;
+  box-sizing: border-box;
+  /*color: white;*/
+}
+
+/*.title:after {
+  clear: both;
+}*/
+
+.header-main,
+.header-contact {
+  width: 100%;
+  text-align: center;
+}
+
+.contact {
+  /*color: #6666e0;*/
+  /*font-size: 1.35em;*/
+  padding: 12px 0;
+  text-align: center;
+}
+
+/* Posts */
+.filter-sort {
+  padding: 15px;
+  background-color: #e0e2f2;
+}
+
+.posts-container {
+  padding: 15px;
+  background-color: #cceae7;
 }
 
 /* Post */
@@ -63,4 +99,42 @@ h4 {
   margin-top: 12px;
   padding: 5px 10px;
   border-radius: 8px;
+}
+
+@media (min-width: 768px) {
+
+  .header {
+    background-color: #999fd5;
+    height: 70px;
+  }
+
+  .header-main,
+  .header-contact {
+    float: left;
+    display: inline-block;
+  }
+
+  .header-main,
+  .header-contact {
+    width: calc(50% - 30px / 2);
+  }
+
+  .header-main {
+    margin-top: 15px;
+    margin-left: 15px;
+    text-align: left;
+  }
+
+  .header-contact {
+    text-align: right;
+    vertical-align: top;
+    margin-top: 8px;
+    margin-right: 15px;
+  }
+
+  .contact {
+    padding-bottom: 12px;
+    text-align: right;
+  }
+
 }
