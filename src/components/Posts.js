@@ -72,8 +72,8 @@ class Posts extends Component {
 
     return (
       <div className="posts">
-        <div className="filter-sort">
-          <div>
+        <div className="filter-sort grid">
+          <div className="col-50p">
             <h3>Filter by Category</h3>
             <ul onClick={this.categoryClick} className="categories-list">
               <Link to="/posts" key="postsAll" ><li key="all">all</li></Link>
@@ -90,7 +90,7 @@ class Posts extends Component {
             </ul>
           </div>
 
-          <div>
+          <div className="col-50p">
             <h3>Sort Posts</h3>
             <ul onClick={this.postsSortClick} className="sort-key-list">
               <li className={ sortKey === "voteScore" ? "is-active-sort voteScore" : "voteScore" }>Sort by Votes ({this.props.prettySortVotes(sortOrderDesc)})</li>

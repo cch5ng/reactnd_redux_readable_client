@@ -65,8 +65,15 @@ h4 {
 
 /* Posts */
 .filter-sort {
+  display: flex;
+  display: -webkit-flex;
+  flex-flow: row wrap;
   padding: 15px;
   background-color: #e0e2f2;
+}
+
+.col-50p {
+  width: 100%;
 }
 
 .posts-container {
@@ -82,12 +89,16 @@ h4 {
   list-style-type: none;
 }
 
-.post-list-item,
-.post-detail {
+.post-list-item {
   background-color: #99d5cf;
   margin-top: 12px;
   padding: 10px;
   border-radius: 8px;
+}
+
+.post-detail {
+  background-color: #99d5cf;
+  padding: 10px;
 }
 
 .is-active-sort {
@@ -99,6 +110,18 @@ h4 {
   margin-top: 12px;
   padding: 5px 10px;
   border-radius: 8px;
+}
+
+/* Post Detail */
+.post-detail-sect {
+  padding: 15px;
+}
+
+.comments-container {
+  margin-top: 8px;
+  padding: 15px;
+  background-color: #eaf6f5;
+  border-radius: 5px;
 }
 
 /* Form */
@@ -146,6 +169,10 @@ h4 {
   .contact {
     padding-bottom: 12px;
     text-align: right;
+  }
+
+  .col-50p {
+    width: 50%;
   }
 
 }
