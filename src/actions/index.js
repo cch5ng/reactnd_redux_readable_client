@@ -522,6 +522,50 @@ export const fetchCommentDelete = (commentId) => dispatch => {
     })
 }
 
+/////
+
+// TEST section for Comment vote actions
+export const REQUEST_COMMENT_VOTE = 'REQUEST_COMMENT_VOTE'
+export const RECEIVE_COMMENT_VOTE = 'RECEIVE_COMMENT_VOTE'
+
+export function requestCommentVote() {
+  return {
+    type: REQUEST_COMMENT_VOTE,
+    retrieving: true
+  }
+}
+
+export function receiveCommentVote(comment) {
+  return {
+    type: RECEIVE_COMMENT_VOTE,
+    comment,
+    retrieving: false
+
+  }
+}
+
+// async action for getting comment vote
+export const updateCommentVote = (commentId, option) => dispatch => {
+  dispatch(requestCommentVote())
+  let INIT_VOTE_COMMENTS = {method: 'POST',
+                          headers: {
+                            'Authorization': 'mAuth',
+                            "Content-Type": 'application/json'
+                          },
+                          body: JSON.stringify({ option })
+                        }
+  return fetch(`${API_COMMENTS}/${commentId}`, INIT_VOTE_COMMENTS)
+    .then(response => response.json())
+    // use json.posts to make the data more shallow
+    .then(json => {
+      dispatch(receiveCommentVote(json))
+      dispatch(fetchComments())
+    })
+    .catch(function(err) {
+      console.log('fetch err: ' + err.message)
+    })
+}
+
 ////////
 
 // section for Comment Form State actions (first try to combine state for create vs edit)

@@ -6,7 +6,7 @@ import { REQUEST_POSTS, RECEIVE_POSTS, FILTER_POSTS, SORT_POSTS, REQUEST_POST_VO
 import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE, REQUEST_POST_EDIT, RECEIVE_POST_EDIT, REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../actions'
 import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, UPDATE_POST_FORM_FIELD_MULTIPLE } from '../actions'
 // separate /comments
-import { REQUEST_COMMENTS, RECEIVE_COMMENTS, SORT_COMMENTS } from '../actions'
+import { REQUEST_COMMENTS, RECEIVE_COMMENTS, SORT_COMMENTS, REQUEST_COMMENT_VOTE, RECEIVE_COMMENT_VOTE, } from '../actions'
 import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, RECEIVE_COMMENT_EDIT, REQUEST_COMMENT_EDIT, REQUEST_COMMENT_DELETE, RECEIVE_COMMENT_DELETE } from '../actions'
 import { TOGGLE_COMMENT_FORM_ACTIVE, UPDATE_COMMENT_FORM_FIELD, SET_COMMENT_FORM_TYPE, CLEAR_COMMENT_FORM_FIELD, UPDATE_COMMENT_FORM_FIELD_MULTIPLE, SET_CURRENT_COMMENT_ID } from '../actions'
 
@@ -164,6 +164,26 @@ function postFormState(state = { formType: 'create', title: '', body: '', author
   }
 }
 
+function postVote(state = {}, action) {
+
+  switch(action.type) {
+    case REQUEST_POST_VOTE:
+      return {
+        ...state,
+
+      }
+    case RECEIVE_POST_VOTE:
+      return {
+        ...state,
+        //posts: action.posts
+      }
+    default:
+      return state
+  }
+}
+
+/////
+// COMMENTS
 
 function comments(state = [], action) {
 
@@ -291,20 +311,10 @@ function commentFormState(state = { active: false, formType: 'create', id: '', b
   }
 }
 
-
-function postVote(state = {}, action) {
-
+function commentVote(state = {}, action) {
   switch(action.type) {
-    case REQUEST_POST_VOTE:
-      return {
-        ...state,
-
-      }
-    case RECEIVE_POST_VOTE:
-      return {
-        ...state,
-        //posts: action.posts
-      }
+    case REQUEST_COMMENT_VOTE:
+    case RECEIVE_COMMENT_VOTE:
     default:
       return state
   }
@@ -326,7 +336,8 @@ export default combineReducers({
   commentEdit,
   commentDelete,
   postFormState,
-  commentFormState
+  commentFormState,
+  commentVote
 })
 
 // note that format of combined reducer will be like

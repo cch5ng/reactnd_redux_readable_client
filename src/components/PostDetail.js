@@ -199,7 +199,7 @@ class PostDetail extends Component {
                         {comment.body}<br />
                         <button onClick={(ev) => this.commentEditBtnClick(ev.target.id, comment.id)} id="edit-comment" className="button" >Edit</button> <button onClick={(ev) => this.commentDeleteBtnClick(comment.id)} id="delete-comment" className="button" >Delete</button><br />
                         Author: {comment.author}<br />
-                        Votes: {comment.voteScore}<br />
+                        Votes: {comment.voteScore}   <ArrowUpIcon className="comment-arrow-up-icon" onClick={(ev) => this.props.clickVote(ev, comment.id)} /><ArrowDownIcon className="comment-arrow-down-icon"  onClick={(ev) => this.props.clickVote(ev, comment.id)} /><br />
                         Time: {this.props.prettyTime(comment.timestamp)}
                       </li>
                     ))
