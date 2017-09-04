@@ -41,7 +41,7 @@ h4 {
 /* Nav */
 
 .header {
-  background-color: #999fd5;
+  background-color: #1f2035;
   box-sizing: border-box;
   /*color: white;*/
 }
@@ -52,6 +52,7 @@ h4 {
 
 .header-main,
 .header-contact {
+  color: #f5ffa6; /*#d8f2e1;*/
   width: 100%;
   text-align: center;
 }
@@ -63,13 +64,22 @@ h4 {
   text-align: center;
 }
 
+.contact a:link,
+.contact a:visited {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+}
+
 /* Posts */
 .filter-sort {
   display: flex;
   display: -webkit-flex;
   flex-flow: row wrap;
   padding: 15px;
-  background-color: #e0e2f2;
+  border: 1px solid #6b9590;
+  border-radius: 8px;
+  /*background-color: #e0e2f2;*/
 }
 
 .col-50p {
@@ -101,12 +111,24 @@ h4 {
   padding: 10px;
 }
 
-.is-active-sort {
-  background-color: #ffd1aa;
+.voteScore,
+.timestamp {
+  padding-left: 5px;
 }
 
+.is-active-sort {
+  border: 3px solid #d6ff94;
+  border-radius: 2px;
+}
+
+.comment-is-active-sort {
+  border: 3px solid #c0e585;
+  border-radius: 2px;
+}
+
+
 .comments-list-item {
-  background-color: #cceae7;
+  background-color: #b7e1dd; /*#cceae7;*/
   margin-top: 12px;
   padding: 5px 10px;
   border-radius: 8px;
@@ -120,11 +142,16 @@ h4 {
 .comments-container {
   margin-top: 8px;
   padding: 15px;
-  background-color: #eaf6f5;
+  background-color: #d6eeeb; /*#eaf6f5;*/
   border-radius: 5px;
 }
 
 /* Form */
+.form-container {
+  background-color: #cceae7;
+  padding: 15px;
+}
+
 .button {
   height: 25px;
   font-size: 14px;
@@ -135,10 +162,47 @@ h4 {
   background-color: #fff;
 }
 
+.button:hover {
+  background-color: #f4fafa;
+}
+
+input {
+  width: calc(100% - 34px);
+  height: 25px;
+  padding-left: 8px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #999;
+}
+
+textarea {
+  width: calc(100% - 34px);
+  height: 60px;
+  padding-left: 8px;  
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #999;
+}
+
+select,
+option {
+  height: 25px;
+  font-size: 14px;  
+}
+
+input:focus,
+select:focus,
+option:focus,
+textarea:focus {
+  outline: none !important;
+  border:1px solid #c0e585; /*#d6ff94;*/
+  box-shadow: 0 0 10px #c0e585; /*#d6ff94; #d6ff94;*/
+}
+
 @media (min-width: 768px) {
 
   .header {
-    background-color: #999fd5;
+    background-color: #1f2035;
     height: 70px;
   }
 
@@ -169,6 +233,12 @@ h4 {
   .contact {
     padding-bottom: 12px;
     text-align: right;
+  }
+
+  .contact a:link,
+  .contact a:visited {
+    padding-left: 12px;
+    display: inline;
   }
 
   .col-50p {

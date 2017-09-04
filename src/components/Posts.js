@@ -71,7 +71,8 @@ class Posts extends Component {
     }
 
     return (
-      <div className="posts">
+      <div className="posts-container">
+        <h2>Posts</h2>
         <div className="filter-sort grid">
           <div className="col-50p">
             <h3>Filter by Category</h3>
@@ -98,8 +99,7 @@ class Posts extends Component {
             </ul>
           </div>
         </div>
-        <div className="posts-container">
-          <h3>Posts</h3>
+        <div className="">
           <ul className="post-list">
             {postsSorted
               ? postsSorted.map(post => {

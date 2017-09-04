@@ -12,6 +12,12 @@ import { toggleCommentFormActive, updateCommentFormField, setCommentFormType, cl
   updateCommentFormFieldMultiple, setCurrentCommentId, updateCommentVote } from '../actions'
 import '../App.css';
 
+const customStyles = {
+  content : {
+    background: '#cceae7'
+  }
+};
+
 class Comments extends Component {
 
   commentsSortClick = this.commentsSortClick.bind(this)
@@ -182,7 +188,7 @@ class Comments extends Component {
 
     return (
       <div className="comments-container">
-        <h4>Comments</h4>
+        <h2>Comments</h2>
 
         <div>
           <button className="button" onClick={(ev) => this.commentEditBtnClick(ev.target.id, '')} id="create-comment">Add Comment</button>
@@ -190,8 +196,8 @@ class Comments extends Component {
         </div>
         <h3>Sort Comments</h3>
         <ul onClick={this.commentsSortClick} className="sort-key-list">
-          <li className={ commentsSort.sortKey === "voteScore" ? "is-active-sort voteScore" : "voteScore" }>Sort by Votes ({this.props.prettySortVotes(commentsSort.sortOrderDesc)})</li>
-          <li className={ commentsSort.sortKey === "timestamp" ? "is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({this.props.prettySortTime(commentsSort.sortOrderDesc)})</li>
+          <li className={ commentsSort.sortKey === "voteScore" ? "comment-is-active-sort voteScore" : "voteScore" }>Sort by Votes ({this.props.prettySortVotes(commentsSort.sortOrderDesc)})</li>
+          <li className={ commentsSort.sortKey === "timestamp" ? "comment-is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({this.props.prettySortTime(commentsSort.sortOrderDesc)})</li>
         </ul>
 
         <ul className="comments-list">
@@ -208,13 +214,14 @@ class Comments extends Component {
             : null
           }
         </ul>
-        <Modal isOpen={active} contentLabel="Modal" onRequestClose={this.closeModal} onAfterOpen={this.afterOpenModal} >
+        <Modal isOpen={active} contentLabel="Modal" onRequestClose={this.closeModal} onAfterOpen={this.afterOpenModal}
+          style={customStyles} >
           <h3>{formType === "create" ? "Add": "Edit"} Comment</h3>
-          <button onClick={this.closeModal}>close</button>
+          <button className="button" onClick={this.closeModal}>Close</button><br /><br />
           <form id="comment-form">
             <textarea width="100"  name="comment-body-ta" id="cbody" value={body ? body : ''} onChange={this.formInputUpdate} placeholder="comment body"  /><br />
-            <input type="text" name="comment-author-inp" id="cauthor" value={author ? author: ''} onChange={this.formInputUpdate}  placeholder="author" /><br />
-            <button name="postSaveBtn" id="commentSaveBtn" onClick={this.formSubmit} >Save</button> <button id="commentCancelBtn" >Cancel</button>
+            <input type="text" name="comment-author-inp" id="cauthor" value={author ? author: ''} onChange={this.formInputUpdate}  placeholder="author" /><br /><br />
+            <button name="postSaveBtn" id="commentSaveBtn" className="button" onClick={this.formSubmit} >Save</button> <button id="commentCancelBtn" className="button">Cancel</button>
           </form>
         </Modal>
       </div>
