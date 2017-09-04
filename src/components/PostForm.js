@@ -123,7 +123,7 @@ class PostForm extends Component {
     }
 
     return (
-      <div>
+      <div className="form-container">
         <h3>{ this.props.formType === 'create' ? 'Add' : 'Edit' } Post</h3>
         <form id="post-create-form">
           <input type="text" value={ postFormState ? postFormState.title : ''} name="post-title-inp" id="ptitle" placeholder="title" onChange={this.formInputUpdate} /><br /><br />
@@ -134,17 +134,17 @@ class PostForm extends Component {
                 {categories.map(category => (
                   <option key={category.name} value={category.name} >{category.name}</option>
                 ))}
-              </select><br />
+              </select><br /><br />
             </div>
           )}
-          <input type="text" value={author ? author : ""} name="post-author-inp" id="pauthor"  placeholder="author" onChange={this.formInputUpdate} /><br />
+          <input type="text" value={author ? author : ""} name="post-author-inp" id="pauthor"  placeholder="author" onChange={this.formInputUpdate} /><br /><br />
           { this.props.formType === "edit" && (
             <div>
-              <input type="number" value={voteScore ? voteScore : '0'} name="post-voteScore-inp" id="pvoteScore"  placeholder="1" onChange={this.formInputUpdate} /><br />
+              <input type="number" value={voteScore ? voteScore : ''} name="post-voteScore-inp" id="pvoteScore"  placeholder="number of votes" onChange={this.formInputUpdate} /><br /><br />
             </div>
 
           )}
-          <button name="postSaveBtn" id="postSaveBtn" onClick={this.formSubmit} >Save</button> <button id="postCancelBtn" id="postCancelBtn">Cancel</button>
+          <button name="postSaveBtn" id="postSaveBtn" className="button" onClick={this.formSubmit} >Save</button> <button id="postCancelBtn" id="postCancelBtn" className="button" >Cancel</button>
         </form>
       </div>
     )
