@@ -35,7 +35,7 @@ class PostDetail extends Component {
                 <p>{postDetail.body}</p>
                 <p>Author: {postDetail.author}</p>
                 <p>Votes: {postDetail.voteScore}  <ArrowUpIcon className="post-arrow-up-icon" onClick={(ev) => this.props.clickVote(ev, postDetail.id)} /><ArrowDownIcon className="post-arrow-down-icon"  onClick={(ev) => this.props.clickVote(ev, postDetail.id)} /></p>
-                <p>Time: {this.props.prettyTime(postDetail.timestamp)}</p>
+                <p>Last updated: {this.props.prettyTime(postDetail.timestamp)}</p>
               </div>
               <Comments postId={this.props.match.params.id} commentEditBtnClick={this.props.commentEditBtnClick} 
                 commentDeleteBtnClick={this.props.commentDeleteBtnClick} clickVote={this.props.clickVote} 
