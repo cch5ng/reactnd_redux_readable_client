@@ -100,12 +100,12 @@ function postCreate(state = {}, action) {
 
 function postEdit(state = {}, action) {
   switch(action.type) {
-    case RECEIVE_POST_CREATE:
+    case RECEIVE_POST_EDIT:
       return {
         ...state,
         post: action.post
       }
-    case REQUEST_POST_CREATE:
+    case REQUEST_POST_EDIT:
     default:
       return state
   }
