@@ -58,16 +58,11 @@ class PostForm extends Component {
     ev.preventDefault()
     const curDateMs = Date.now()
     let postFormState
-    //let tDate = new Date(this.props.postFormState.timestamp)
     let postTimestamp 
     let postId
-    if (this.props.formType === "create") {
-      postTimestamp = curDateMs
-    } else {
-      postTimestamp = Date.parse(this.props.postFormState.timestamp)
-    }
     let formData
 
+    postTimestamp = curDateMs
     if (this.props.match) {
       postId = this.props.match.params.id
     }

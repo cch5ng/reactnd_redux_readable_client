@@ -67,11 +67,11 @@ class Comments extends Component {
     let commentFormState
     let commentTimestamp
     let commentId
+
+    commentTimestamp = curDateMs
     if (this.props.commentFormState.formType === "create") {
-       commentTimestamp = curDateMs
        commentId = uuidv1()
      } else {
-       commentTimestamp = Date.parse(this.props.commentFormState.timestamp)
        commentId = this.props.commentFormState.id
     }
     let formData
@@ -208,7 +208,7 @@ class Comments extends Component {
                 <button onClick={(ev) => this.commentEditBtnClick(ev.target.id, comment.id)} id="edit-comment" className="button" >Edit</button> <button onClick={(ev) => this.commentDeleteBtnClick(comment.id, this.props.postId)} id="delete-comment" className="button" >Delete</button><br />
                 Author: {comment.author}<br />
                 Votes: {comment.voteScore}   <ArrowUpIcon className="comment-arrow-up-icon" onClick={(ev) => this.clickCommentVote(ev, comment.id, this.props.postId)} /><ArrowDownIcon className="comment-arrow-down-icon"  onClick={(ev) => this.clickCommentVote(ev, comment.id, this.props.postId)} /><br />
-                Time: {this.props.prettyTime(comment.timestamp)}
+                Last updated: {this.props.prettyTime(comment.timestamp)}
               </li>
             ))
             : null
