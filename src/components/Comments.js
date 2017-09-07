@@ -10,7 +10,7 @@ import { SORT_COMMENTS, sortComments } from '../actions'
 import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, fetchCommentCreate, fetchCommentEdit } from '../actions'
 import { toggleCommentFormActive, updateCommentFormField, setCommentFormType, clearCommentFormField, 
   updateCommentFormFieldMultiple, setCurrentCommentId, updateCommentVote } from '../actions'
-import { prettySortVotes, prettySortTime, prettyTime } from '../utils'
+import { prettySortVotes, prettySortTime, prettyTime, sortList } from '../utils'
 import '../App.css';
 
 const customStyles = {
@@ -157,7 +157,7 @@ class Comments extends Component {
     commentsFiltered = comments.filter(comment => (
       comment.deleted === false
     ))
-    orderedComments = this.props.sortList(this.props.commentsSort.sortKey, this.props.commentsSort.sortOrderDesc, commentsFiltered)
+    orderedComments = sortList(this.props.commentsSort.sortKey, this.props.commentsSort.sortOrderDesc, commentsFiltered)
 
     return orderedComments
   }
