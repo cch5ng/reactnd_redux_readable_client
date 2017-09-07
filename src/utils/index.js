@@ -49,8 +49,10 @@ export function prettySortTime(sortOrderDesc) {
 
 export function prettyTime(timestampMs) {
   let dateStr = ''
-  const dateTime = new Date(timestampMs)
-  dateStr = dateTime.toString()
+  if (timestampMs) {
+    const dateTime = new Date(timestampMs)
+    dateStr = dateTime.toString()
+  }
 
   return dateStr
 }
