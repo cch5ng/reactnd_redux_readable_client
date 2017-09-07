@@ -6,7 +6,7 @@ import { REQUEST_POSTS, RECEIVE_POSTS, fetchPosts } from '../actions'
 import { FILTER_POSTS, filterPosts } from '../actions'
 import { SORT_POSTS, sortPosts } from '../actions'
 import Post from './Post'
-import { prettySortVotes, prettySortTime } from '../utils'
+import { prettySortVotes, prettySortTime, sortList } from '../utils'
 import '../App.css';
 
 class Posts extends Component {
@@ -68,7 +68,7 @@ class Posts extends Component {
     }
 
     if (sortKey && postsFiltered) {
-      postsSorted = this.props.sortList(sortKey, sortOrderDesc, postsFiltered)
+      postsSorted = sortList(sortKey, sortOrderDesc, postsFiltered)
     }
 
     return (

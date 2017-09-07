@@ -1,3 +1,5 @@
+// HELPERS
+
 export function sortNumbersAr(numAr) {
   let sortedAr = []
 
@@ -55,4 +57,37 @@ export function prettyTime(timestampMs) {
   }
 
   return dateStr
+}
+
+export function sortList(sortKey, sortOrderDesc, list) {
+  let sortedList = []
+  let sortKeysList = []
+  let sortKeysList2
+
+  list.forEach(item => {
+    if (sortKeysList.indexOf(item[sortKey]) === -1) {
+      sortKeysList.push(item[sortKey])
+    }
+  })
+  sortKeysList2 = sortNumbersAr(sortKeysList)
+
+  if (sortOrderDesc) {
+    sortKeysList2.reverse()
+    sortKeysList2.forEach(score => {
+      let nextList = list.filter( item => (
+        score === item[sortKey]
+      ))
+      sortedList = sortedList.concat(nextList)
+    })
+  }
+
+  if (!sortOrderDesc) {
+    sortKeysList2.forEach(score => {
+      let nextList = list.filter( item => (
+        score === item[sortKey]
+      ))
+      sortedList = sortedList.concat(nextList)
+    })
+  }
+  return sortedList
 }

@@ -6,7 +6,7 @@ import ArrowDownIcon from 'react-icons/lib/fa/arrow-circle-down'
 import ArrowUpIcon from 'react-icons/lib/fa/arrow-circle-up'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../actions'
 import Comments from './Comments'
-import { prettyTime } from '../utils'
+import { prettyTime, sortList } from '../utils'
 
 import '../App.css';
 
@@ -40,7 +40,7 @@ class PostDetail extends Component {
               </div>
               <Comments postId={this.props.match.params.id} commentEditBtnClick={this.props.commentEditBtnClick} 
                 commentDeleteBtnClick={this.props.commentDeleteBtnClick} clickVote={this.props.clickVote} 
-                sortList={this.props.sortList} prettyTime={this.props.prettyTime} 
+                sortList={sortList}
               />
             </div>
           </div>
