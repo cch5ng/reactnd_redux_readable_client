@@ -8,6 +8,7 @@ import Nav from './components/Nav'
 import PostForm from './components/PostForm'
 import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE, updatePostVote, fetchPostDelete } from './actions'
 import { updateCommentVote } from './actions'
+import { sortNumbersAr } from './utils'
 import './App.css';
 
 class App extends Component {
@@ -27,12 +28,6 @@ class App extends Component {
     if (classList[0] === "post-arrow-down-icon") {
       this.props.dispatch(updatePostVote(objId, 'downVote'))
     }
-    // if (classList[0] === "comment-arrow-up-icon") {
-    //   this.props.dispatch(updateCommentVote(objId, 'upVote'))
-    // }
-    // if (classList[0] === "comment-arrow-down-icon") {
-    //   this.props.dispatch(updateCommentVote(objId, 'downVote'))
-    // }
   }
 
   deletePostBtnClick(postId) {
@@ -51,7 +46,7 @@ class App extends Component {
         sortKeysList.push(item[sortKey])
       }
     })
-    sortKeysList2 = this.sortNumbersAr(sortKeysList)
+    sortKeysList2 = sortNumbersAr(sortKeysList)
 
     if (sortOrderDesc) {
       sortKeysList2.reverse()
@@ -102,33 +97,6 @@ class App extends Component {
       default:
         return 'unknown'
     }
-  }
-
-  sortNumbersAr(numAr) {
-    let sortedAr = []
-
-    for (var i = 0; i < numAr.length; i++) {
-      if (sortedAr.length === 0) {
-        sortedAr.push(numAr[i])
-      } else if (numAr[i] < sortedAr[0]) {
-        sortedAr.unshift(numAr[i])
-      } else if (numAr[i] > sortedAr[sortedAr.length - 1]) {
-        sortedAr.push(numAr[i])
-      } else {
-        for (var j = 0; j < sortedAr.length - 1; j++) {
-          if (numAr[i] >= sortedAr[j] && numAr[i] <= sortedAr[j + 1]) {
-            let end = j + 1
-            if (j === 0) {
-              end = 1
-            }
-            let tempAr = sortedAr.slice(0, end).concat([numAr[i]]).concat(sortedAr.slice(j + 1))
-            sortedAr = tempAr.slice(0)
-            break
-          }
-        }         
-      }
-    }
-    return sortedAr
   }
 
   render() {
