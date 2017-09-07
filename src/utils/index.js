@@ -26,24 +26,31 @@ export function sortNumbersAr(numAr) {
 }
 
 export function prettySortVotes(sortOrderDesc) {
-    switch(sortOrderDesc) {
-      case true:
-        return 'high to low'
-      case false:
-        return 'low to high'
-      default:
-        return 'unknown'
-    }
+  switch(sortOrderDesc) {
+    case true:
+      return 'high to low'
+    case false:
+      return 'low to high'
+    default:
+      return 'unknown'
   }
+}
 
 export function prettySortTime(sortOrderDesc) {
-    switch(sortOrderDesc) {
-      case true:
-        return 'recent to oldest'
-      case false:
-        return 'oldest to recent'
-      default:
-        return 'unknown'
-    }
+  switch(sortOrderDesc) {
+    case true:
+      return 'recent to oldest'
+    case false:
+      return 'oldest to recent'
+    default:
+      return 'unknown'
   }
+}
 
+export function prettyTime(timestampMs) {
+  let dateStr = ''
+  const dateTime = new Date(timestampMs)
+  dateStr = dateTime.toString()
+
+  return dateStr
+}

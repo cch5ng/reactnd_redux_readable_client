@@ -69,14 +69,6 @@ class App extends Component {
     return sortedList
   }
 
-  prettyTime(timestampMs) {
-    let dateStr = ''
-    const dateTime = new Date(timestampMs)
-    dateStr = dateTime.toString()
-
-    return dateStr
-  }
-
   render() {
     return (
       <Router>
@@ -84,7 +76,7 @@ class App extends Component {
           <Nav />
 
           <Route exact path="/" render={() => (
-            <Posts prettyTime={this.prettyTime}  
+            <Posts 
               sortList={this.sortList}
               clickVote={this.clickVote}
               deletePostBtnClick={this.deletePostBtnClick}
@@ -93,13 +85,13 @@ class App extends Component {
 
 
           <Route exact path="/posts" render={() => (
-            <Posts prettyTime={this.prettyTime} sortList={this.sortList} clickVote={this.clickVote}
+            <Posts sortList={this.sortList} clickVote={this.clickVote}
               deletePostBtnClick={this.deletePostBtnClick}
             />
           )} />
 
           <Route exact path="/:category/posts" render={(match) => (
-            <Posts prettyTime={this.prettyTime} match={match} sortList={this.sortList}
+            <Posts match={match} sortList={this.sortList}
               clickVote={this.clickVote} deletePostBtnClick={this.deletePostBtnClick}
             />
           )} />
