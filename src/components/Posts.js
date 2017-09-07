@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES, fetchCategories } from '../actions'
-import { REQUEST_POSTS, RECEIVE_POSTS, fetchPosts } from '../actions'
-import { FILTER_POSTS, filterPosts } from '../actions'
-import { SORT_POSTS, sortPosts } from '../actions'
+import { fetchCategories } from '../actions'
+import { fetchPosts, filterPosts, sortPosts } from '../actions'
 import Post from './Post'
 import { prettySortVotes, prettySortTime, sortList } from '../utils'
 import '../App.css';
