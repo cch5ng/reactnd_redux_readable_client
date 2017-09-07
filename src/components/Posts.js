@@ -6,6 +6,7 @@ import { REQUEST_POSTS, RECEIVE_POSTS, fetchPosts } from '../actions'
 import { FILTER_POSTS, filterPosts } from '../actions'
 import { SORT_POSTS, sortPosts } from '../actions'
 import Post from './Post'
+import { prettySortVotes, prettySortTime, sortList } from '../utils'
 import '../App.css';
 
 class Posts extends Component {
@@ -67,7 +68,7 @@ class Posts extends Component {
     }
 
     if (sortKey && postsFiltered) {
-      postsSorted = this.props.sortList(sortKey, sortOrderDesc, postsFiltered)
+      postsSorted = sortList(sortKey, sortOrderDesc, postsFiltered)
     }
 
     return (
@@ -94,8 +95,8 @@ class Posts extends Component {
           <div className="col-50p">
             <h3>Sort Posts</h3>
             <ul onClick={this.postsSortClick} className="sort-key-list">
-              <li className={ sortKey === "voteScore" ? "is-active-sort voteScore" : "voteScore" }>Sort by Votes ({this.props.prettySortVotes(sortOrderDesc)})</li>
-              <li className={ sortKey === "timestamp" ? "is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({this.props.prettySortTime(sortOrderDesc)})</li>
+              <li className={ sortKey === "voteScore" ? "is-active-sort voteScore" : "voteScore" }>Sort by Votes ({prettySortVotes(sortOrderDesc)})</li>
+              <li className={ sortKey === "timestamp" ? "is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({prettySortTime(sortOrderDesc)})</li>
             </ul>
           </div>
         </div>
@@ -104,7 +105,7 @@ class Posts extends Component {
             {postsSorted
               ? postsSorted.map(post => {
                   return (
-                    <Post key={post.id} post={post} prettyTime={this.props.prettyTime} clickVote={this.props.clickVote} deletePostBtnClick={this.props.deletePostBtnClick} />
+                    <Post key={post.id} post={post} clickVote={this.props.clickVote} deletePostBtnClick={this.props.deletePostBtnClick} />
                   )
               })
               : null

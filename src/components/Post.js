@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../actions'
 import ArrowDownIcon from 'react-icons/lib/fa/arrow-circle-down'
 import ArrowUpIcon from 'react-icons/lib/fa/arrow-circle-up'
+import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../actions'
+import { prettyTime } from '../utils'
 import '../App.css';
 
 class Post extends Component {
@@ -17,7 +18,7 @@ class Post extends Component {
         <Link to={`/editPost/${post.id}`}><button className="button">Edit</button></Link> <button className="button" onClick={(ev) => this.props.deletePostBtnClick(post.id)} >Delete</button><br />
           Author: {post.author}<br />
           Votes: {post.voteScore} <ArrowUpIcon className="post-arrow-up-icon" onClick={(ev) => this.props.clickVote(ev, post.id)} /><ArrowDownIcon className="post-arrow-down-icon"  onClick={(ev) => this.props.clickVote(ev, post.id)} /><br />
-          Last updated: {this.props.prettyTime(post.timestamp)}<br /> 
+          Last updated: {prettyTime(post.timestamp)}<br /> 
       </div>
     )
   }
