@@ -6,9 +6,7 @@ import Posts from './components/Posts'
 import PostDetail from './components/PostDetail'
 import Nav from './components/Nav'
 import PostForm from './components/PostForm'
-import { REQUEST_POST_VOTE, RECEIVE_POST_VOTE, updatePostVote, fetchPostDelete } from './actions'
-import { updateCommentVote } from './actions'
-import { sortNumbersAr } from './utils'
+import { updatePostVote, fetchPostDelete } from './actions'
 import './App.css';
 
 class App extends Component {

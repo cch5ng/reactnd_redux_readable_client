@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import uuidv1 from 'uuid/v1'
 import ArrowUpIcon from 'react-icons/lib/fa/arrow-circle-up'
 import ArrowDownIcon from 'react-icons/lib/fa/arrow-circle-down'
-import { REQUEST_COMMENTS, RECEIVE_COMMENTS, fetchComments, fetchCommentDelete } from '../actions'
-import { SORT_COMMENTS, sortComments } from '../actions'
-import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, fetchCommentCreate, fetchCommentEdit } from '../actions'
+import { fetchComments, fetchCommentDelete, fetchCommentCreate, fetchCommentEdit, sortComments } from '../actions'
 import { toggleCommentFormActive, updateCommentFormField, setCommentFormType, clearCommentFormField, 
   updateCommentFormFieldMultiple, setCurrentCommentId, updateCommentVote } from '../actions'
 import { prettySortVotes, prettySortTime, prettyTime, sortList } from '../utils'
@@ -55,7 +52,7 @@ class Comments extends Component {
     let stateObj = {}
 
     if (prettyId === "voteScore") {
-      value = parseInt(value)
+      value = parseInt(value, 10)
     }
     stateObj[prettyId] = value
     this.props.dispatch(updateCommentFormField(stateObj))
@@ -65,7 +62,6 @@ class Comments extends Component {
   formSubmit(ev) {
     ev.preventDefault()
     const curDateMs = Date.now()
-    let commentFormState
     let commentTimestamp
     let commentId
 
@@ -78,13 +74,11 @@ class Comments extends Component {
     let formData
     const parentId = this.props.postId
     if (this.props.commentFormState) {
-      commentFormState = this.props.commentFormState
-
       formData = {
         id: commentId,
         body: this.props.commentFormState.body,
         author: this.props.commentFormState.author,
-        voteScore: parseInt(this.props.commentFormState.voteScore),
+        voteScore: parseInt(this.props.commentFormState.voteScore, 10),
         timestamp: commentTimestamp,
         parentId
       }
@@ -114,7 +108,6 @@ class Comments extends Component {
 
   commentEditBtnClick(btnId, commentId) {
     let formType = btnId.split('-')
-    let commentFormState = this.props.commentFormState
 
     if (formType[0] === "edit") {
       this.props.dispatch(setCurrentCommentId(commentId))    
@@ -165,14 +158,11 @@ class Comments extends Component {
   render() {
     let comments = null
     let commentsSort = null
-    let commentsFiltered = null
     // var will store the sorted commments
-    let commentsOrdered = null
     let body = null
     let author = null
     let active = null
     let formType = null
-    const { sortKey, sortOrderDesc } = this.props.commentsSort
 
     if (this.props.comments.comments && this.props.comments.comments.length) {
        comments = this.props.comments.comments
