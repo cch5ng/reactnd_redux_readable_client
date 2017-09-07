@@ -77,28 +77,6 @@ class App extends Component {
     return dateStr
   }
 
-  prettySortVotes(sortOrderDesc) {
-    switch(sortOrderDesc) {
-      case true:
-        return 'high to low'
-      case false:
-        return 'low to high'
-      default:
-        return 'unknown'
-    }
-  }
-
-  prettySortTime(sortOrderDesc) {
-    switch(sortOrderDesc) {
-      case true:
-        return 'recent to oldest'
-      case false:
-        return 'oldest to recent'
-      default:
-        return 'unknown'
-    }
-  }
-
   render() {
     return (
       <Router>
@@ -106,9 +84,7 @@ class App extends Component {
           <Nav />
 
           <Route exact path="/" render={() => (
-            <Posts prettyTime={this.prettyTime} 
-              prettySortVotes={this.prettySortVotes} 
-              prettySortTime={this.prettySortTime} 
+            <Posts prettyTime={this.prettyTime}  
               sortList={this.sortList}
               clickVote={this.clickVote}
               deletePostBtnClick={this.deletePostBtnClick}
@@ -117,15 +93,14 @@ class App extends Component {
 
 
           <Route exact path="/posts" render={() => (
-            <Posts prettyTime={this.prettyTime} prettySortVotes={this.prettySortVotes} prettySortTime={this.prettySortTime}
-              sortList={this.sortList} clickVote={this.clickVote} deletePostBtnClick={this.deletePostBtnClick}
+            <Posts prettyTime={this.prettyTime} sortList={this.sortList} clickVote={this.clickVote}
+              deletePostBtnClick={this.deletePostBtnClick}
             />
           )} />
 
           <Route exact path="/:category/posts" render={(match) => (
-            <Posts prettyTime={this.prettyTime} match={match} prettySortVotes={this.prettySortVotes} 
-              prettySortTime={this.prettySortTime} sortList={this.sortList} clickVote={this.clickVote}
-              deletePostBtnClick={this.deletePostBtnClick}
+            <Posts prettyTime={this.prettyTime} match={match} sortList={this.sortList}
+              clickVote={this.clickVote} deletePostBtnClick={this.deletePostBtnClick}
             />
           )} />
 

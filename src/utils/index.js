@@ -24,3 +24,26 @@ export function sortNumbersAr(numAr) {
   }
   return sortedAr
 }
+
+export function prettySortVotes(sortOrderDesc) {
+    switch(sortOrderDesc) {
+      case true:
+        return 'high to low'
+      case false:
+        return 'low to high'
+      default:
+        return 'unknown'
+    }
+  }
+
+export function prettySortTime(sortOrderDesc) {
+    switch(sortOrderDesc) {
+      case true:
+        return 'recent to oldest'
+      case false:
+        return 'oldest to recent'
+      default:
+        return 'unknown'
+    }
+  }
+
