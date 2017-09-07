@@ -6,6 +6,7 @@ import { REQUEST_POSTS, RECEIVE_POSTS, fetchPosts } from '../actions'
 import { FILTER_POSTS, filterPosts } from '../actions'
 import { SORT_POSTS, sortPosts } from '../actions'
 import Post from './Post'
+import { prettySortVotes, prettySortTime } from '../utils'
 import '../App.css';
 
 class Posts extends Component {
@@ -94,8 +95,8 @@ class Posts extends Component {
           <div className="col-50p">
             <h3>Sort Posts</h3>
             <ul onClick={this.postsSortClick} className="sort-key-list">
-              <li className={ sortKey === "voteScore" ? "is-active-sort voteScore" : "voteScore" }>Sort by Votes ({this.props.prettySortVotes(sortOrderDesc)})</li>
-              <li className={ sortKey === "timestamp" ? "is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({this.props.prettySortTime(sortOrderDesc)})</li>
+              <li className={ sortKey === "voteScore" ? "is-active-sort voteScore" : "voteScore" }>Sort by Votes ({prettySortVotes(sortOrderDesc)})</li>
+              <li className={ sortKey === "timestamp" ? "is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({prettySortTime(sortOrderDesc)})</li>
             </ul>
           </div>
         </div>

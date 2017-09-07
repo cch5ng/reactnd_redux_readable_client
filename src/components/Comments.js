@@ -10,6 +10,7 @@ import { SORT_COMMENTS, sortComments } from '../actions'
 import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, fetchCommentCreate, fetchCommentEdit } from '../actions'
 import { toggleCommentFormActive, updateCommentFormField, setCommentFormType, clearCommentFormField, 
   updateCommentFormFieldMultiple, setCurrentCommentId, updateCommentVote } from '../actions'
+import { prettySortVotes, prettySortTime } from '../utils'
 import '../App.css';
 
 const customStyles = {
@@ -196,8 +197,8 @@ class Comments extends Component {
         </div>
         <h3>Sort Comments</h3>
         <ul onClick={this.commentsSortClick} className="sort-key-list">
-          <li className={ commentsSort.sortKey === "voteScore" ? "comment-is-active-sort voteScore" : "voteScore" }>Sort by Votes ({this.props.prettySortVotes(commentsSort.sortOrderDesc)})</li>
-          <li className={ commentsSort.sortKey === "timestamp" ? "comment-is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({this.props.prettySortTime(commentsSort.sortOrderDesc)})</li>
+          <li className={ commentsSort.sortKey === "voteScore" ? "comment-is-active-sort voteScore" : "voteScore" }>Sort by Votes ({prettySortVotes(commentsSort.sortOrderDesc)})</li>
+          <li className={ commentsSort.sortKey === "timestamp" ? "comment-is-active-sort timestamp" : "timestamp" }>Sort by Most Recent ({prettySortTime(commentsSort.sortOrderDesc)})</li>
         </ul>
 
         <ul className="comments-list">

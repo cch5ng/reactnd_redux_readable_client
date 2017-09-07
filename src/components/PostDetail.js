@@ -39,7 +39,6 @@ class PostDetail extends Component {
               </div>
               <Comments postId={this.props.match.params.id} commentEditBtnClick={this.props.commentEditBtnClick} 
                 commentDeleteBtnClick={this.props.commentDeleteBtnClick} clickVote={this.props.clickVote} 
-                prettySortVotes={this.props.prettySortVotes} prettySortTime={this.props.prettySortTime}
                 sortList={this.props.sortList} prettyTime={this.props.prettyTime} 
               />
             </div>
