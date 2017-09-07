@@ -10,7 +10,7 @@ import { SORT_COMMENTS, sortComments } from '../actions'
 import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, fetchCommentCreate, fetchCommentEdit } from '../actions'
 import { toggleCommentFormActive, updateCommentFormField, setCommentFormType, clearCommentFormField, 
   updateCommentFormFieldMultiple, setCurrentCommentId, updateCommentVote } from '../actions'
-import { prettySortVotes, prettySortTime } from '../utils'
+import { prettySortVotes, prettySortTime, prettyTime } from '../utils'
 import '../App.css';
 
 const customStyles = {
@@ -209,7 +209,7 @@ class Comments extends Component {
                 <button onClick={(ev) => this.commentEditBtnClick(ev.target.id, comment.id)} id="edit-comment" className="button" >Edit</button> <button onClick={(ev) => this.commentDeleteBtnClick(comment.id, this.props.postId)} id="delete-comment" className="button" >Delete</button><br />
                 Author: {comment.author}<br />
                 Votes: {comment.voteScore}   <ArrowUpIcon className="comment-arrow-up-icon" onClick={(ev) => this.clickCommentVote(ev, comment.id, this.props.postId)} /><ArrowDownIcon className="comment-arrow-down-icon"  onClick={(ev) => this.clickCommentVote(ev, comment.id, this.props.postId)} /><br />
-                Last updated: {this.props.prettyTime(comment.timestamp)}
+                Last updated: {prettyTime(comment.timestamp)}
               </li>
             ))
             : null
