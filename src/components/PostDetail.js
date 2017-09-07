@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import uuidv1 from 'uuid/v1'
 import ArrowDownIcon from 'react-icons/lib/fa/arrow-circle-down'
 import ArrowUpIcon from 'react-icons/lib/fa/arrow-circle-up'
-import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../actions'
+import { fetchPostDetail } from '../actions'
 import Comments from './Comments'
 import { prettyTime, sortList } from '../utils'
 
