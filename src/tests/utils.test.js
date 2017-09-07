@@ -1,4 +1,4 @@
-import { sortNumbersAr, prettySortVotes, prettySortTime, prettyTime } from '../utils'
+import { sortNumbersAr, prettySortVotes, prettySortTime, prettyTime, sortList } from '../utils'
 
 test('sort array of sortNumbersAr', () => {
   expect(sortNumbersAr([6, 1, 3, 5, 0])).toEqual([0, 1, 3, 5, 6]);
@@ -24,3 +24,14 @@ test('prettyTime', () => {
   expect(prettyTime()).toBe('');
 });
 
+test('sortList', () => {
+  const postsList = [{id: "id1", voteScore: 4, timestamp: 444},
+    {id: "id2", voteScore: 1, timestamp: 22},
+    {id: "id3", voteScore: 2, timestamp: 151},
+    {id: "id4", voteScore: 3, timestamp: 70}]
+
+  expect(sortList('voteScore', true, postsList)).toEqual([{id: "id1", voteScore: 4, timestamp: 444}, {id: "id4", voteScore: 3, timestamp: 70}, {id: "id3", voteScore: 2, timestamp: 151}, {id: "id2", voteScore: 1, timestamp: 22}]);
+  expect(sortList('voteScore', false, postsList)).toEqual([{id: "id2", voteScore: 1, timestamp: 22}, {id: "id3", voteScore: 2, timestamp: 151}, {id: "id4", voteScore: 3, timestamp: 70}, {id: "id1", voteScore: 4, timestamp: 444}]);
+  expect(sortList('timestamp', true, postsList)).toEqual([{id: "id1", voteScore: 4, timestamp: 444}, {id: "id3", voteScore: 2, timestamp: 151}, {id: "id4", voteScore: 3, timestamp: 70}, {id: "id2", voteScore: 1, timestamp: 22}]);
+  expect(sortList('timestamp', false, postsList)).toEqual([{id: "id2", voteScore: 1, timestamp: 22}, {id: "id4", voteScore: 3, timestamp: 70}, {id: "id3", voteScore: 2, timestamp: 151}, {id: "id1", voteScore: 4, timestamp: 444}]);
+});
