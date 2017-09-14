@@ -23,6 +23,8 @@ describe('comments actions', () => {
       parentId: "post000"
     }
   const COMMENT_ID = "comment000"
+  const VOTE = "upVote"
+  const VOTE_SCORE = 9
 
   afterEach(() => {
     fetchMock.restore()
@@ -215,6 +217,52 @@ describe('comments actions', () => {
     const store = mockStore({})
 
     return store.dispatch(fetchCommentDelete(COMMENT_ID, POST_ID))
+      .then(() => {
+        const actions = store.getActions().map((action, index) => {
+          return action;
+        })
+      })
+
+      expect(actions).toEqual(expectedActions)
+  })
+
+  it('should update a comment vote', () => {
+    fetchMock.post(`${API_COMMENTS}/${COMMENT_ID}`, {
+      body: {
+        data: {
+          comment: {
+            comment: {"id":"comment000",
+              "timestamp":null,
+              "body":"nnn",
+              "author":"mmm",
+              "parentId":"post000",
+              "voteScore": VOTE_SCORE + 1,
+              "deleted":true,
+              "parentDeleted":false
+            }
+          }
+        }
+      }
+    })
+
+    const expectedActions = [
+      {type: REQUEST_COMMENT_VOTE},
+      {type: RECEIVE_COMMENT_VOTE,
+        comment:{"id":"comment000",
+          "timestamp":null,
+          "body":"mmm",
+          "author":"mmm",
+          "parentId":"post000",
+          "voteScore": VOTE_SCORE,
+          "deleted":true,
+          "parentDeleted":false
+        }
+      }
+    ]
+
+    const store = mockStore({})
+
+    return store.dispatch(updateCommentVote(COMMENT_ID, POST_ID, VOTE))
       .then(() => {
         const actions = store.getActions().map((action, index) => {
           return action;
