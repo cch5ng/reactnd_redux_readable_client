@@ -132,7 +132,6 @@ describe('comments actions', () => {
       expect(actions).toEqual(expectedActions)
   })
 
-
   it('should update a comment', () => {
     fetchMock.put(`${API_COMMENTS}/${COMMENT_ID}`, {
       body: {
@@ -153,8 +152,8 @@ describe('comments actions', () => {
     })
 
     const expectedActions = [
-      {type: REQUEST_COMMENT_CREATE},
-      {type: RECEIVE_COMMENT_CREATE,
+      {type: REQUEST_COMMENT_EDIT},
+      {type: RECEIVE_COMMENT_EDIT,
         comment:{"id":"comment000",
           "timestamp":null,
           "body":"mmm",
@@ -170,6 +169,52 @@ describe('comments actions', () => {
     const store = mockStore({})
 
     return store.dispatch(fetchCommentEdit(COMMENT_ID, COMMENT_DATA))
+      .then(() => {
+        const actions = store.getActions().map((action, index) => {
+          return action;
+        })
+      })
+
+      expect(actions).toEqual(expectedActions)
+  })
+
+  it('should delete a comment', () => {
+    fetchMock.delete(`${API_COMMENTS}/${COMMENT_ID}`, {
+      body: {
+        data: {
+          comment: {
+            comment: {"id":"comment000",
+              "timestamp":null,
+              "body":"nnn",
+              "author":"mmm",
+              "parentId":"post000",
+              "voteScore":9,
+              "deleted":true,
+              "parentDeleted":false
+            }
+          }
+        }
+      }
+    })
+
+    const expectedActions = [
+      {type: REQUEST_COMMENT_DELETE},
+      {type: RECEIVE_COMMENT_DELETE,
+        comment:{"id":"comment000",
+          "timestamp":null,
+          "body":"mmm",
+          "author":"mmm",
+          "parentId":"post000",
+          "voteScore":9,
+          "deleted":true,
+          "parentDeleted":false
+        }
+      }
+    ]
+
+    const store = mockStore({})
+
+    return store.dispatch(fetchCommentDelete(COMMENT_ID, POST_ID))
       .then(() => {
         const actions = store.getActions().map((action, index) => {
           return action;
