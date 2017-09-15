@@ -164,7 +164,7 @@ class Comments extends Component {
     let active = null
     let formType = null
 
-    if (this.props.comments.comments && this.props.comments.comments.length) {
+    if (this.props.comments && this.props.comments.comments && this.props.comments.comments.length) {
        comments = this.props.comments.comments
     }
     if (this.props.commentsSort) {
