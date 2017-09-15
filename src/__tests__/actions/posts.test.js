@@ -19,14 +19,13 @@ const API_GET_POST_DETAIL = 'http://localhost:5001/posts/'
 
 describe('posts actions', () => {
   const POST_ID = 'post000'
-  const COMMENT_DATA = {
-      id: "comment000",
-      body: "mmm",
-      author: "mmm",
-      voteScore: 9,
-      timestamp: 1505422670672,
-      parentId: "post000"
-    }
+  const POST_DATA = {title: "www", 
+    body: "www",
+    author: "www",
+    category: "udacity",
+    voteScore: 0,
+    timestamp: 1505509052933
+  }
   const VOTE = "upVote"
   const VOTE_SCORE = 9
 
@@ -149,65 +148,67 @@ describe('posts actions', () => {
   })
 
   it('should create a post', () => {
-    fetchMock.post(API_COMMENTS, {
+    fetchMock.post(API_GET_POSTS, {
       body: {
-        comment: {"id":"comment000",
-          "timestamp":1505422670672,
-          "body":"mmm",
-          "author":"mmm",
-          "parentId":"post000",
-          "voteScore":9,
-          "deleted":false,
-          "parentDeleted":false
+        post: {title: "www",
+          body: "www",
+          author: "www",
+          category: "udacity",
+          voteScore: 0,
+          timestamp: 1505509052933,
+          id: "post002"
         }
       }
     })
 
-    fetchMock.get(`${API_GET_COMMENTS_PREFIX}${POST_ID}${API_GET_COMMENTS_SUFFIX}`, {
+    fetchMock.get(`${API_GET_POSTS}`, {
       body: {
-        comments: [
-          {"id":"comment000",
-            "parentId":"parent000",
-            "timestamp":1468166872634,
-            "body":"Hi there!",
-            "author":"author000",
-            "voteScore":6,
-            "deleted":false,
-            "parentDeleted":false
-          }
+        posts: [
+          {"id":"post000",
+          "timestamp":1467166872634,
+          "title":"post 1",
+          "body":"body 1",
+          "author":"auth 1",
+          "category":"react",
+          "voteScore":6,
+          "deleted":false},
+
+          {"id":"post001",
+          "timestamp":1468479767190,
+          "title":"post 2",
+          "body":"body 2",
+          "author":"auth2",
+          "category":"redux",
+          "voteScore":-4,
+          "deleted":false}
         ]
       }
     })
-
     let expectedActions = [
-      {type: REQUEST_COMMENT_CREATE,
+      {type: REQUEST_POST_CREATE,
         retrieving: true
       },
-      {type: RECEIVE_COMMENT_CREATE,
-        comment: {
-          comment:{"id":"comment000",
-            "timestamp":1505422670672,
-            "body":"mmm",
-            "author":"mmm",
-            "parentId":"post000",
-            "voteScore":9,
-            "deleted":false,
-            "parentDeleted":false
+      {type: RECEIVE_POST_CREATE,
+        post: {
+          post: {title: "www",
+            body: "www",
+            author: "www",
+            category: "udacity",
+            voteScore: 0,
+            timestamp: 1505509052933,
+            id: "post002"
           }
         },
         retrieving: false
       },
       {
-        type: CLEAR_COMMENT_FORM_FIELD
-      },
-      {type: REQUEST_COMMENTS,
-        retrieving: true
+        type: CLEAR_POST_FORM_FIELD
       }
     ]
 
     let store = mockStore({})
 
-    return store.dispatch(fetchCommentCreate(POST_ID))
+    return store.dispatch(fetchPostCreate(POST_DATA))
       .then(() => {
         const actions = store.getActions().map((action, index) => {
           return action;
