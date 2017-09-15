@@ -22,7 +22,7 @@ class PostForm extends Component {
     if (this.props.formType === "create") {
       this.props.dispatch(clearPostFormField())
     }
-    if (this.props.formType === "edit" && this.props.posts.posts && this.props.posts.posts.length) {
+    if (this.props.formType === "edit" && this.props.posts && this.props.posts.posts && this.props.posts.posts.length) {
       const postId = this.props.match.params.id
       let tpost = this.props.posts.posts.filter(post => (
         post.id === postId
@@ -101,11 +101,11 @@ class PostForm extends Component {
     let author = null
     let voteScore = null
 
-    if (this.props.categories.categories) {
+    if (this.props.categories && this.props.categories.categories) {
       categories = this.props.categories.categories
     }
 
-    if (this.props.postDetail.postDetail) {
+    if (this.props.postDetail && this.props.postDetail.postDetail) {
       postDetail = this.props.postDetail.postDetail
     }
     if (this.props.postFormState) {
