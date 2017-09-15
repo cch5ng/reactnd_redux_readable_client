@@ -293,61 +293,73 @@ describe('posts actions', () => {
 
   })
 
-  it.skip('should delete a comment', () => {
-    fetchMock.delete(`${API_COMMENTS}/${COMMENT_ID}`, {
-      body: {
-        "id":"comment000",
-        "timestamp":null,
-        "body":"mmm",
-        "author":"mmm",
-        "parentId":"post000",
-        "voteScore":9,
-        "deleted":true,
-        "parentDeleted":false
-      }
+  it('should delete a post', () => {
+    fetchMock.delete(`${API_GET_POSTS}/${POST_ID}`, {
     })
 
-    fetchMock.get(`${API_GET_COMMENTS_PREFIX}${POST_ID}${API_GET_COMMENTS_SUFFIX}`, {
+    fetchMock.get(`${API_GET_POSTS}`, {
       body: {
-        comments: [
-          {"id":"comment000",
-            "parentId":"parent000",
-            "timestamp":1468166872634,
-            "body":"Hi there!",
-            "author":"author000",
-            "voteScore":6,
-            "deleted":false,
-            "parentDeleted":false
-          }
+        posts: [
+          {"id":"post000",
+          "timestamp":1467166872634,
+          "title":"post 1",
+          "body":"body 1",
+          "author":"auth 1",
+          "category":"react",
+          "voteScore":6,
+          "deleted":false},
+
+          {"id":"post001",
+          "timestamp":1468479767190,
+          "title":"post 2",
+          "body":"body 2",
+          "author":"auth2",
+          "category":"redux",
+          "voteScore":-4,
+          "deleted":false}
         ]
       }
     })
 
     let expectedActions = [
-      {type: REQUEST_COMMENT_DELETE,
+      {type: REQUEST_POST_DELETE,
         retrieving: true
       },
-      {type: RECEIVE_COMMENT_DELETE,
-        "comment": {
-          "id":"comment000",
-          "timestamp":null,
-          "body":"mmm",
-          "author":"mmm",
-          "parentId":"post000",
-          "voteScore":9,
-          "deleted":true,
-          "parentDeleted":false
-        },
+      {type: RECEIVE_POST_DELETE,
         retrieving: false
       },
-      {type: REQUEST_COMMENTS,
+      {type: REQUEST_POSTS,
         retrieving: true
+      },
+      {type: RECEIVE_POSTS,
+        posts: {
+          posts: [
+            {"id":"post000",
+            "timestamp":1467166872634,
+            "title":"post 1",
+            "body":"body 1",
+            "author":"auth 1",
+            "category":"react",
+            "voteScore":6,
+            "deleted":false},
+
+            {"id":"post001",
+            "timestamp":1468479767190,
+            "title":"post 2",
+            "body":"body 2",
+            "author":"auth2",
+            "category":"redux",
+            "voteScore":-4,
+            "deleted":false}
+          ]
+        },
+        retrieving: false
       }
     ]
 
     let store = mockStore({})
 
-    return store.dispatch(fetchCommentDelete(COMMENT_ID, POST_ID))
+    return store.dispatch(fetchPostDelete(POST_ID))
       .then(() => {
         const actions = store.getActions().map((action, index) => {
           return action;
