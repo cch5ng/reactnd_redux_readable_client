@@ -456,7 +456,7 @@ export function receiveCommentEdit(comment) {
 
 // async action for getting posts
 export const fetchCommentEdit = (commentId, commentData) => dispatch => {
-  dispatch(requestCommentCreate())
+  dispatch(requestCommentEdit())
   let INIT_CREATE_COMMENT = {method: 'PUT',
                           headers: {
                             'Authorization': 'mAuth',
