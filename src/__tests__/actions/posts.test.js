@@ -370,68 +370,89 @@ describe('posts actions', () => {
 
   })
 
-  it.skip('should update a comment vote', () => {
-    fetchMock.post(`${API_COMMENTS}/${COMMENT_ID}`, {
+  it('should update a post vote', () => {
+    fetchMock.post(`${API_GET_POSTS}/${POST_ID}`, {
       body: {
-        comment: {"id":"comment000",
-          "timestamp":null,
-          "body":"mmm",
-          "author":"mmm",
-          "parentId":"post000",
-          "voteScore": VOTE_SCORE + 1,
-          "deleted":false,
-          "parentDeleted":false
+        post: {"id":"post000",
+          "timestamp":1467166872634,
+          "title":"post 1",
+          "body":"body 1",
+          "author":"auth 1",
+          "category":"react",
+          "voteScore":7,
+          "deleted":false
         }
       }
     })
 
-    fetchMock.get(`${API_GET_COMMENTS_PREFIX}${POST_ID}${API_GET_COMMENTS_SUFFIX}`, {
+    fetchMock.get(`${API_GET_POSTS}`, {
       body: {
-        data: {
-          comments: {
-            comments: [
-              {"id":"comment000",
-              "timestamp":null,
-              "body":"mmm",
-              "author":"mmm",
-              "parentId":"post000",
-              "voteScore": VOTE_SCORE + 1,
-              "deleted":false,
-              "parentDeleted":false
-            }
-            ]
-          }
-        }
+        posts: [
+          {"id":"post000",
+          "timestamp":1467166872634,
+          "title":"post 1",
+          "body":"body 1",
+          "author":"auth 1",
+          "category":"react",
+          "voteScore":6,
+          "deleted":false},
+
+          {"id":"post001",
+          "timestamp":1468479767190,
+          "title":"post 2",
+          "body":"body 2",
+          "author":"auth2",
+          "category":"redux",
+          "voteScore":-4,
+          "deleted":false}
+        ]
       }
     })
 
+    fetchMock.get(`${API_GET_POSTS}/${POST_ID}`, {
+      body: {
+        postDetail: {"id":"post000",
+          "timestamp":1467166872634,
+          "title":"post 1",
+          "body":"body 1",
+          "author":"auth 1",
+          "category":"react",
+          "voteScore":7,
+          "deleted":false
+        }
+      }
+    })
 
     let expectedActions = [
-      {type: REQUEST_COMMENT_VOTE,
+      {type: REQUEST_POST_VOTE,
         retrieving: true
       },
-      {type: RECEIVE_COMMENT_VOTE,
-        comment: {
-          comment:{"id":"comment000",
-            "timestamp":null,
-            "body":"mmm",
-            "author":"mmm",
-            "parentId":"post000",
-            "voteScore": VOTE_SCORE + 1,
-            "deleted":false,
-            "parentDeleted":false
+      {type: RECEIVE_POST_VOTE,
+        post: {
+          post: {"id":"post000",
+            "timestamp":1467166872634,
+            "title":"post 1",
+            "body":"body 1",
+            "author":"auth 1",
+            "category":"react",
+            "voteScore":7,
+            "deleted":false
           }
         },
         retrieving: false
       },
-      {type: REQUEST_COMMENTS,
+      {type: REQUEST_POSTS,
+        retrieving: true
+      },
+      {type: REQUEST_POST_DETAIL,
         retrieving: true
       }
+
     ]
 
     let store = mockStore({})
 
-    return store.dispatch(updateCommentVote(COMMENT_ID, POST_ID, VOTE))
+    return store.dispatch(updatePostVote(POST_ID, VOTE))
       .then(() => {
         const actions = store.getActions().map((action, index) => {
           return action;
