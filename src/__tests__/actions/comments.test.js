@@ -86,19 +86,15 @@ describe('comments actions', () => {
   it('should create a comment', () => {
     fetchMock.post(API_COMMENTS, {
       body: {
-        //data: {
-          //comment: {
-            comment: {"id":"comment000",
-              "timestamp":1505422670672,
-              "body":"mmm",
-              "author":"mmm",
-              "parentId":"post000",
-              "voteScore":9,
-              "deleted":false,
-              "parentDeleted":false
-            }
-          //}
-        //}
+        comment: {"id":"comment000",
+          "timestamp":1505422670672,
+          "body":"mmm",
+          "author":"mmm",
+          "parentId":"post000",
+          "voteScore":9,
+          "deleted":false,
+          "parentDeleted":false
+        }
       }
     })
 
@@ -159,19 +155,15 @@ describe('comments actions', () => {
   it('should update a comment', () => {
     fetchMock.put(`${API_COMMENTS}/${COMMENT_ID}`, {
       body: {
-        //data: {
-          //comment: {
-            comment: {"id":"comment000",
-              "timestamp":null,
-              "body":"mmm",
-              "author":"mmm",
-              "parentId":"post000",
-              "voteScore":9,
-              "deleted":false,
-              "parentDeleted":false
-            }
-          //}
-        //}
+        comment: {"id":"comment000",
+          "timestamp":null,
+          "body":"mmm",
+          "author":"mmm",
+          "parentId":"post000",
+          "voteScore":9,
+          "deleted":false,
+          "parentDeleted":false
+        }
       }
     })
 
@@ -191,7 +183,7 @@ describe('comments actions', () => {
       }
     })
 
-    expectedActions = [
+    let expectedActions = [
       {type: REQUEST_COMMENT_EDIT,
         retrieving: true
       },
@@ -217,26 +209,13 @@ describe('comments actions', () => {
       }
     ]
 
-    store = mockStore({})
+    let store = mockStore({})
 
     return store.dispatch(fetchCommentEdit(COMMENT_ID, COMMENT_DATA))
       .then(() => {
         const actions = store.getActions().map((action, index) => {
           return action;
         })
-
-        console.log('actions.length: ' + actions.length)
-        console.log('keys actions[0]: ' + Object.keys(actions[0]))
-        console.log('actions[0].type: ' + actions[0].type)
-        console.log('actions[0].retrieving: ' + actions[0].retrieving)
-        console.log('keys actions[1]: ' + Object.keys(actions[1]))
-        console.log('actions[1].comment: ' + actions[1].comment)
-        console.log('keys actions[1].comment: ' + Object.keys(actions[1].comment))
-        console.log('keys actions[2]: ' + Object.keys(actions[2]))
-        console.log('actions[2].type: ' + actions[2].type)
-        console.log('keys actions[3]: ' + Object.keys(actions[3]))
-        console.log('actions[3].type: ' + actions[3].type)
-        console.log('actions[3].retrieving: ' + actions[3].retrieving)
 
         expect(actions).to.deep.equal(expectedActions)
       })
@@ -246,26 +225,40 @@ describe('comments actions', () => {
   it('should delete a comment', () => {
     fetchMock.delete(`${API_COMMENTS}/${COMMENT_ID}`, {
       body: {
-        data: {
-          comment: {
-            comment: {"id":"comment000",
-              "timestamp":null,
-              "body":"nnn",
-              "author":"mmm",
-              "parentId":"post000",
-              "voteScore":9,
-              "deleted":true,
-              "parentDeleted":false
-            }
-          }
-        }
+        "id":"comment000",
+        "timestamp":null,
+        "body":"mmm",
+        "author":"mmm",
+        "parentId":"post000",
+        "voteScore":9,
+        "deleted":true,
+        "parentDeleted":false
       }
     })
 
-    expectedActions = [
-      {type: REQUEST_COMMENT_DELETE},
+    fetchMock.get(`${API_GET_COMMENTS_PREFIX}${POST_ID}${API_GET_COMMENTS_SUFFIX}`, {
+      body: {
+        comments: [
+          {"id":"comment000",
+            "parentId":"parent000",
+            "timestamp":1468166872634,
+            "body":"Hi there!",
+            "author":"author000",
+            "voteScore":6,
+            "deleted":false,
+            "parentDeleted":false
+          }
+        ]
+      }
+    })
+
+    let expectedActions = [
+      {type: REQUEST_COMMENT_DELETE,
+        retrieving: true
+      },
       {type: RECEIVE_COMMENT_DELETE,
-        comment:{"id":"comment000",
+        "comment": {
+          "id":"comment000",
           "timestamp":null,
           "body":"mmm",
           "author":"mmm",
@@ -273,17 +266,22 @@ describe('comments actions', () => {
           "voteScore":9,
           "deleted":true,
           "parentDeleted":false
-        }
+        },
+        retrieving: false
+      },
+      {type: REQUEST_COMMENTS,
+        retrieving: true
       }
     ]
 
-    store = mockStore({})
+    let store = mockStore({})
 
     return store.dispatch(fetchCommentDelete(COMMENT_ID, POST_ID))
       .then(() => {
         const actions = store.getActions().map((action, index) => {
           return action;
         })
+
         expect(actions).to.deep.equal(expectedActions)
       })
 
@@ -292,18 +290,14 @@ describe('comments actions', () => {
   it('should update a comment vote', () => {
     fetchMock.post(`${API_COMMENTS}/${COMMENT_ID}`, {
       body: {
-        data: {
-          comment: {
-            comment: {"id":"comment000",
-              "timestamp":null,
-              "body":"nnn",
-              "author":"mmm",
-              "parentId":"post000",
-              "voteScore": VOTE_SCORE + 1,
-              "deleted":true,
-              "parentDeleted":false
-            }
-          }
+        comment: {"id":"comment000",
+          "timestamp":null,
+          "body":"mmm",
+          "author":"mmm",
+          "parentId":"post000",
+          "voteScore": VOTE_SCORE + 1,
+          "deleted":false,
+          "parentDeleted":false
         }
       }
     })
@@ -315,11 +309,11 @@ describe('comments actions', () => {
             comments: [
               {"id":"comment000",
               "timestamp":null,
-              "body":"nnn",
+              "body":"mmm",
               "author":"mmm",
               "parentId":"post000",
               "voteScore": VOTE_SCORE + 1,
-              "deleted":true,
+              "deleted":false,
               "parentDeleted":false
             }
             ]
@@ -329,37 +323,40 @@ describe('comments actions', () => {
     })
 
 
-    expectedActions = [
-      {type: REQUEST_COMMENT_VOTE},
+    let expectedActions = [
+      {type: REQUEST_COMMENT_VOTE,
+        retrieving: true
+      },
       {type: RECEIVE_COMMENT_VOTE,
-        comment:{"id":"comment000",
-          "timestamp":null,
-          "body":"mmm",
-          "author":"mmm",
-          "parentId":"post000",
-          "voteScore": VOTE_SCORE,
-          "deleted":true,
-          "parentDeleted":false
-        }
+        comment: {
+          comment:{"id":"comment000",
+            "timestamp":null,
+            "body":"mmm",
+            "author":"mmm",
+            "parentId":"post000",
+            "voteScore": VOTE_SCORE + 1,
+            "deleted":false,
+            "parentDeleted":false
+          }
+        },
+        retrieving: false
+      },
+      {type: REQUEST_COMMENTS,
+        retrieving: true
       }
     ]
 
-    store = mockStore({})
+    let store = mockStore({})
 
     return store.dispatch(updateCommentVote(COMMENT_ID, POST_ID, VOTE))
       .then(() => {
         const actions = store.getActions().map((action, index) => {
           return action;
         })
-        // console.log('actions: ' + actions)
-        // console.log('keys actions: ' + Object.keys(actions))
-        // console.log('actions[0]: ' + Object.keys(actions[0]))
+
         expect(actions).to.deep.equal(expectedActions)
       })
 
-      //expect({}).to.deep.equal(expectedActions)
-      //expect(actions).to.eql({})
-      //expect(actions).toEqual(expectedActions)
   })
 
 })
