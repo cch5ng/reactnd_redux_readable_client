@@ -6,7 +6,6 @@ import ArrowUpIcon from 'react-icons/lib/fa/arrow-circle-up'
 import { fetchPostDetail } from '../actions'
 import Comments from './Comments'
 import { prettyTime, sortList } from '../utils'
-
 import '../App.css';
 
 class PostDetail extends Component {
