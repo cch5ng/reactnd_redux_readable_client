@@ -41,7 +41,14 @@ class Posts extends Component {
     let posts = null
     let postsFiltered = null
     let postsSorted = null
-    const { sortKey, sortOrderDesc } = this.props.postsSort
+    let sortKey
+    let sortOrderDesc
+
+    if (this.props.postsSort) {
+      sortKey = this.props.postsSort.sortKey
+      sortOrderDesc = this.props.postsSort.sortOrderDesc
+    }
+    //const { sortKey, sortOrderDesc } = this.props.postsSort
     if (this.props.categories.categories) {
       categories = this.props.categories.categories
     }
