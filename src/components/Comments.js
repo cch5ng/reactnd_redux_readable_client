@@ -16,7 +16,25 @@ const customStyles = {
   }
 };
 
+const CLEARED_COMMENT_FORM = {
+  id: '',
+  body: '',
+  author: '',
+  voteScore: 1,
+  timestamp: ''
+}
+
 class Comments extends Component {
+
+  state = {
+    commentFormActive: false,
+    commentFormType: 'create',
+    id: '',
+    body: '',
+    author: '',
+    voteScore: 1,
+    timestamp: ''
+  }
 
   commentsSortClick = this.commentsSortClick.bind(this)
   formSubmit = this.formSubmit.bind(this)
@@ -27,6 +45,7 @@ class Comments extends Component {
   afterOpenModal = this.afterOpenModal.bind(this)
   filterSortComments = this.filterSortComments.bind(this)
   clickCommentVote = this.clickCommentVote.bind(this)
+  getActiveComment = this.getActiveComment.bind(this)
 
   componentDidMount() {
     this.props.dispatch(fetchComments(this.props.postId))
@@ -55,7 +74,8 @@ class Comments extends Component {
       value = parseInt(value, 10)
     }
     stateObj[prettyId] = value
-    this.props.dispatch(updateCommentFormField(stateObj))
+    this.setState(stateObj)
+    //this.props.dispatch(updateCommentFormField(stateObj))
   }
 
   // modal form submit
@@ -66,31 +86,32 @@ class Comments extends Component {
     let commentId
 
     commentTimestamp = curDateMs
-    if (this.props.commentFormState.formType === "create") {
+    if (this.state.commentFormState === "create") {
        commentId = uuidv1()
      } else {
-       commentId = this.props.commentFormState.id
+       commentId = this.state.formCommentId
     }
     let formData
     const parentId = this.props.postId
-    if (this.props.commentFormState) {
+    //if (this.props.commentFormState) {
       formData = {
         id: commentId,
-        body: this.props.commentFormState.body,
-        author: this.props.commentFormState.author,
-        voteScore: parseInt(this.props.commentFormState.voteScore, 10),
+        body: this.state.body,
+        author: this.state.author,
+        voteScore: parseInt(this.state.voteScore, 10),
         timestamp: commentTimestamp,
         parentId
       }
-    }
-
+    //}
+// TODO fix
     // create form
-    if (this.props.commentFormState.formType === "create") {
+    if (this.state.commentFormType === "create") {
        this.props.dispatch(fetchCommentCreate(formData))
+       this.setState(CLEARED_COMMENT_FORM)
     }
-
+// TODO fix
     // edit form
-    if (this.props.commentFormState.formType === "edit") {
+    if (this.state.commentFormType === "edit") {
       this.props.dispatch(fetchCommentEdit(commentId, formData))
     }
   }
@@ -109,11 +130,26 @@ class Comments extends Component {
   commentEditBtnClick(btnId, commentId) {
     let formType = btnId.split('-')
 
+    this.setState({
+      commentFormActive: true,
+      commentFormType: formType[0],
+      formCommentId: commentId,
+    })
+
     if (formType[0] === "edit") {
-      this.props.dispatch(setCurrentCommentId(commentId))    
+//      this.props.dispatch(setCurrentCommentId(commentId))
+      let tComment = this.getActiveComment(commentId)
+      this.setState({
+        id: tComment.id,
+        body: tComment.body,
+        author: tComment.author,
+        voteScore: tComment.voteScore,
+        timestamp: tComment.timestamp
+      })
     }
-    this.props.dispatch(toggleCommentFormActive())
-    this.props.dispatch(setCommentFormType(formType[0]))
+
+    //this.props.dispatch(toggleCommentFormActive())
+    //this.props.dispatch(setCommentFormType(formType[0]))
   }
 
   commentDeleteBtnClick(commentId, postId) {
@@ -140,7 +176,10 @@ class Comments extends Component {
   }
 
   closeModal() {
-    this.props.dispatch(toggleCommentFormActive())
+    this.setState({
+      commentFormActive: false
+    })
+    //this.props.dispatch(toggleCommentFormActive())
   }
 
   filterSortComments(comments) {
@@ -154,6 +193,21 @@ class Comments extends Component {
 
     return orderedComments
   }
+
+  getActiveComment(commentId) {
+    if (this.props.comments && this.props.comments.comments && this.props.comments.comments.length) {
+      let comments = this.props.comments.comments
+      console.log('len comments: ' + comments.length)
+      let comment = comments.filter((comment) => {
+        return comment.id === commentId
+      })
+      return comment[0]
+    }
+
+  }
+
+// ? body : ''
+//author ? author: ''
 
   render() {
     let comments = null
@@ -205,13 +259,13 @@ class Comments extends Component {
             : null
           }
         </ul>
-        <Modal isOpen={active} contentLabel="Modal" onRequestClose={this.closeModal} onAfterOpen={this.afterOpenModal}
+        <Modal isOpen={ this.state.commentFormActive } contentLabel="Modal" onRequestClose={this.closeModal} onAfterOpen={this.afterOpenModal}
           style={customStyles} >
-          <h3>{formType === "create" ? "Add": "Edit"} Comment</h3>
+          <h3>{this.state.commentFormType  === "create" ? "Add": "Edit"} Comment</h3>
           <button className="button" onClick={this.closeModal}>Close</button><br /><br />
           <form id="comment-form">
-            <textarea width="100"  name="comment-body-ta" id="cbody" value={body ? body : ''} onChange={this.formInputUpdate} placeholder="comment body"  /><br />
-            <input type="text" name="comment-author-inp" id="cauthor" value={author ? author: ''} onChange={this.formInputUpdate}  placeholder="author" /><br /><br />
+            <textarea width="100"  name="comment-body-ta" id="cbody" value={this.state.body} onChange={this.formInputUpdate} placeholder="comment body"  /><br />
+            <input type="text" name="comment-author-inp" id="cauthor" value={this.state.author} onChange={this.formInputUpdate}  placeholder="author" /><br /><br />
             <button name="postSaveBtn" id="commentSaveBtn" className="button" onClick={this.formSubmit} >Save</button> <button id="commentCancelBtn" className="button">Cancel</button>
           </form>
         </Modal>
