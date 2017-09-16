@@ -6,13 +6,18 @@ import Posts from './components/Posts'
 import PostDetail from './components/PostDetail'
 import Nav from './components/Nav'
 import PostForm from './components/PostForm'
-import { updatePostVote, fetchPostDelete } from './actions'
+import { fetchPosts, updatePostVote, fetchPostDelete } from './actions'
 import './App.css';
 
 class App extends Component {
 
   clickVote = this.clickVote.bind(this)
   deletePostBtnClick = this.deletePostBtnClick.bind(this)
+  getPostFromId = this.getPostFromId.bind(this)
+
+  componentDidMount() {
+    this.props.dispatch(fetchPosts())
+  }
 
 // EVENT HANDLERS
 
@@ -29,6 +34,18 @@ class App extends Component {
 
   deletePostBtnClick(postId) {
     this.props.dispatch(fetchPostDelete(postId))
+  }
+
+  getPostFromId(postId) {
+    let tpost
+
+    if (this.props.posts && this.props.posts.posts) {
+      tpost = this.props.posts.posts.filter(post => (
+        post.id === postId
+      ))
+
+      return tpost[0]
+    }
   }
 
   render() {
@@ -68,7 +85,7 @@ class App extends Component {
           )} />
 
           <Route exact path="/editPost/:id" render={ ({match}) => (
-            <PostForm formType="edit" match={match} />
+            <PostForm formType="edit" match={match} post={this.getPostFromId(match.params.id)} />
           )} />
 
 
@@ -78,10 +95,11 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({ postVote }) {
+function mapStateToProps({ postVote, posts }) {
 
   return {
-    postVote
+    postVote,
+    posts
   }
 }
 
