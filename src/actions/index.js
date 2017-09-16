@@ -58,7 +58,6 @@ export function receivePosts(posts) {
     type: RECEIVE_POSTS,
     posts,
     retrieving: false
-
   }
 }
 
@@ -137,7 +136,6 @@ export function receivePostCreate(post) {
     type: RECEIVE_POST_CREATE,
     post,
     retrieving: false
-
   }
 }
 
@@ -156,9 +154,6 @@ export const fetchPostCreate = (postData) => dispatch => {
     .then(response => response.json())
     // use json.posts to make the data more shallow
     .then(json => dispatch(receivePostCreate(json)))
-    .then(() => {
-      dispatch(clearPostFormField())
-    })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
@@ -182,7 +177,6 @@ export function receivePostEdit(post) {
     type: RECEIVE_POST_EDIT,
     post,
     retrieving: false
-
   }
 }
 
@@ -201,9 +195,6 @@ export const fetchPostEdit = (postId, postData) => dispatch => {
     .then(response => response.json())
     // use json.posts to make the data more shallow
     .then(json => dispatch(receivePostEdit(json)))
-    .then(() => {
-      dispatch(clearPostFormField())
-    })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
@@ -225,9 +216,7 @@ export function requestPostDelete() {
 export function receivePostDelete() {
   return {
     type: RECEIVE_POST_DELETE,
-    //post,
     retrieving: false
-
   }
 }
 
@@ -238,8 +227,7 @@ export const fetchPostDelete = (postId) => dispatch => {
                           headers: {
                             'Authorization': 'mAuth',
                             "Content-Type": 'application/json'
-                          },
-                          //body: JSON.stringify(postData)
+                          }
                         }
 
   return fetch(`${API_GET_POSTS}/${postId}`, INIT_EDIT_POST)
@@ -288,7 +276,6 @@ export function receivePostDetail(postDetail) {
     type: RECEIVE_POST_DETAIL,
     postDetail,
     retrieving: false
-
   }
 }
 
@@ -302,43 +289,6 @@ export const fetchPostDetail = (postId) => dispatch => {
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
-}
-
-////////
-
-// section for Post Form State actions (first try to combine state for create vs edit)
-export const SET_POST_FORM_TYPE = 'SET_POST_FORM_TYPE'
-export const UPDATE_POST_FORM_FIELD = 'UPDATE_POST_FORM_FIELD'
-export const UPDATE_POST_FORM_FIELD_MULTIPLE = 'UPDATE_POST_FORM_FIELD_MULTIPLE'
-export const CLEAR_POST_FORM_FIELD = 'CLEAR_POST_FORM_FIELD'
-
-export function setPostFormType(formType) {
-  return {
-    type: SET_POST_FORM_TYPE,
-    formType
-  }
-}
-
-export function updatePostFormField(fieldDataObj) {
-  return {
-    type: UPDATE_POST_FORM_FIELD,
-    ...fieldDataObj
-  }
-}
-
-// used to prepopulate form if formType = 'edit'
-export function updatePostFormFieldMultiple(fieldDataObj) {
-  return {
-    type: UPDATE_POST_FORM_FIELD_MULTIPLE,
-    ...fieldDataObj
-  }
-}
-
-// called at the end of action, fetchPostCreate
-export function clearPostFormField() {
-  return {
-    type: CLEAR_POST_FORM_FIELD
-  }
 }
 
 /////

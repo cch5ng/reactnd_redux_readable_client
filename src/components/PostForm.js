@@ -5,10 +5,18 @@ import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES, fetchCategories } from '../acti
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../actions'
 import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE, fetchPostCreate } from '../actions'
 import { REQUEST_POST_EDIT, RECEIVE_POST_EDIT, fetchPostEdit } from '../actions'
-import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, setPostFormType, updatePostFormField, updatePostFormFieldMultiple, clearPostFormField } from '../actions'
 import ArrowDownIcon from 'react-icons/lib/fa/arrow-circle-down'
 import ArrowUpIcon from 'react-icons/lib/fa/arrow-circle-up'
 import '../App.css';
+
+const CLEARED_FORM = {
+  title: '',
+  body: '',
+  author: '',
+  category: 'none',
+  voteScore: 0,
+  timestamp: ''
+}
 
 class PostForm extends Component {
 
@@ -26,28 +34,8 @@ class PostForm extends Component {
   formSubmit = this.formSubmit.bind(this)
 
   componentDidMount() {
-    this.props.dispatch(setPostFormType(this.props.formType))
 // should this be necessary?
     this.props.dispatch(fetchCategories())
-    if (this.props.formType === "create") {
-      this.props.dispatch(clearPostFormField())
-    }
-    if (this.props.formType === "edit" && this.props.posts && this.props.posts.posts && this.props.posts.posts.length) {
-      const postId = this.props.match.params.id
-      let tpost = this.props.posts.posts.filter(post => (
-        post.id === postId
-      ))
-      const formObj = {
-        title: tpost[0].title,
-        author: tpost[0].author,
-        body: tpost[0].body,
-        category: tpost[0].category,
-        voteScore: tpost[0].voteScore,
-        timestamp: tpost[0].timestamp
-      }
-      this.props.dispatch(updatePostFormFieldMultiple(formObj))
-    }
-
   }
 
   formInputUpdate(ev) {
@@ -67,7 +55,6 @@ class PostForm extends Component {
   formSubmit(ev) {
     ev.preventDefault()
     const curDateMs = Date.now()
-    let postFormState
     let postTimestamp 
     let postId
     let formData
@@ -76,22 +63,20 @@ class PostForm extends Component {
     if (this.props.match) {
       postId = this.props.match.params.id
     }
-    if (this.props.postFormState) {
-      postFormState = this.props.postFormState
 
-      formData = {
-        title: this.state.title,
-        body: this.state.body,
-        author: this.state.author,
-        category: this.state.category,
-        voteScore: parseInt(this.state.voteScore),
-        timestamp: postTimestamp,
-      }
+    formData = {
+      title: this.state.title,
+      body: this.state.body,
+      author: this.state.author,
+      category: this.state.category,
+      voteScore: parseInt(this.state.voteScore),
+      timestamp: postTimestamp,
     }
 
     // create form
     if (this.props.formType === "create") {
       this.props.dispatch(fetchPostCreate(formData))
+      this.setState(CLEARED_FORM)
     }
 
     // edit form
@@ -104,7 +89,6 @@ class PostForm extends Component {
     const { formType } = this.props.formType
     let categories = null
     let postDetail = null
-    let postFormState = null
     let title = null
     let postCategory = null
     let body = null
@@ -117,14 +101,6 @@ class PostForm extends Component {
 
     if (this.props.postDetail && this.props.postDetail.postDetail) {
       postDetail = this.props.postDetail.postDetail
-    }
-    if (this.props.postFormState) {
-      postFormState = this.props.postFormState
-      title = postFormState.title
-      body = postFormState.body
-      author = postFormState.author
-      postCategory = postFormState.category
-      voteScore = postFormState.voteScore
     }
 
     return (
@@ -156,12 +132,11 @@ class PostForm extends Component {
   }
 }
 
-function mapStateToProps({ postCreate, categories, postDetail, postFormState, posts }) {
+function mapStateToProps({ postCreate, categories, postDetail, posts }) {
   return {
     postCreate,
     categories,
     postDetail,
-    postFormState,
     posts
   }
 }
