@@ -205,59 +205,6 @@ function commentDelete(state = {}, action) {
   }
 }
 
-function commentFormState(state = { active: false, formType: 'create', id: '', body: '', author: '', voteScore: 0, timestamp: ''}, action) {
-  const clearedFields = {
-    id: '',
-    body: '',
-    author: '',
-    voteScore: 0,
-    timestamp: ''
-  }
-
-  switch(action.type) {
-    case TOGGLE_COMMENT_FORM_ACTIVE:
-      return {
-        ...state,
-        active: !state.active
-      }
-    case SET_COMMENT_FORM_TYPE:
-      return {
-        ...state,
-        formType: action.formType
-      }
-    case SET_CURRENT_COMMENT_ID:
-      return {
-        ...state,
-        id: action.commentId
-      }
-    case UPDATE_COMMENT_FORM_FIELD:
-        let newField = {}
-        var property = Object.keys(action).filter(item => (item !== 'type'))
-        newField[property] = action[property]
-       return {
-         ...state,
-         ...newField
-       }
-    case UPDATE_COMMENT_FORM_FIELD_MULTIPLE:
-        let fieldsDataObj = {}
-        var properties = Object.keys(action).filter(item => (item !== 'type'))
-        properties.forEach(prop => {
-          fieldsDataObj[prop] = action[prop]
-        })
-       return {
-         ...state,
-         ...fieldsDataObj
-       }
-    case CLEAR_COMMENT_FORM_FIELD:
-      return {
-        ...state,
-        ...clearedFields
-      }
-    default:
-      return state
-  }
-}
-
 function commentVote(state = {}, action) {
   switch(action.type) {
     case REQUEST_COMMENT_VOTE:
@@ -282,7 +229,6 @@ export default combineReducers({
   commentCreate,
   commentEdit,
   commentDelete,
-  commentFormState,
   commentVote
 })
 
