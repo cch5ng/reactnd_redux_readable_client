@@ -4,7 +4,6 @@ import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../actions'
 // separate /posts
 import { REQUEST_POSTS, RECEIVE_POSTS, FILTER_POSTS, SORT_POSTS, REQUEST_POST_VOTE, RECEIVE_POST_VOTE, REQUEST_POST_DELETE, RECEIVE_POST_DELETE } from '../actions'
 import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE, REQUEST_POST_EDIT, RECEIVE_POST_EDIT, REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../actions'
-import { SET_POST_FORM_TYPE, UPDATE_POST_FORM_FIELD, CLEAR_POST_FORM_FIELD, UPDATE_POST_FORM_FIELD_MULTIPLE } from '../actions'
 // separate /comments
 import { REQUEST_COMMENTS, RECEIVE_COMMENTS, SORT_COMMENTS, REQUEST_COMMENT_VOTE, RECEIVE_COMMENT_VOTE, } from '../actions'
 import { RECEIVE_COMMENT_CREATE, REQUEST_COMMENT_CREATE, RECEIVE_COMMENT_EDIT, REQUEST_COMMENT_EDIT, REQUEST_COMMENT_DELETE, RECEIVE_COMMENT_DELETE } from '../actions'
@@ -12,16 +11,12 @@ import { TOGGLE_COMMENT_FORM_ACTIVE, UPDATE_COMMENT_FORM_FIELD, SET_COMMENT_FORM
 
 function categories(state = [], action) {
   switch(action.type) {
-    case REQUEST_CATEGORIES:
-      return {
-        ...state,
-
-      }
     case RECEIVE_CATEGORIES:
       return {
         ...state,
         categories: action.categories
       }
+    case REQUEST_CATEGORIES:
     default:
       return state
   }
@@ -29,16 +24,12 @@ function categories(state = [], action) {
 
 function posts(state = [], action) {
   switch(action.type) {
-    case REQUEST_POSTS:
-      return {
-        ...state,
-
-      }
     case RECEIVE_POSTS:
       return {
         ...state,
         posts: action.posts
       }
+    case REQUEST_POSTS:
     default:
       return state
   }
@@ -115,50 +106,6 @@ function postDelete(state = {}, action) {
   switch(action.type) {
     case RECEIVE_POST_DELETE:
     case REQUEST_POST_DELETE:
-    default:
-      return state
-  }
-}
-
-function postFormState(state = { formType: 'create', title: '', body: '', author: '', category: 'none', voteScore: 0, timestamp: ''}, action) {
-  const clearedFields = {
-    title: '',
-    body: '',
-    author: '',
-    category: 'none',
-    voteScore: 0,
-    timestamp: ''
-  }
-
-  switch(action.type) {
-    case SET_POST_FORM_TYPE:
-      return {
-        ...state,
-        formType: action.formType
-      }
-    case UPDATE_POST_FORM_FIELD:
-        let newField = {}
-        var property = Object.keys(action).filter(item => (item !== 'type'))
-        newField[property] = action[property]
-       return {
-         ...state,
-         ...newField
-       }
-    case UPDATE_POST_FORM_FIELD_MULTIPLE:
-        let fieldsDataObj = {}
-        var properties = Object.keys(action).filter(item => (item !== 'type'))
-        properties.forEach(prop => {
-          fieldsDataObj[prop] = action[prop]
-        })
-       return {
-         ...state,
-         ...fieldsDataObj
-       }
-    case CLEAR_POST_FORM_FIELD:
-      return {
-        ...state,
-        ...clearedFields
-      }
     default:
       return state
   }
@@ -258,59 +205,6 @@ function commentDelete(state = {}, action) {
   }
 }
 
-function commentFormState(state = { active: false, formType: 'create', id: '', body: '', author: '', voteScore: 0, timestamp: ''}, action) {
-  const clearedFields = {
-    id: '',
-    body: '',
-    author: '',
-    voteScore: 0,
-    timestamp: ''
-  }
-
-  switch(action.type) {
-    case TOGGLE_COMMENT_FORM_ACTIVE:
-      return {
-        ...state,
-        active: !state.active
-      }
-    case SET_COMMENT_FORM_TYPE:
-      return {
-        ...state,
-        formType: action.formType
-      }
-    case SET_CURRENT_COMMENT_ID:
-      return {
-        ...state,
-        id: action.commentId
-      }
-    case UPDATE_COMMENT_FORM_FIELD:
-        let newField = {}
-        var property = Object.keys(action).filter(item => (item !== 'type'))
-        newField[property] = action[property]
-       return {
-         ...state,
-         ...newField
-       }
-    case UPDATE_COMMENT_FORM_FIELD_MULTIPLE:
-        let fieldsDataObj = {}
-        var properties = Object.keys(action).filter(item => (item !== 'type'))
-        properties.forEach(prop => {
-          fieldsDataObj[prop] = action[prop]
-        })
-       return {
-         ...state,
-         ...fieldsDataObj
-       }
-    case CLEAR_COMMENT_FORM_FIELD:
-      return {
-        ...state,
-        ...clearedFields
-      }
-    default:
-      return state
-  }
-}
-
 function commentVote(state = {}, action) {
   switch(action.type) {
     case REQUEST_COMMENT_VOTE:
@@ -335,8 +229,6 @@ export default combineReducers({
   commentCreate,
   commentEdit,
   commentDelete,
-  postFormState,
-  commentFormState,
   commentVote
 })
 
