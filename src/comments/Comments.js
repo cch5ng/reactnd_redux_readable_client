@@ -5,7 +5,7 @@ import uuidv1 from 'uuid/v1'
 import ArrowUpIcon from 'react-icons/lib/fa/arrow-circle-up'
 import ArrowDownIcon from 'react-icons/lib/fa/arrow-circle-down'
 import { fetchComments, fetchCommentDelete, fetchCommentCreate, fetchCommentEdit, sortComments,
-  setCurrentCommentId, updateCommentVote } from '../actions'
+  setCurrentCommentId, updateCommentVote } from '../comments/CommentActions'
 import { prettySortVotes, prettySortTime, prettyTime, sortList } from '../utils'
 import '../App.css';
 
