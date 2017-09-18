@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchCategories } from '../actions'
-import { fetchPosts, filterPosts, sortPosts } from '../actions'
-import Post from './Post'
+import { fetchCategories, fetchPosts, filterPosts, sortPosts } from '../posts/PostActions'
+import Post from '../posts/Post'
 import { prettySortVotes, prettySortTime, sortList } from '../utils'
 import '../App.css';
 
@@ -49,15 +48,15 @@ class Posts extends Component {
       sortOrderDesc = this.props.postsSort.sortOrderDesc
     }
     //const { sortKey, sortOrderDesc } = this.props.postsSort
-    if (this.props.categories.categories) {
+    if (this.props.categories && this.props.categories.categories) {
       categories = this.props.categories.categories
     }
 
-    if (this.props.posts.posts ) {
+    if (this.props.posts && this.props.posts.posts ) {
       posts = this.props.posts.posts
     }
 
-    if (this.props.postsFilter.filter && posts) {
+    if (this.props.postsFilter && this.props.postsFilter.filter && posts) {
       if (this.props.postsFilter.filter !== 'all') {
         postsFiltered = posts.filter(post => (
           post.category === this.props.postsFilter.filter

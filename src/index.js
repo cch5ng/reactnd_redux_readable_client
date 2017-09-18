@@ -6,11 +6,11 @@ import ReduxThunk from 'redux-thunk'
 import './index.css'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
-import categories from './reducers'
+import appStore from './store/index.js'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-const store = createStore(categories,
+const store = createStore(appStore,
   composeEnhancers(
     applyMiddleware(ReduxThunk)
   )

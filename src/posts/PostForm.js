@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES, fetchCategories } from '../actions'
-import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail } from '../actions'
-import { REQUEST_POST_CREATE, RECEIVE_POST_CREATE, fetchPostCreate } from '../actions'
-import { REQUEST_POST_EDIT, RECEIVE_POST_EDIT, fetchPostEdit } from '../actions'
+import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail, REQUEST_POST_CREATE, 
+  RECEIVE_POST_CREATE, fetchPostCreate, REQUEST_POST_EDIT, RECEIVE_POST_EDIT,
+  fetchPostEdit, REQUEST_CATEGORIES, RECEIVE_CATEGORIES, fetchCategories
+} from '../posts/PostActions'
 import ArrowDownIcon from 'react-icons/lib/fa/arrow-circle-down'
 import ArrowUpIcon from 'react-icons/lib/fa/arrow-circle-up'
 import '../App.css';

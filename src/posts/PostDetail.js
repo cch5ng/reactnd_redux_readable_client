@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import ArrowDownIcon from 'react-icons/lib/fa/arrow-circle-down'
 import ArrowUpIcon from 'react-icons/lib/fa/arrow-circle-up'
-import { fetchPostDetail } from '../actions'
-import Comments from './Comments'
+import { fetchPostDetail } from '../posts/PostActions'
+import Comments from '../comments/Comments'
 import { prettyTime, sortList } from '../utils'
 import '../App.css';
 
