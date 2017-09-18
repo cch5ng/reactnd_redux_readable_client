@@ -6,7 +6,7 @@ import Posts from './posts/Posts'
 import PostDetail from './posts/PostDetail'
 import Nav from './Nav'
 import PostForm from './posts/PostForm'
-import { fetchPosts, updatePostVote, fetchPostDelete } from './actions'
+import { fetchPosts, updatePostVote, fetchPostDelete } from './posts/PostActions'
 import './App.css';
 
 class App extends Component {
