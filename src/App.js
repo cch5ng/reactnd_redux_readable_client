@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-import Posts from './components/Posts'
-import PostDetail from './components/PostDetail'
-import Nav from './components/Nav'
-import PostForm from './components/PostForm'
+import Posts from './posts/Posts'
+import PostDetail from './posts/PostDetail'
+import Nav from './Nav'
+import PostForm from './posts/PostForm'
 import { fetchPosts, updatePostVote, fetchPostDelete } from './actions'
 import './App.css';
 
