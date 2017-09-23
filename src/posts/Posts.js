@@ -49,7 +49,9 @@ class Posts extends Component {
     }
     //const { sortKey, sortOrderDesc } = this.props.postsSort
     if (this.props.categories && this.props.categories.categories) {
-      categories = this.props.categories.categories
+      categories = this.props.categories.allIds.map(id => (
+        this.props.categories.categories[id]
+      ))
     }
 
     if (this.props.posts && this.props.posts.posts ) {
