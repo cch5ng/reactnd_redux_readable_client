@@ -32,6 +32,7 @@ class PostDetail extends Component {
                 <Link to={`/editPost/${postDetail.id}`}><button className="button">Edit</button></Link> <button className="button" onClick={(ev) => this.props.deletePostBtnClick(postDetail.id)}>Delete</button><br />
                 <p>{postDetail.title}</p>
                 <p>{postDetail.body}</p>
+                <p>Category: {postDetail.category}</p>
                 <p>Author: {postDetail.author}</p>
                 <p>Votes: {postDetail.voteScore}  <ArrowUpIcon className="post-arrow-up-icon" onClick={(ev) => this.props.clickVote(ev, postDetail.id)} /><ArrowDownIcon className="post-arrow-down-icon"  onClick={(ev) => this.props.clickVote(ev, postDetail.id)} /></p>
                 <p>Last updated: {prettyTime(postDetail.timestamp)}</p>
