@@ -7,19 +7,23 @@ import { REQUEST_COMMENTS, RECEIVE_COMMENTS, SORT_COMMENTS, REQUEST_COMMENT_VOTE
 
 // COMMENTS
 
-export function comments(state = [], action) {
+export function comments(state = {}, action) {
 
   switch(action.type) {
-    case REQUEST_COMMENTS:
-      return {
-        ...state,
-
-      }
     case RECEIVE_COMMENTS:
+      let commentsObj = {}
+      let allIds = []
+      action.comments.forEach(comment => {
+        commentsObj[comment.id] = comment
+        allIds.push(comment.id)
+      })
+
       return {
         ...state,
-        comments: action.comments
+        comments: commentsObj,
+        allIds
       }
+    case REQUEST_COMMENTS:
     default:
       return state
   }

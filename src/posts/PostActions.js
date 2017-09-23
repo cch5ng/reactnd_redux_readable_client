@@ -24,7 +24,6 @@ export function receiveCategories(categories) {
     type: RECEIVE_CATEGORIES,
     categories,
     retrieving: false
-
   }
 }
 

@@ -3,12 +3,20 @@ import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES, REQUEST_POSTS, RECEIVE_POSTS,
   RECEIVE_POST_DELETE, REQUEST_POST_CREATE, RECEIVE_POST_CREATE, REQUEST_POST_EDIT,
   RECEIVE_POST_EDIT, REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL } from '../posts/PostActions'
 
-export function categories(state = [], action) {
+export function categories(state = {}, action) {
   switch(action.type) {
     case RECEIVE_CATEGORIES:
+      let categoriesObj = {}
+      let allIds = []
+      action.categories.forEach(categ => {
+        categoriesObj[categ.name] = categ
+        allIds.push(categ.name)
+      })
+
       return {
         ...state,
-        categories: action.categories
+        categories: categoriesObj,
+        allIds
       }
     case REQUEST_CATEGORIES:
     default:
@@ -16,12 +24,20 @@ export function categories(state = [], action) {
   }
 }
 
-export function posts(state = [], action) {
+export function posts(state = {}, action) {
   switch(action.type) {
     case RECEIVE_POSTS:
+      let postsObj = {}
+      let allIds = []
+      action.posts.forEach(post => {
+        postsObj[post.id] = post
+        allIds.push(post.id)
+      })
+
       return {
         ...state,
-        posts: action.posts
+        posts: postsObj,
+        allIds
       }
     case REQUEST_POSTS:
     default:
