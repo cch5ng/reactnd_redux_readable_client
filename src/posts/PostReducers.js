@@ -27,9 +27,17 @@ export function categories(state = {}, action) {
 export function posts(state = {}, action) {
   switch(action.type) {
     case RECEIVE_POSTS:
+      let postsObj = {}
+      let allIds = []
+      action.posts.forEach(post => {
+        postsObj[post.id] = post
+        allIds.push(post.id)
+      })
+
       return {
         ...state,
-        posts: action.posts
+        posts: postsObj,
+        allIds
       }
     case REQUEST_POSTS:
     default:

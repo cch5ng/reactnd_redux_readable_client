@@ -55,7 +55,9 @@ class Posts extends Component {
     }
 
     if (this.props.posts && this.props.posts.posts ) {
-      posts = this.props.posts.posts
+      posts = this.props.posts.allIds.map(id => (
+        this.props.posts.posts[id]
+      ))
     }
 
     if (this.props.postsFilter && this.props.postsFilter.filter && posts) {
