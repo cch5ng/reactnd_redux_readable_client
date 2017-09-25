@@ -13,7 +13,6 @@ class Posts extends Component {
 
   componentDidMount() {
     this.props.dispatch(fetchCategories())
-    this.props.dispatch(fetchPosts())
   }
 
   categoryClick(ev) {
@@ -47,7 +46,7 @@ class Posts extends Component {
       sortKey = this.props.postsSort.sortKey
       sortOrderDesc = this.props.postsSort.sortOrderDesc
     }
-    //const { sortKey, sortOrderDesc } = this.props.postsSort
+
     if (this.props.categories && this.props.categories.categories) {
       categories = this.props.categories.allIds.map(id => (
         this.props.categories.categories[id]
@@ -113,7 +112,11 @@ class Posts extends Component {
             {postsSorted
               ? postsSorted.map(post => {
                   return (
-                    <Post key={post.id} post={post} clickVote={this.props.clickVote} deletePostBtnClick={this.props.deletePostBtnClick} />
+                    <Post key={post.id} post={post} 
+                      clickVote={this.props.clickVote} 
+                      deletePostBtnClick={this.props.deletePostBtnClick} 
+                      getCommentsCountFromPostId={this.props.getCommentsCountFromPostId}
+                    />
                   )
               })
               : null
