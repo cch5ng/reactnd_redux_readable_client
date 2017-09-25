@@ -1,3 +1,5 @@
+import { fetchComments } from '../comments/CommentActions'
+
 const API_GET_CATEGORIES = 'http://localhost:5001/categories'
 const API_GET_POSTS = 'http://localhost:5001/posts'
 const INIT_GET_CATEGORIES = {method: 'GET',
@@ -64,7 +66,17 @@ export const fetchPosts = () => dispatch => {
   return fetch(API_GET_POSTS, INIT_GET_CATEGORIES)
     .then(response => response.json())
     // use json.posts to make the data more shallow
-    .then(json => dispatch(receivePosts(json)))
+    .then(json => {
+      dispatch(receivePosts(json))
+      // need make multiple calls to get the comments list per postId
+      let allIds = []
+      json.forEach(post => {
+        allIds.push(post.id)
+      })
+      allIds.forEach(postId => {
+        dispatch(fetchComments(postId))
+      }) 
+    })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })

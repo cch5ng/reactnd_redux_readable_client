@@ -27,6 +27,7 @@ export function receiveComments(comments) {
   }
 }
 
+
 // async action for getting comments
 export const fetchComments = (postId) => dispatch => {
   dispatch(requestComments())

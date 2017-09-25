@@ -9,7 +9,7 @@ class Nav extends Component {
     return (
       <div className="header title">
         <div className="header-main">
-          <h2>Talk-about</h2>
+          <h2><Link to="/" className="header-main">Talk-about</Link></h2>
         </div>
         <div className="header-contact">
           <p className="contact">

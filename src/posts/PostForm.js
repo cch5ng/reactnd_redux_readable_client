@@ -96,7 +96,9 @@ class PostForm extends Component {
     let voteScore = null
 
     if (this.props.categories && this.props.categories.categories) {
-      categories = this.props.categories.categories
+      categories = this.props.categories.allIds.map(id => (
+        this.props.categories.categories[id]
+      ))
     }
 
     if (this.props.postDetail && this.props.postDetail.postDetail) {

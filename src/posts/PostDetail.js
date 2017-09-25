@@ -18,9 +18,17 @@ class PostDetail extends Component {
 
   render() {
     let postDetail = null
+    let comments
+    let commentsCount
+    const postId = this.props.match.params.id
+
     if (this.props.postDetail.postDetail) {
       postDetail = this.props.postDetail.postDetail
     }
+    if (this.props.comments.comments) {
+      comments = this.props.comments.comments
+    }
+    commentsCount = this.props.getCommentsCountFromPostId(comments, postId)
 
     return (
       <div>
@@ -32,9 +40,10 @@ class PostDetail extends Component {
                 <Link to={`/editPost/${postDetail.id}`}><button className="button">Edit</button></Link> <button className="button" onClick={(ev) => this.props.deletePostBtnClick(postDetail.id)}>Delete</button><br />
                 <p>{postDetail.title}</p>
                 <p>{postDetail.body}</p>
-                <p>Author: {postDetail.author}</p>
+                <p>Category: {postDetail.category}</p>
+                <p>Author: {postDetail.author} updated {prettyTime(postDetail.timestamp)}</p>
                 <p>Votes: {postDetail.voteScore}  <ArrowUpIcon className="post-arrow-up-icon" onClick={(ev) => this.props.clickVote(ev, postDetail.id)} /><ArrowDownIcon className="post-arrow-down-icon"  onClick={(ev) => this.props.clickVote(ev, postDetail.id)} /></p>
-                <p>Last updated: {prettyTime(postDetail.timestamp)}</p>
+                <p>{commentsCount} Comments</p>
               </div>
               <Comments postId={this.props.match.params.id} commentEditBtnClick={this.props.commentEditBtnClick} 
                 commentDeleteBtnClick={this.props.commentDeleteBtnClick} clickVote={this.props.clickVote} 
@@ -49,9 +58,10 @@ class PostDetail extends Component {
   }
 }
 
-function mapStateToProps({ postDetail }) {
+function mapStateToProps({ postDetail, comments }) {
   return {
-    postDetail
+    postDetail,
+    comments
   }
 }
 
