@@ -21,9 +21,6 @@ export function comments(state = {comments: {}, allIds: []}, action) {
           allIds.push(comment.id)
         }
       })
-      console.log('commentsObj: ' + commentsObj)
-      console.log('keys commentsObj: ' + Object.keys(commentsObj))
-      console.log('allIds')
 
       return {
         ...state,

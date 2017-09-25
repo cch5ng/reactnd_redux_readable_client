@@ -45,10 +45,6 @@ class Comments extends Component {
   clickCommentVote = this.clickCommentVote.bind(this)
   getActiveComment = this.getActiveComment.bind(this)
 
-  componentDidMount() {
-    //this.props.dispatch(fetchComments(this.props.postId))
-  }
-
   commentsSortClick(ev) {
     const className = ev.target.className
     let sortKey = ''
