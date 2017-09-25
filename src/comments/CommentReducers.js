@@ -7,21 +7,31 @@ import { REQUEST_COMMENTS, RECEIVE_COMMENTS, SORT_COMMENTS, REQUEST_COMMENT_VOTE
 
 // COMMENTS
 
-export function comments(state = {}, action) {
+export function comments(state = {comments: {}, allIds: []}, action) {
 
   switch(action.type) {
     case RECEIVE_COMMENTS:
       let commentsObj = {}
       let allIds = []
       action.comments.forEach(comment => {
-        commentsObj[comment.id] = comment
-        allIds.push(comment.id)
+        if (!state.comments[comment.id]) {
+          commentsObj[comment.id] = comment
+        }
+        if (state.allIds.indexOf(comment.id) === -1) {
+          allIds.push(comment.id)
+        }
       })
+      console.log('commentsObj: ' + commentsObj)
+      console.log('keys commentsObj: ' + Object.keys(commentsObj))
+      console.log('allIds')
 
       return {
         ...state,
-        comments: commentsObj,
-        allIds
+        comments: {
+          ...state.comments,
+          ...commentsObj
+        },
+        allIds: state.allIds.concat(allIds)
       }
     case REQUEST_COMMENTS:
     default:
@@ -48,9 +58,13 @@ export function commentsSort(state = { sortKey: 'voteScore', sortOrderDesc: true
 export function commentCreate(state = {}, action) {
   switch(action.type) {
     case RECEIVE_COMMENT_CREATE:
+      let commentId = action.comment.id
       return {
         ...state,
-        comment: action.comment
+        comments: {
+          ...state.comments,
+          commentId: action.comment
+        }
       }
     case REQUEST_COMMENT_CREATE:
     default:
