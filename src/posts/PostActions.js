@@ -71,13 +71,11 @@ export const fetchPosts = () => dispatch => {
       // need make multiple calls to get the comments list per postId
       let allIds = []
       json.forEach(post => {
-        //postsObj[post.id] = post
         allIds.push(post.id)
       })
       allIds.forEach(postId => {
         dispatch(fetchComments(postId))
-      })
- 
+      }) 
     })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
