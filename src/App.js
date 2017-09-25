@@ -48,6 +48,19 @@ class App extends Component {
     }
   }
 
+  getCommentsCountFromPostId(comments, postId) {
+    let filteredComments = []
+
+    for (let commentId in comments) {
+      //console.log('commentId: ' + commentId)
+      if (comments[commentId].parentId === postId) {
+        filteredComments.push(comments[commentId])
+      }
+    }
+
+    return filteredComments.length
+  }
+
   render() {
     return (
       <Router>
@@ -58,6 +71,7 @@ class App extends Component {
             <Posts
               clickVote={this.clickVote}
               deletePostBtnClick={this.deletePostBtnClick}
+              getCommentsCountFromPostId={this.getCommentsCountFromPostId}
               />
           )} />
 
@@ -65,18 +79,22 @@ class App extends Component {
           <Route exact path="/posts" render={() => (
             <Posts clickVote={this.clickVote}
               deletePostBtnClick={this.deletePostBtnClick}
+              getCommentsCountFromPostId={this.getCommentsCountFromPostId}
             />
           )} />
 
           <Route exact path="/:category/posts" render={(match) => (
             <Posts match={match} clickVote={this.clickVote}
               deletePostBtnClick={this.deletePostBtnClick}
+              getCommentsCountFromPostId={this.getCommentsCountFromPostId}
             />
           )} />
 
 
           <Route exact path="/posts/:id" render={ ({match}) => (
-            <PostDetail match={match} clickVote={this.clickVote} deletePostBtnClick={this.deletePostBtnClick}
+            <PostDetail match={match} clickVote={this.clickVote} 
+              deletePostBtnClick={this.deletePostBtnClick} 
+              getCommentsCountFromPostId={this.getCommentsCountFromPostId}
             />
           )} />
 
