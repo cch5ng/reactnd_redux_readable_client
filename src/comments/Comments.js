@@ -46,7 +46,7 @@ class Comments extends Component {
   getActiveComment = this.getActiveComment.bind(this)
 
   componentDidMount() {
-    this.props.dispatch(fetchComments(this.props.postId))
+    //this.props.dispatch(fetchComments(this.props.postId))
   }
 
   commentsSortClick(ev) {
@@ -154,13 +154,17 @@ class Comments extends Component {
   }
 
   filterSortComments(comments) {
-    let orderedComments
+    let orderedComments = []
     let commentsFiltered
 
-    commentsFiltered = comments.filter(comment => (
-      comment.deleted === false
-    ))
-    orderedComments = sortList(this.props.commentsSort.sortKey, this.props.commentsSort.sortOrderDesc, commentsFiltered)
+    if (comments.length > 0) {
+      commentsFiltered = comments.filter(comment => {
+        if (comment) {
+          return comment.deleted === false
+        }
+      })
+      orderedComments = sortList(this.props.commentsSort.sortKey, this.props.commentsSort.sortOrderDesc, commentsFiltered)
+    }
 
     return orderedComments
   }
@@ -178,7 +182,8 @@ class Comments extends Component {
   }
 
   render() {
-    let comments = null
+    let comments = []
+    let commentsObj = null
     let commentsSort = null
     // var will store the sorted commments
     let body = null
@@ -186,10 +191,14 @@ class Comments extends Component {
     let active = null
     let formType = null
 
-    if (this.props.comments && this.props.comments.comments && this.props.comments.allIds.length) {
-      comments = this.props.comments.allIds.map(id => (
-        this.props.comments.comments[id]
-      ))
+    if (this.props.comments && this.props.comments.comments) {
+      commentsObj = this.props.comments.comments
+      for (let commentId in commentsObj) {
+        const parentId = commentsObj[commentId].parentId
+        if (parentId === this.props.postId) {
+          comments.push(commentsObj[commentId])
+        }
+      }
     }
 
     if (this.props.commentsSort) {
@@ -199,7 +208,6 @@ class Comments extends Component {
     return (
       <div className="comments-container">
         <h2>Comments</h2>
-
         <div>
           <button className="button" onClick={(ev) => this.commentEditBtnClick(ev.target.id, '')} id="create-comment">Add Comment</button>
           <br /><br />
@@ -211,14 +219,13 @@ class Comments extends Component {
         </ul>
 
         <ul className="comments-list">
-          { comments 
+          { comments.length
             ? this.filterSortComments(comments).map(comment => (
               <li key={comment.id} className="comments-list-item">
                 {comment.body}<br />
                 <button onClick={(ev) => this.commentEditBtnClick(ev.target.id, comment.id)} id="edit-comment" className="button" >Edit</button> <button onClick={(ev) => this.commentDeleteBtnClick(comment.id, this.props.postId)} id="delete-comment" className="button" >Delete</button><br />
-                Author: {comment.author}<br />
-                Votes: {comment.voteScore}   <ArrowUpIcon className="comment-arrow-up-icon" onClick={(ev) => this.clickCommentVote(ev, comment.id, this.props.postId)} /><ArrowDownIcon className="comment-arrow-down-icon"  onClick={(ev) => this.clickCommentVote(ev, comment.id, this.props.postId)} /><br />
-                Last updated: {prettyTime(comment.timestamp)}
+                Author: {comment.author} updated {prettyTime(comment.timestamp)}<br />
+                Votes: {comment.voteScore}   <ArrowUpIcon className="comment-arrow-up-icon" onClick={(ev) => this.clickCommentVote(ev, comment.id, this.props.postId)} /><ArrowDownIcon className="comment-arrow-down-icon"  onClick={(ev) => this.clickCommentVote(ev, comment.id, this.props.postId)} />
               </li>
             ))
             : null
