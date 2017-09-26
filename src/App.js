@@ -37,14 +37,8 @@ class App extends Component {
   }
 
   getPostFromId(postId) {
-    let tpost
-
     if (this.props.posts && this.props.posts.posts) {
-      tpost = this.props.posts.posts.filter(post => (
-        post.id === postId
-      ))
-
-      return tpost[0]
+      return this.props.posts.posts[postId]
     }
   }
 
