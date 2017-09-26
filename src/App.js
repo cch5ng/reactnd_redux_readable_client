@@ -40,11 +40,9 @@ class App extends Component {
     let tpost
 
     if (this.props.posts && this.props.posts.posts) {
-      tpost = this.props.posts.posts.filter(post => (
-        post.id === postId
-      ))
 
-      return tpost[0]
+      console.log('this.props.posts.posts[postId]' + this.props.posts.posts[postId])
+      return this.props.posts.posts[postId]
     }
   }
 
