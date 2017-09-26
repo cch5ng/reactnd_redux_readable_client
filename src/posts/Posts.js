@@ -8,6 +8,10 @@ import '../App.css';
 
 class Posts extends Component {
 
+  state = {
+    curCategory: 'all'
+  }
+
   categoryClick = this.categoryClick.bind(this)
   postsSortClick = this.postsSortClick.bind(this)
 
@@ -18,6 +22,7 @@ class Posts extends Component {
   categoryClick(ev) {
     const filter = ev.target.innerHTML
     this.props.dispatch(filterPosts(filter))
+    this.setState({curCategory: filter})
   }
 
   postsSortClick(ev) {
@@ -35,6 +40,7 @@ class Posts extends Component {
   // HELPERS
 
   render() {
+    let curCategory = null
     let categories = null
     let posts = null
     let postsFiltered = null
@@ -85,13 +91,19 @@ class Posts extends Component {
           <div className="col-50p">
             <h3>Filter by Category</h3>
             <ul onClick={this.categoryClick} className="categories-list">
-              <Link to="/posts" key="postsAll" ><li key="all">all</li></Link>
+              <Link to="/posts" key="postsAll" >
+                <li key="all" className={this.state.curCategory === "all" ? "is-active-category" : ""}>all</li>
+              </Link>
               {categories
                 ? categories.map((category, idx) => {
                   let link = `/${category.name}/posts`
                   let linkKey = `${category.name}${idx}`
                   return (
-                    <Link to={link} key={linkKey} ><li key={category.name}>{category.name}</li></Link>
+                    <Link to={link} key={linkKey} >
+                      <li key={category.name} className={category.name === this.state.curCategory ? "is-active-category" : ""}>
+                        {category.name}
+                      </li>
+                    </Link>
                   )
                 })
                 : null
