@@ -100,6 +100,11 @@ h4 {
   list-style-type: none;
 }
 
+.categories-list li,
+.sort-key-list li {
+  padding-left: 8px;
+}
+
 .post-list-item {
   background-color: #99d5cf;
   margin-top: 12px;
@@ -117,9 +122,14 @@ h4 {
   padding-left: 5px;
 }
 
-.is-active-sort {
+.is-active-sort,
+.is-active-category {
   border: 3px solid #d6ff94;
   border-radius: 2px;
+}
+
+.is-active-category {
+  width: 100px;
 }
 
 .comment-is-active-sort {
