@@ -33,10 +33,7 @@ class PostForm extends Component {
   formInputUpdate = this.formInputUpdate.bind(this)
   formSubmit = this.formSubmit.bind(this)
 
-  componentDidMount() {
-// should this be necessary?
-    this.props.dispatch(fetchCategories())
-  }
+//  componentDidMount() {  }
 
   formInputUpdate(ev) {
     const id = ev.target.id
@@ -104,6 +101,7 @@ class PostForm extends Component {
     if (this.props.postDetail && this.props.postDetail.postDetail) {
       postDetail = this.props.postDetail.postDetail
     }
+
 
     return (
       <div className="form-container">
