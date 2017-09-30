@@ -21,6 +21,12 @@ class PostDetail extends Component {
     let comments
     let commentsCount
     const postId = this.props.match.params.id
+    let postStore = null
+
+    if (this.props.posts && this.props.posts.posts) {
+      postStore = this.props.posts.posts[postId]
+      console.log('postStore.deleted: ' + postStore.deleted)
+    }
 
     if (this.props.postDetail.postDetail) {
       postDetail = this.props.postDetail.postDetail
@@ -30,9 +36,11 @@ class PostDetail extends Component {
     }
     commentsCount = this.props.getCommentsCountFromPostId(comments, postId)
 
+//{/*       { postDetail*/}
+
     return (
       <div>
-      { postDetail
+        {postStore && postStore.deleted === false
         ? <div>
             <div className="post-detail">
               <div className="post-detail-sect">
@@ -51,17 +59,18 @@ class PostDetail extends Component {
               />
             </div>
           </div>
-        : null
+        : <h4>Sorry, that post does not exist</h4>
       }
       </div>
     )
   }
 }
 
-function mapStateToProps({ postDetail, comments }) {
+function mapStateToProps({ postDetail, comments, posts }) {
   return {
     postDetail,
-    comments
+    comments,
+    posts
   }
 }
 
