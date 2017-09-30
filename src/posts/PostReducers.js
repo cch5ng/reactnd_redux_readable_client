@@ -44,6 +44,21 @@ export function posts(state = {}, action) {
         allIds,
         retrievingAllPosts: false
       }
+    case REQUEST_POST_CREATE:
+      return {
+        ...state,
+        retrievingCreatePost: true
+      }
+    case RECEIVE_POST_CREATE:
+      return {
+        ...state,
+        posts: {
+          ...state.posts,
+          [action.post.id]: action.post
+        },
+        allIds: state.allIds.concat([action.post.id]),
+        retrievingCreatePost: false
+      }
     case REQUEST_POST_EDIT:
       return {
         ...state,
@@ -98,19 +113,6 @@ export function postDetail(state = {}, action) {
         ...state,
         postDetail: action.postDetail
       }
-    default:
-      return state
-  }
-}
-
-export function postCreate(state = {}, action) {
-  switch(action.type) {
-    case RECEIVE_POST_CREATE:
-      return {
-        ...state,
-        post: action.post
-      }
-    case REQUEST_POST_CREATE:
     default:
       return state
   }
