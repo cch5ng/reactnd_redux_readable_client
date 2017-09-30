@@ -218,14 +218,15 @@ export const RECEIVE_POST_DELETE = 'RECEIVE_POST_DELETE'
 export function requestPostDelete() {
   return {
     type: REQUEST_POST_DELETE,
-    retrieving: true
+    retrievingDeletePost: true
   }
 }
 
-export function receivePostDelete() {
+export function receivePostDelete(postId) {
   return {
     type: RECEIVE_POST_DELETE,
-    retrieving: false
+    retrievingDeletePost: false,
+    deletedPostId: postId
   }
 }
 
@@ -240,8 +241,7 @@ export const fetchPostDelete = (postId) => dispatch => {
                         }
 
   return fetch(`${API_GET_POSTS}/${postId}`, INIT_EDIT_POST)
-    .then(() => dispatch(receivePostDelete()))
-    .then(() => dispatch(fetchPosts()))
+    .then(() => dispatch(receivePostDelete(postId)))
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
