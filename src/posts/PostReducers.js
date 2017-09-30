@@ -26,6 +26,11 @@ export function categories(state = {}, action) {
 
 export function posts(state = {}, action) {
   switch(action.type) {
+    case REQUEST_POSTS:
+      return {
+        ...state,
+        retrievingAllPosts: action.retrieving
+      }
     case RECEIVE_POSTS:
       let postsObj = {}
       let allIds = []
@@ -33,13 +38,25 @@ export function posts(state = {}, action) {
         postsObj[post.id] = post
         allIds.push(post.id)
       })
-
       return {
         ...state,
         posts: postsObj,
-        allIds
+        allIds,
+        retrievingAllPosts: false
       }
-    case REQUEST_POSTS:
+    case REQUEST_POST_EDIT:
+      return {
+        ...state,
+        retrievingPost: true
+      }
+    case RECEIVE_POST_EDIT:
+      return {
+        ...state,
+        posts: {...state.posts, 
+          [action.post.id]: action.post
+        },
+        retrievingPost: false
+      }
     default:
       return state
   }
@@ -94,19 +111,6 @@ export function postCreate(state = {}, action) {
         post: action.post
       }
     case REQUEST_POST_CREATE:
-    default:
-      return state
-  }
-}
-
-export function postEdit(state = {}, action) {
-  switch(action.type) {
-    case RECEIVE_POST_EDIT:
-      return {
-        ...state,
-        post: action.post
-      }
-    case REQUEST_POST_EDIT:
     default:
       return state
   }
