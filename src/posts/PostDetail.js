@@ -25,7 +25,6 @@ class PostDetail extends Component {
 
     if (this.props.posts && this.props.posts.posts) {
       postStore = this.props.posts.posts[postId]
-      console.log('postStore.deleted: ' + postStore.deleted)
     }
 
     if (this.props.postDetail.postDetail) {
@@ -35,8 +34,6 @@ class PostDetail extends Component {
       comments = this.props.comments.comments
     }
     commentsCount = this.props.getCommentsCountFromPostId(comments, postId)
-
-//{/*       { postDetail*/}
 
     return (
       <div>
