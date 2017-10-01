@@ -19,7 +19,7 @@ class PostDetail extends Component {
   render() {
     let postDetail = null
     let comments
-    let commentsCount
+    let commentsCount = 0
     const postId = this.props.match.params.id
     let postStore = null
 
@@ -33,7 +33,12 @@ class PostDetail extends Component {
     if (this.props.comments.comments) {
       comments = this.props.comments.comments
     }
-    commentsCount = this.props.getCommentsCountFromPostId(comments, postId)
+
+    for (let i in comments) {
+      if (comments[i].parentId === postId && comments[i].deleted === false) {
+        commentsCount += 1
+      }
+    }
 
     return (
       <div>
