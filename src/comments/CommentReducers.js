@@ -66,6 +66,27 @@ export function comments(state = {comments: {}, allIds: []}, action) {
         },
         retrievingEditComment: action.retrievingEditComment
       }
+    case REQUEST_COMMENT_DELETE:
+      return {
+        ...state,
+        retrievingDeleteComment: action.retrievingDeleteComment
+      }
+
+    case RECEIVE_COMMENT_DELETE:
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          [action.comment.id]: {
+            ...state.comments[action.comment.id],
+            deleted: true
+          }
+        },
+        allIds: state.allIds.filter(commentId => (commentId !== action.comment.id)),
+        retrievingDeleteComment: action.retrievingDeleteComment
+      }
+
+
     default:
       return state
   }
@@ -82,19 +103,6 @@ export function commentsSort(state = { sortKey: 'voteScore', sortOrderDesc: true
         sortKey: action.sortKey,
         sortOrderDesc: action.sortKey === state.sortKey ? !state.sortOrderDesc : true 
       }
-    default:
-      return state
-  }
-}
-
-export function commentDelete(state = {}, action) {
-  switch(action.type) {
-    case RECEIVE_COMMENT_DELETE:
-      return {
-        ...state,
-        comment: action.comment
-      }
-    case REQUEST_COMMENT_DELETE:
     default:
       return state
   }

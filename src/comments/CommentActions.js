@@ -48,8 +48,6 @@ export function sortComments(sortKey) {
   }
 }
 
-/////
-
 // section for create Comment action
 export const REQUEST_COMMENT_CREATE = 'REQUEST_COMMENT_CREATE'
 export const RECEIVE_COMMENT_CREATE = 'RECEIVE_COMMENT_CREATE'
@@ -85,15 +83,11 @@ export const fetchCommentCreate = (commentData) => dispatch => {
     .then(response => response.json())
     // use json.posts to make the data more shallow
     .then(json => dispatch(receiveCommentCreate(json)))
-    // .then(() => {
-    //   dispatch(fetchComments(commentData.parentId))
-    // })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
 }
 
-/////
 
 // section for edit Comment action
 export const REQUEST_COMMENT_EDIT = 'REQUEST_COMMENT_EDIT'
@@ -134,8 +128,6 @@ export const fetchCommentEdit = (commentId, commentData) => dispatch => {
     })
 }
 
-/////
-
 // section for delete Comment action
 export const REQUEST_COMMENT_DELETE = 'REQUEST_COMMENT_DELETE'
 export const RECEIVE_COMMENT_DELETE = 'RECEIVE_COMMENT_DELETE'
@@ -143,7 +135,7 @@ export const RECEIVE_COMMENT_DELETE = 'RECEIVE_COMMENT_DELETE'
 export function requestCommentDelete() {
   return {
     type: REQUEST_COMMENT_DELETE,
-    retrieving: true
+    retrievingDeleteComment: true
   }
 }
 
@@ -151,7 +143,7 @@ export function receiveCommentDelete(comment) {
   return {
     type: RECEIVE_COMMENT_DELETE,
     comment,
-    retrieving: false
+    retrievingDeleteComment: false
   }
 }
 
@@ -170,14 +162,11 @@ export const fetchCommentDelete = (commentId, postId) => dispatch => {
     // use json.posts to make the data more shallow
     .then(json => {
       dispatch(receiveCommentDelete(json))
-      dispatch(fetchComments(postId)) 
     })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
 }
-
-/////
 
 // TEST section for Comment vote actions
 export const REQUEST_COMMENT_VOTE = 'REQUEST_COMMENT_VOTE'
