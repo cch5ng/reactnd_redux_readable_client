@@ -85,9 +85,9 @@ export const fetchCommentCreate = (commentData) => dispatch => {
     .then(response => response.json())
     // use json.posts to make the data more shallow
     .then(json => dispatch(receiveCommentCreate(json)))
-    .then(() => {
-      dispatch(fetchComments(commentData.parentId))
-    })
+    // .then(() => {
+    //   dispatch(fetchComments(commentData.parentId))
+    // })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })

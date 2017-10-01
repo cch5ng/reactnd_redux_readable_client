@@ -15,7 +15,6 @@ export function comments(state = {comments: {}, allIds: []}, action) {
         ...state,
         retrievingComments: action.retrievingComments
       }
-
     case RECEIVE_COMMENTS:
       let commentsObj = {}
       let allIds = []
@@ -36,6 +35,22 @@ export function comments(state = {comments: {}, allIds: []}, action) {
         },
         allIds: state.allIds.concat(allIds),
         retrievingComments: action.retrievingComments
+      }
+    case REQUEST_COMMENT_CREATE:
+      return {
+        ...state,
+        retrievingCreateComment: action.retrievingCreateComment
+      }
+    case RECEIVE_COMMENT_CREATE:
+      let commentId = action.comment.id
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          [commentId]: action.comment
+        },
+        allIds: state.allIds.concat([commentId]),
+        retrievingCreateComment: action.retrievingCreateComment
       }
     case REQUEST_COMMENT_EDIT:
       return {
@@ -66,28 +81,6 @@ export function commentsSort(state = { sortKey: 'voteScore', sortOrderDesc: true
         ...state,
         sortKey: action.sortKey,
         sortOrderDesc: action.sortKey === state.sortKey ? !state.sortOrderDesc : true 
-      }
-    default:
-      return state
-  }
-}
-
-export function commentCreate(state = {}, action) {
-  switch(action.type) {
-    case RECEIVE_COMMENT_CREATE:
-      let commentId = action.comment.id
-      return {
-        ...state,
-        comments: {
-          ...state.comments,
-          commentId: action.comment
-        },
-        retrievingCreateComment: action.retrievingCreateComment
-      }
-    case REQUEST_COMMENT_CREATE:
-      return {
-        ...state,
-        retrievingCreateComment: action.retrievingCreateComment
       }
     default:
       return state
