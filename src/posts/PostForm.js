@@ -33,8 +33,6 @@ class PostForm extends Component {
   formInputUpdate = this.formInputUpdate.bind(this)
   formSubmit = this.formSubmit.bind(this)
 
-//  componentDidMount() {  }
-
   formInputUpdate(ev) {
     const id = ev.target.id
     let value = ev.target.value
