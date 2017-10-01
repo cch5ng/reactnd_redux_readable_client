@@ -72,6 +72,11 @@ export function posts(state = {}, action) {
         },
         retrievingPost: false
       }
+    case REQUEST_POST_DELETE:
+      return {
+        ...state,
+        retrievingDeletePost: action.retrievingDeletePost
+      }
     case RECEIVE_POST_DELETE:
       return {
         ...state,
@@ -82,11 +87,6 @@ export function posts(state = {}, action) {
             deleted: true
           } 
         },
-        retrievingDeletePost: action.retrievingDeletePost
-      }
-    case REQUEST_POST_DELETE:
-      return {
-        ...state,
         retrievingDeletePost: action.retrievingDeletePost
       }
     default:
