@@ -14,7 +14,7 @@ export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export function requestComments() {
   return {
     type: REQUEST_COMMENTS,
-    retrieving: true
+    retrievingComments: true
   }
 }
 
@@ -22,11 +22,9 @@ export function receiveComments(comments) {
   return {
     type: RECEIVE_COMMENTS,
     comments,
-    retrieving: false
-
+    retrievingComments: false
   }
 }
-
 
 // async action for getting comments
 export const fetchComments = (postId) => dispatch => {
@@ -59,7 +57,7 @@ export const RECEIVE_COMMENT_CREATE = 'RECEIVE_COMMENT_CREATE'
 export function requestCommentCreate() {
   return {
     type: REQUEST_COMMENT_CREATE,
-    retrieving: true
+    retrievingCreateComment: true
   }
 }
 
@@ -67,7 +65,7 @@ export function receiveCommentCreate(comment) {
   return {
     type: RECEIVE_COMMENT_CREATE,
     comment,
-    retrieving: false
+    retrievingCreateComment: false
 
   }
 }
@@ -104,7 +102,7 @@ export const RECEIVE_COMMENT_EDIT = 'RECEIVE_COMMENT_EDIT'
 export function requestCommentEdit() {
   return {
     type: REQUEST_COMMENT_EDIT,
-    retrieving: true
+    retrievingEditComment: true
   }
 }
 
@@ -112,7 +110,7 @@ export function receiveCommentEdit(comment) {
   return {
     type: RECEIVE_COMMENT_EDIT,
     comment,
-    retrieving: false
+    retrievingEditComment: false
   }
 }
 
@@ -131,9 +129,6 @@ export const fetchCommentEdit = (commentId, commentData) => dispatch => {
     .then(response => response.json())
     // use json.posts to make the data more shallow
     .then(json => dispatch(receiveCommentEdit(json)))
-    .then(() => {
-      dispatch(fetchComments(commentData.parentId))
-    })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })

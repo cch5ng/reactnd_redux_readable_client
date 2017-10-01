@@ -10,6 +10,12 @@ import { REQUEST_COMMENTS, RECEIVE_COMMENTS, SORT_COMMENTS, REQUEST_COMMENT_VOTE
 export function comments(state = {comments: {}, allIds: []}, action) {
 
   switch(action.type) {
+    case REQUEST_COMMENTS:
+      return {
+        ...state,
+        retrievingComments: action.retrievingComments
+      }
+
     case RECEIVE_COMMENTS:
       let commentsObj = {}
       let allIds = []
@@ -28,9 +34,23 @@ export function comments(state = {comments: {}, allIds: []}, action) {
           ...state.comments,
           ...commentsObj
         },
-        allIds: state.allIds.concat(allIds)
+        allIds: state.allIds.concat(allIds),
+        retrievingComments: action.retrievingComments
       }
-    case REQUEST_COMMENTS:
+    case REQUEST_COMMENT_EDIT:
+      return {
+        ...state,
+        retrievingEditComment: action.retrievingEditComment
+      }
+    case RECEIVE_COMMENT_EDIT:
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          [action.comment.id]: action.comment
+        },
+        retrievingEditComment: action.retrievingEditComment
+      }
     default:
       return state
   }
@@ -61,22 +81,14 @@ export function commentCreate(state = {}, action) {
         comments: {
           ...state.comments,
           commentId: action.comment
-        }
+        },
+        retrievingCreateComment: action.retrievingCreateComment
       }
     case REQUEST_COMMENT_CREATE:
-    default:
-      return state
-  }
-}
-
-export function commentEdit(state = {}, action) {
-  switch(action.type) {
-    case RECEIVE_COMMENT_EDIT:
       return {
         ...state,
-        comment: action.comment
+        retrievingCreateComment: action.retrievingCreateComment
       }
-    case REQUEST_COMMENT_EDIT:
     default:
       return state
   }
