@@ -44,6 +44,21 @@ export function posts(state = {}, action) {
         allIds,
         retrievingAllPosts: false
       }
+    case REQUEST_POST_CREATE:
+      return {
+        ...state,
+        retrievingCreatePost: true
+      }
+    case RECEIVE_POST_CREATE:
+      return {
+        ...state,
+        posts: {
+          ...state.posts,
+          [action.post.id]: action.post
+        },
+        allIds: state.allIds.concat([action.post.id]),
+        retrievingCreatePost: false
+      }
     case REQUEST_POST_EDIT:
       return {
         ...state,
@@ -56,6 +71,23 @@ export function posts(state = {}, action) {
           [action.post.id]: action.post
         },
         retrievingPost: false
+      }
+    case RECEIVE_POST_DELETE:
+      return {
+        ...state,
+        allIds: state.allIds.filter(id => id !== action.deletedPostId),
+        posts: {
+          ...state.posts,
+          [action.deletedPostId]: {...state.posts[action.deletedPostId],
+            deleted: true
+          } 
+        },
+        retrievingDeletePost: action.retrievingDeletePost
+      }
+    case REQUEST_POST_DELETE:
+      return {
+        ...state,
+        retrievingDeletePost: action.retrievingDeletePost
       }
     default:
       return state
@@ -98,28 +130,6 @@ export function postDetail(state = {}, action) {
         ...state,
         postDetail: action.postDetail
       }
-    default:
-      return state
-  }
-}
-
-export function postCreate(state = {}, action) {
-  switch(action.type) {
-    case RECEIVE_POST_CREATE:
-      return {
-        ...state,
-        post: action.post
-      }
-    case REQUEST_POST_CREATE:
-    default:
-      return state
-  }
-}
-
-export function postDelete(state = {}, action) {
-  switch(action.type) {
-    case RECEIVE_POST_DELETE:
-    case REQUEST_POST_DELETE:
     default:
       return state
   }
