@@ -175,7 +175,7 @@ export const RECEIVE_COMMENT_VOTE = 'RECEIVE_COMMENT_VOTE'
 export function requestCommentVote() {
   return {
     type: REQUEST_COMMENT_VOTE,
-    retrieving: true
+    retrievingVoteComment: true
   }
 }
 
@@ -183,7 +183,7 @@ export function receiveCommentVote(comment) {
   return {
     type: RECEIVE_COMMENT_VOTE,
     comment,
-    retrieving: false
+    retrievingVoteComment: false
 
   }
 }
@@ -203,7 +203,6 @@ export const updateCommentVote = (commentId, postId, option) => dispatch => {
     // use json.posts to make the data more shallow
     .then(json => {
       dispatch(receiveCommentVote(json))
-      dispatch(fetchComments(postId))
     })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
