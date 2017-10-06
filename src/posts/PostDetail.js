@@ -42,7 +42,7 @@ class PostDetail extends Component {
 
     return (
       <div>
-        {postStore && postStore.deleted === false
+        {postStore && postStore.deleted === false && postDetail
         ? <div>
             <div className="post-detail">
               <div className="post-detail-sect">
