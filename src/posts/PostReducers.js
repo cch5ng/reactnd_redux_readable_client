@@ -155,20 +155,3 @@ export function postDetail(state = {}, action) {
       return state
   }
 }
-
-//TODO refactor
-// export function postVote(state = {}, action) {
-//   switch(action.type) {
-//     case REQUEST_POST_VOTE:
-//       return {
-//         ...state,
-//       }
-//     case RECEIVE_POST_VOTE:
-//       return {
-//         ...state,
-//         //posts: action.posts
-//       }
-//     default:
-//       return state
-//   }
-// }
