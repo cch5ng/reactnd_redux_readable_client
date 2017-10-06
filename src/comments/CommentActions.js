@@ -14,7 +14,7 @@ export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export function requestComments() {
   return {
     type: REQUEST_COMMENTS,
-    retrieving: true
+    retrievingComments: true
   }
 }
 
@@ -22,11 +22,9 @@ export function receiveComments(comments) {
   return {
     type: RECEIVE_COMMENTS,
     comments,
-    retrieving: false
-
+    retrievingComments: false
   }
 }
-
 
 // async action for getting comments
 export const fetchComments = (postId) => dispatch => {
@@ -50,8 +48,6 @@ export function sortComments(sortKey) {
   }
 }
 
-/////
-
 // section for create Comment action
 export const REQUEST_COMMENT_CREATE = 'REQUEST_COMMENT_CREATE'
 export const RECEIVE_COMMENT_CREATE = 'RECEIVE_COMMENT_CREATE'
@@ -59,7 +55,7 @@ export const RECEIVE_COMMENT_CREATE = 'RECEIVE_COMMENT_CREATE'
 export function requestCommentCreate() {
   return {
     type: REQUEST_COMMENT_CREATE,
-    retrieving: true
+    retrievingCreateComment: true
   }
 }
 
@@ -67,7 +63,7 @@ export function receiveCommentCreate(comment) {
   return {
     type: RECEIVE_COMMENT_CREATE,
     comment,
-    retrieving: false
+    retrievingCreateComment: false
 
   }
 }
@@ -87,15 +83,11 @@ export const fetchCommentCreate = (commentData) => dispatch => {
     .then(response => response.json())
     // use json.posts to make the data more shallow
     .then(json => dispatch(receiveCommentCreate(json)))
-    .then(() => {
-      dispatch(fetchComments(commentData.parentId))
-    })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
 }
 
-/////
 
 // section for edit Comment action
 export const REQUEST_COMMENT_EDIT = 'REQUEST_COMMENT_EDIT'
@@ -104,7 +96,7 @@ export const RECEIVE_COMMENT_EDIT = 'RECEIVE_COMMENT_EDIT'
 export function requestCommentEdit() {
   return {
     type: REQUEST_COMMENT_EDIT,
-    retrieving: true
+    retrievingEditComment: true
   }
 }
 
@@ -112,7 +104,7 @@ export function receiveCommentEdit(comment) {
   return {
     type: RECEIVE_COMMENT_EDIT,
     comment,
-    retrieving: false
+    retrievingEditComment: false
   }
 }
 
@@ -131,15 +123,10 @@ export const fetchCommentEdit = (commentId, commentData) => dispatch => {
     .then(response => response.json())
     // use json.posts to make the data more shallow
     .then(json => dispatch(receiveCommentEdit(json)))
-    .then(() => {
-      dispatch(fetchComments(commentData.parentId))
-    })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
 }
-
-/////
 
 // section for delete Comment action
 export const REQUEST_COMMENT_DELETE = 'REQUEST_COMMENT_DELETE'
@@ -148,7 +135,7 @@ export const RECEIVE_COMMENT_DELETE = 'RECEIVE_COMMENT_DELETE'
 export function requestCommentDelete() {
   return {
     type: REQUEST_COMMENT_DELETE,
-    retrieving: true
+    retrievingDeleteComment: true
   }
 }
 
@@ -156,7 +143,7 @@ export function receiveCommentDelete(comment) {
   return {
     type: RECEIVE_COMMENT_DELETE,
     comment,
-    retrieving: false
+    retrievingDeleteComment: false
   }
 }
 
@@ -175,14 +162,11 @@ export const fetchCommentDelete = (commentId, postId) => dispatch => {
     // use json.posts to make the data more shallow
     .then(json => {
       dispatch(receiveCommentDelete(json))
-      dispatch(fetchComments(postId)) 
     })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
 }
-
-/////
 
 // TEST section for Comment vote actions
 export const REQUEST_COMMENT_VOTE = 'REQUEST_COMMENT_VOTE'
@@ -191,7 +175,7 @@ export const RECEIVE_COMMENT_VOTE = 'RECEIVE_COMMENT_VOTE'
 export function requestCommentVote() {
   return {
     type: REQUEST_COMMENT_VOTE,
-    retrieving: true
+    retrievingVoteComment: true
   }
 }
 
@@ -199,7 +183,7 @@ export function receiveCommentVote(comment) {
   return {
     type: RECEIVE_COMMENT_VOTE,
     comment,
-    retrieving: false
+    retrievingVoteComment: false
 
   }
 }
@@ -219,7 +203,6 @@ export const updateCommentVote = (commentId, postId, option) => dispatch => {
     // use json.posts to make the data more shallow
     .then(json => {
       dispatch(receiveCommentVote(json))
-      dispatch(fetchComments(postId))
     })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)

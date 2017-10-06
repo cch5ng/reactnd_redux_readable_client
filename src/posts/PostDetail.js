@@ -19,7 +19,7 @@ class PostDetail extends Component {
   render() {
     let postDetail = null
     let comments
-    let commentsCount
+    let commentsCount = 0
     const postId = this.props.match.params.id
     let postStore = null
 
@@ -33,16 +33,21 @@ class PostDetail extends Component {
     if (this.props.comments.comments) {
       comments = this.props.comments.comments
     }
-    commentsCount = this.props.getCommentsCountFromPostId(comments, postId)
+
+    for (let i in comments) {
+      if (comments[i].parentId === postId && comments[i].deleted === false) {
+        commentsCount += 1
+      }
+    }
 
     return (
       <div>
-        {postStore && postStore.deleted === false
+        {postStore && postStore.deleted === false && postDetail
         ? <div>
             <div className="post-detail">
               <div className="post-detail-sect">
                 <h2>Post</h2>
-                <Link to={`/editPost/${postDetail.id}`}><button className="button">Edit</button></Link> <button className="button" onClick={(ev) => this.props.deletePostBtnClick(postDetail.id)}>Delete</button><br />
+                <Link to={`/editPost/${postId}`}><button className="button">Edit</button></Link> <button className="button" onClick={(ev) => this.props.deletePostBtnClick(postDetail.id)}>Delete</button><br />
                 <p>{postDetail.title}</p>
                 <p>{postDetail.body}</p>
                 <p>Category: {postDetail.category}</p>

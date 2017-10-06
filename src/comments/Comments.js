@@ -166,13 +166,10 @@ class Comments extends Component {
   }
 
   getActiveComment(commentId) {
-    if (this.props.comments && this.props.comments.comments && this.props.comments.comments.length) {
+    if (this.props.comments && this.props.comments.comments) {
       let comments = this.props.comments.comments
-      console.log('len comments: ' + comments.length)
-      let comment = comments.filter((comment) => {
-        return comment.id === commentId
-      })
-      return comment[0]
+      let comment = comments[commentId]
+      return comment
     }
 
   }

@@ -91,7 +91,7 @@ export const RECEIVE_POST_VOTE = 'RECEIVE_POST_VOTE'
 export function requestPostVote() {
   return {
     type: REQUEST_POST_VOTE,
-    retrieving: true
+    retrievingVotePost: true
   }
 }
 
@@ -99,7 +99,7 @@ export function receivePostVote(post) {
   return {
     type: RECEIVE_POST_VOTE,
     post,
-    retrieving: false
+    retrievingVotePost: false
 
   }
 }
@@ -119,15 +119,11 @@ export const updatePostVote = (postId, option) => dispatch => {
     // use json.posts to make the data more shallow
     .then(json => {
       dispatch(receivePostVote(json))
-      dispatch(fetchPosts())
-      dispatch(fetchPostDetail(postId))
     })
     .catch(function(err) {
       console.log('fetch err: ' + err.message)
     })
 }
-
-/////
 
 // TEST section for create Post action
 export const REQUEST_POST_CREATE = 'REQUEST_POST_CREATE'

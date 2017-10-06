@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux'
-import { posts, categories, postsFilter, postsSort, postDetail,
-  postVote} from '../posts/PostReducers'
-import { comments, commentsSort, commentCreate, commentEdit, commentDelete,
-  commentVote } from '../comments/CommentReducers'
+import { posts, categories, postsFilter, postsSort, postDetail } from '../posts/PostReducers'
+import { comments, commentsSort } from '../comments/CommentReducers'
 
 export default combineReducers({
     posts,
@@ -10,11 +8,6 @@ export default combineReducers({
     postsFilter,
     postsSort,
     postDetail,
-    postVote,
     comments,
-    commentsSort,
-    commentCreate,
-    commentEdit,
-    commentDelete,
-    commentVote
+    commentsSort
   })

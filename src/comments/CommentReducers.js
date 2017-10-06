@@ -10,6 +10,11 @@ import { REQUEST_COMMENTS, RECEIVE_COMMENTS, SORT_COMMENTS, REQUEST_COMMENT_VOTE
 export function comments(state = {comments: {}, allIds: []}, action) {
 
   switch(action.type) {
+    case REQUEST_COMMENTS:
+      return {
+        ...state,
+        retrievingComments: action.retrievingComments
+      }
     case RECEIVE_COMMENTS:
       let commentsObj = {}
       let allIds = []
@@ -28,9 +33,74 @@ export function comments(state = {comments: {}, allIds: []}, action) {
           ...state.comments,
           ...commentsObj
         },
-        allIds: state.allIds.concat(allIds)
+        allIds: state.allIds.concat(allIds),
+        retrievingComments: action.retrievingComments
       }
-    case REQUEST_COMMENTS:
+    case REQUEST_COMMENT_CREATE:
+      return {
+        ...state,
+        retrievingCreateComment: action.retrievingCreateComment
+      }
+    case RECEIVE_COMMENT_CREATE:
+      let commentId = action.comment.id
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          [commentId]: action.comment
+        },
+        allIds: state.allIds.concat([commentId]),
+        retrievingCreateComment: action.retrievingCreateComment
+      }
+    case REQUEST_COMMENT_EDIT:
+      return {
+        ...state,
+        retrievingEditComment: action.retrievingEditComment
+      }
+    case RECEIVE_COMMENT_EDIT:
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          [action.comment.id]: action.comment
+        },
+        retrievingEditComment: action.retrievingEditComment
+      }
+    case REQUEST_COMMENT_DELETE:
+      return {
+        ...state,
+        retrievingDeleteComment: action.retrievingDeleteComment
+      }
+    case RECEIVE_COMMENT_DELETE:
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          [action.comment.id]: {
+            ...state.comments[action.comment.id],
+            deleted: true
+          }
+        },
+        allIds: state.allIds.filter(commentId => (commentId !== action.comment.id)),
+        retrievingDeleteComment: action.retrievingDeleteComment
+      }
+    case REQUEST_COMMENT_VOTE:
+      return {
+        ...state,
+        retrievingVoteComment: action.retrievingVoteComment
+      }
+    case RECEIVE_COMMENT_VOTE:
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          [action.comment.id]: {
+            ...state.comments[action.comment.id],
+            voteScore: action.comment.voteScore
+          }
+        },
+        retrievingVoteComment: action.retrievingVoteComment
+      }
     default:
       return state
   }
@@ -47,58 +117,6 @@ export function commentsSort(state = { sortKey: 'voteScore', sortOrderDesc: true
         sortKey: action.sortKey,
         sortOrderDesc: action.sortKey === state.sortKey ? !state.sortOrderDesc : true 
       }
-    default:
-      return state
-  }
-}
-
-export function commentCreate(state = {}, action) {
-  switch(action.type) {
-    case RECEIVE_COMMENT_CREATE:
-      let commentId = action.comment.id
-      return {
-        ...state,
-        comments: {
-          ...state.comments,
-          commentId: action.comment
-        }
-      }
-    case REQUEST_COMMENT_CREATE:
-    default:
-      return state
-  }
-}
-
-export function commentEdit(state = {}, action) {
-  switch(action.type) {
-    case RECEIVE_COMMENT_EDIT:
-      return {
-        ...state,
-        comment: action.comment
-      }
-    case REQUEST_COMMENT_EDIT:
-    default:
-      return state
-  }
-}
-
-export function commentDelete(state = {}, action) {
-  switch(action.type) {
-    case RECEIVE_COMMENT_DELETE:
-      return {
-        ...state,
-        comment: action.comment
-      }
-    case REQUEST_COMMENT_DELETE:
-    default:
-      return state
-  }
-}
-
-export function commentVote(state = {}, action) {
-  switch(action.type) {
-    case REQUEST_COMMENT_VOTE:
-    case RECEIVE_COMMENT_VOTE:
     default:
       return state
   }

@@ -72,6 +72,11 @@ export function posts(state = {}, action) {
         },
         retrievingPost: false
       }
+    case REQUEST_POST_DELETE:
+      return {
+        ...state,
+        retrievingDeletePost: action.retrievingDeletePost
+      }
     case RECEIVE_POST_DELETE:
       return {
         ...state,
@@ -84,10 +89,20 @@ export function posts(state = {}, action) {
         },
         retrievingDeletePost: action.retrievingDeletePost
       }
-    case REQUEST_POST_DELETE:
+    case REQUEST_POST_VOTE:
       return {
         ...state,
-        retrievingDeletePost: action.retrievingDeletePost
+        retrievingVotePost: action.retrievingVotePost
+      }
+    case RECEIVE_POST_VOTE:
+      return {
+        ...state,
+        posts: {...state.posts,
+          [action.post.id]: {...state.posts[action.post.id],
+            voteScore: action.post.voteScore
+          }
+        },
+        retrievingVotePost: action.retrievingVotePost
       }
     default:
       return state
@@ -130,24 +145,12 @@ export function postDetail(state = {}, action) {
         ...state,
         postDetail: action.postDetail
       }
-    default:
-      return state
-  }
-}
-
-export function postVote(state = {}, action) {
-
-  switch(action.type) {
-    case REQUEST_POST_VOTE:
-      return {
-        ...state,
-
-      }
     case RECEIVE_POST_VOTE:
       return {
         ...state,
-        //posts: action.posts
+        postDetail: {...state.postDetail, voteScore: action.post.voteScore}
       }
+    case REQUEST_POST_VOTE:
     default:
       return state
   }
