@@ -125,8 +125,6 @@ export const updatePostVote = (postId, option) => dispatch => {
     })
 }
 
-/////
-
 // TEST section for create Post action
 export const REQUEST_POST_CREATE = 'REQUEST_POST_CREATE'
 export const RECEIVE_POST_CREATE = 'RECEIVE_POST_CREATE'
