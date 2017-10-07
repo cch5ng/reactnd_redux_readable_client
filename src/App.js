@@ -46,7 +46,6 @@ class App extends Component {
     let filteredComments = []
 
     for (let commentId in comments) {
-      //console.log('commentId: ' + commentId)
       if (comments[commentId].parentId === postId) {
         filteredComments.push(comments[commentId])
       }
@@ -108,7 +107,6 @@ class App extends Component {
 }
 
 function mapStateToProps({ postVote, posts }) {
-
   return {
     postVote,
     posts

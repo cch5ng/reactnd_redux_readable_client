@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { REQUEST_POST_DETAIL, RECEIVE_POST_DETAIL, fetchPostDetail, REQUEST_POST_CREATE, 
   RECEIVE_POST_CREATE, fetchPostCreate, REQUEST_POST_EDIT, RECEIVE_POST_EDIT,
@@ -71,12 +71,14 @@ class PostForm extends Component {
     // create form
     if (this.props.formType === "create") {
       this.props.dispatch(fetchPostCreate(formData))
-      this.setState(CLEARED_FORM)
+      this.props.history.push('/')
+//      this.setState(CLEARED_FORM)
     }
 
     // edit form
     if (this.props.formType === "edit") {
       this.props.dispatch(fetchPostEdit(postId, formData))
+      this.props.history.push(`/posts/${postId}`)
     }
   }
 
@@ -139,4 +141,4 @@ function mapStateToProps({ postCreate, categories, postDetail, posts }) {
   }
 }
 
-export default connect(mapStateToProps)(PostForm);
+export default withRouter(connect(mapStateToProps)(PostForm));

@@ -104,6 +104,8 @@ class Comments extends Component {
     if (this.state.commentFormType === "edit") {
       this.props.dispatch(fetchCommentEdit(commentId, formData))
     }
+
+    this.closeModal()
   }
 
   clickCommentVote(ev, objId, postId) {
